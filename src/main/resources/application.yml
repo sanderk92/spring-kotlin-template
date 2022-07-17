@@ -1,0 +1,17 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/auth/realms/master/protocol/openid-connect/certs
+        opaquetoken:
+          client-id: public
+
+springdoc:
+  oAuthFlow:
+    authUrl: http://localhost:8081/auth/realms/master/protocol/openid-connect/auth
+    tokenUrl: http://localhost:8081/auth/realms/master/protocol/openid-connect/token
+  swagger-ui:
+    oauth:
+      client-id: public
+      use-pkce-with-authorization-code-grant: true
