@@ -2,10 +2,11 @@
 
 A simple Spring Security implementation for Keycloak JWT tokens including:
 
-- Controller tests with JWT mock
+- A generic Spring adapter, non-Keycloak specific
+- WebMvc controller tests with JWT mock
+- Integration tests with JWT mock
 - Swagger page with OAUTH2 flow
 - Docker compose for Keycloak server
-- A generic Spring adapter, non-Keycloak specific
 
 ### Keycloak config
 For this example to work, make sure you have configured your Keycloak server. A user `user` is already inserted as 
