@@ -31,7 +31,7 @@ class SwaggerConfiguration {
 
     @Bean
     fun api(): GroupedOpenApi = GroupedOpenApi.builder()
-        .group("GOPACS")
+        .group("Test")
         .pathsToMatch("/**")
         .build()
 
