@@ -1,7 +1,7 @@
 package com.example.controller
 
 import com.example.common.ApplicationEndpoints.TEST_ENDPOINT
-import com.example.config.SecurityConfiguration
+import com.example.common.SecurityConfiguration
 import com.example.common.jwtString
 import com.example.common.randomJwt
 import com.example.common.testJwt
