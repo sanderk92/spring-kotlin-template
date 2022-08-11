@@ -26,4 +26,18 @@ You can now follow the login flow on `http://localhost:8080/swagger-ui/index.htm
 With this project we can easily secure our endpoints and extract the `sub` of the JWT token, all while Swagger is
 facilitating the PKCE flow for us:
 
-https://github.com/sanderk92/spring-security-keycloak/blob/d3e047cdb897f1800a9ab4e32f29d64540d354d7/src/main/kotlin/com/example/controller/TestController.kt#L16-L36
+```kotlin
+ @Operation(
+     description = "Test operation",
+     security = [ SecurityRequirement(name = SECURITY_SCHEME_NAME) ]
+ )
+ @GetMapping("/test-path")
+ @PostAuthorize("hasAuthority('test_role')")
+ fun test(
+
+     @Parameter(hidden = true)
+     @ResourceOwner
+     resourceOwner: String
+
+ ) = ResponseEntity.ok().build<Void>()
+```
