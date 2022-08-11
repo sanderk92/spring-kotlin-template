@@ -15,7 +15,7 @@ In order to start a development Keycloak instance, run:
 docker compose up
 ```
 
-<sub>*An admin `user : password` is inserted as specified in the docker compose file.
+<sub>*A user `user`/`password` is inserted as specified in the docker compose file.
 
 1. Create a public client `public`
    - set `Valid Redirect URIs` to `*`
