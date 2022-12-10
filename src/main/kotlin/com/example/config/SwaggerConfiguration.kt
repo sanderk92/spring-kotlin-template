@@ -11,10 +11,18 @@ import org.springdoc.core.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-const val SECURITY_SCHEME_NAME = "bearer"
+object AuthSchemes {
+    const val APIKEY = "apikey-scheme"
+    const val OAUTH2 = "bearer-scheme"
+}
 
 @SecurityScheme(
-    name = SECURITY_SCHEME_NAME,
+    name = AuthSchemes.APIKEY,
+    `in` = SecuritySchemeIn.HEADER,
+    type = SecuritySchemeType.APIKEY,
+)
+@SecurityScheme(
+    name = AuthSchemes.OAUTH2,
     scheme = "bearer",
     bearerFormat = "JWT",
     `in` = SecuritySchemeIn.HEADER,

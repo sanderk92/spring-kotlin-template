@@ -1,6 +1,6 @@
 package com.example.common
 
-import com.example.common.ApplicationRoles.TEST_ROLE
+import com.example.auth.UserRoles
 import org.springframework.security.oauth2.jwt.Jwt
 import java.time.Instant
 
@@ -17,7 +17,7 @@ val testJwt: Jwt = Jwt
     .issuedAt(Instant.MIN)
     .expiresAt(Instant.MAX)
     .subject(jwtSubject)
-    .claims { it.putAll(roleClaims(TEST_ROLE)) }
+    .claims { it.putAll(roleClaims(UserRoles.USER)) }
     .header("type", "JWT")
     .build()
 

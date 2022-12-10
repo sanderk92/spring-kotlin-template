@@ -1,7 +1,9 @@
-package com.example.controller
+package com.example
 
-import com.example.common.ApplicationEndpoints.TEST_ENDPOINT
-import com.example.common.SecurityConfiguration
+import com.example.auth.AuthenticatedUserRepository
+import com.example.auth.SecurityConfiguration
+import com.example.auth.apikey.ApiKeyTokenFilter
+import com.example.auth.apikey.HashGenerator
 import com.example.common.jwtString
 import com.example.common.randomJwt
 import com.example.common.testJwt
@@ -20,13 +22,19 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
 @WebMvcTest
-@Import(value = [SecurityConfiguration::class, TestController::class])
+@Import(value = [SecurityConfiguration::class, TestController::class, ApiKeyTokenFilter::class])
 class TestControllerTest {
 
     @TestConfiguration
     class Configuration {
         @Bean
         fun jwtDecoder() = mockk<JwtDecoder>()
+
+        @Bean
+        fun userRepository() = mockk<AuthenticatedUserRepository>()
+
+        @Bean
+        fun hashGenerator() = mockk<HashGenerator>()
     }
 
     @Autowired
@@ -39,7 +47,7 @@ class TestControllerTest {
     fun `Authorized user gets a 200`() {
         every { jwtDecoder.decode(jwtString) } returns testJwt
 
-        mvc.get(TEST_ENDPOINT) {
+        mvc.get("/test") {
             header(HttpHeaders.AUTHORIZATION, "bearer $jwtString")
         }.andExpect {
             status { isOk() }
@@ -52,7 +60,7 @@ class TestControllerTest {
     fun `Unauthorized user gets a 403`() {
         every { jwtDecoder.decode(jwtString) } returns randomJwt
 
-        mvc.get(TEST_ENDPOINT) {
+        mvc.get("/test") {
             header(HttpHeaders.AUTHORIZATION, "bearer $jwtString")
         }.andExpect {
             status { isForbidden() }
@@ -65,7 +73,7 @@ class TestControllerTest {
     fun `Unauthenticated user gets a 401`() {
         every { jwtDecoder.decode(jwtString) } throws JwtException("Invalid JWT token!")
 
-        mvc.get(TEST_ENDPOINT) {
+        mvc.get("/test") {
         }.andExpect {
             status { isUnauthorized() }
         }.andDo {
