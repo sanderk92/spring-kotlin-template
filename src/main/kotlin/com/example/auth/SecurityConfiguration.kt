@@ -14,8 +14,10 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import java.security.SecureRandom
 
-// TODO API Key endpoints should not be accessible with api key
 // TODO APiKey should probably be an interface
+// TODO Should improve configurability
+// TODO JWTs should always have a user
+// TODO Proper test support
 
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",

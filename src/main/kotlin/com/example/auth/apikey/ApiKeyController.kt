@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PostAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -18,10 +19,9 @@ class ApiKeyController(
     private val apiKeyService: ApiKeyService,
     private val userService: ApiKeyUserService
 ) {
-
     @Operation(
         description = "Get all API keys for the current user",
-        security = [SecurityRequirement(name = AuthSchemes.OAUTH2), SecurityRequirement(name = AuthSchemes.APIKEY)]
+        security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @GetMapping
     fun getApiKeys(principal: Principal): ResponseEntity<List<ApiKeyView>> =
@@ -32,7 +32,7 @@ class ApiKeyController(
 
     @Operation(
         description = "Add a new API key to the current user",
-        security = [SecurityRequirement(name = AuthSchemes.OAUTH2), SecurityRequirement(name = AuthSchemes.APIKEY)]
+        security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @PostMapping
     fun createApiKey(principal: Principal, request: ApiKeyRequest): ResponseEntity<ApiKey> {
@@ -46,7 +46,7 @@ class ApiKeyController(
 
     @Operation(
         description = "Delete an API key from the current user",
-        security = [SecurityRequirement(name = AuthSchemes.OAUTH2), SecurityRequirement(name = AuthSchemes.APIKEY)]
+        security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @DeleteMapping("/{id}")
     fun deleteApiKey(principal: Principal, @PathVariable id: String): ResponseEntity<Void> =

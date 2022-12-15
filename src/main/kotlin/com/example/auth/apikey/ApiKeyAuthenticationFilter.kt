@@ -18,6 +18,10 @@ class ApiKeyAuthenticationFilter(
     private val hashGenerator: HashGenerator,
 ) : OncePerRequestFilter() {
 
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        return request.servletPath.startsWith("/apikey")
+    }
+
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         request.apiKeyHeader().ifPresent { apiKey ->
             val hashedApiKey = hashGenerator.hash(apiKey)
