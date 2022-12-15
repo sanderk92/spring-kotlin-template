@@ -1,7 +1,6 @@
 package com.example.auth.dev
 
 import com.example.auth.apikey.ApiKeyService
-import com.example.auth.apikey.HashGenerator
 import com.example.auth.apikey.model.ApiKeyRequest
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
@@ -14,25 +13,26 @@ private const val TEST_API_KEY = "dev-api-key"
 @ConditionalOnProperty("feature.in-memory-users")
 class InMemoryUserGenerator(
     private val inMemoryUserRepository: InMemoryUserService,
-    private val apiKeyGenerator: ApiKeyService,
-    private val hashGenerator: HashGenerator,
+    private val apiKeyService: ApiKeyService,
 ) {
     @PostConstruct
     fun generate() {
-        val apiKey = ApiKeyRequest(
+        val apiKeyRequest = ApiKeyRequest(
             name = "development key",
             read = true,
             write = true,
             delete = true
-        ).let(apiKeyGenerator::createFrom)
+        )
+
+        val devApiKey = apiKeyService.createFrom(apiKeyRequest).copy(
+            key = TEST_API_KEY
+        )
+
+        val hashedDevApiKey = apiKeyService.hash(devApiKey)
 
         val user = InMemoryUser(
             id = UUID.randomUUID().toString(),
-            apiKeys = listOf(
-                apiKey.copy(
-                    key = hashGenerator.hash(TEST_API_KEY)
-                )
-            ),
+            apiKeys = listOf(hashedDevApiKey),
         )
 
         inMemoryUserRepository.store(user)

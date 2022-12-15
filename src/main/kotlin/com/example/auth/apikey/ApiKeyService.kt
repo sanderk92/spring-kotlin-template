@@ -24,11 +24,11 @@ class SecureRandomApiKeyService(
     /**
      * Generate an [ApiKey] with a high entropy plain text key value.
      */
-    override fun createFrom(entry: ApiKeyRequest): ApiKey = ApiKey(
+    override fun createFrom(request: ApiKeyRequest): ApiKey = ApiKey(
         id = UUID.randomUUID().toString(),
         key = buildKey(),
-        name = entry.name,
-        authorities = authoritiesFrom(entry),
+        name = request.name,
+        authorities = authoritiesFrom(request),
     )
 
     /**
