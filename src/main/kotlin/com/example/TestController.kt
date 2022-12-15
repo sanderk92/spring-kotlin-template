@@ -21,7 +21,7 @@ class TestController {
         security = [SecurityRequirement(name = OAUTH2), SecurityRequirement(name = APIKEY)]
     )
     @GetMapping("/test")
-    @PostAuthorize("hasAuthority('USER')")
+    @PostAuthorize("hasAuthority('USER') or hasAuthority('READ')")
     fun test(
 
         @Parameter(hidden = true)
