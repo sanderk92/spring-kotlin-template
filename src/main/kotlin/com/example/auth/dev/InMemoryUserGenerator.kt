@@ -1,9 +1,8 @@
 package com.example.auth.dev
 
-import com.example.auth.apikey.ApiKeyEntry
-import com.example.auth.apikey.ApiKeyGenerator
+import com.example.auth.apikey.ApiKeyService
 import com.example.auth.apikey.HashGenerator
-import com.example.auth.apikey.Sha256HashGenerator
+import com.example.auth.apikey.model.ApiKeyRequest
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import java.util.*
@@ -14,30 +13,29 @@ private const val TEST_API_KEY = "dev-api-key"
 @Component
 @ConditionalOnProperty("feature.in-memory-users")
 class InMemoryUserGenerator(
-    private val inMemoryUserRepository: InMemoryUserRepository,
-    private val apiKeyGenerator: ApiKeyGenerator,
+    private val inMemoryUserRepository: InMemoryUserService,
+    private val apiKeyGenerator: ApiKeyService,
     private val hashGenerator: HashGenerator,
 ) {
     @PostConstruct
     fun generate() {
-        val apiKeyEntry = ApiKeyEntry(
-            name = "Test",
+        val apiKey = ApiKeyRequest(
+            name = "development key",
             read = true,
             write = true,
             delete = true
-        )
-
-        val apiKey = apiKeyGenerator.generate(apiKeyEntry).copy(
-            key = hashGenerator.hash(TEST_API_KEY)
-        )
+        ).let(apiKeyGenerator::createFrom)
 
         val user = InMemoryUser(
-            id = UUID.randomUUID(),
-            subject = UUID.randomUUID().toString(),
-            apiKey = listOf(apiKey),
+            id = UUID.randomUUID().toString(),
+            apiKeys = listOf(
+                apiKey.copy(
+                    key = hashGenerator.hash(TEST_API_KEY)
+                )
+            ),
         )
 
-        inMemoryUserRepository.add(user)
+        inMemoryUserRepository.store(user)
 
         println("GENERATED TEST API KEY: '$TEST_API_KEY' FOR USER '$user'")
     }

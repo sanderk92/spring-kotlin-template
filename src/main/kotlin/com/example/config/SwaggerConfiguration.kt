@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 object AuthSchemes {
-    const val APIKEY = "apikey-scheme"
+    const val APIKEY = "apikey"
     const val OAUTH2 = "bearer-scheme"
 }
 

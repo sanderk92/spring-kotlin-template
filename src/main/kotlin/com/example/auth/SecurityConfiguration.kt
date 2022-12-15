@@ -1,6 +1,6 @@
 package com.example.auth
 
-import com.example.auth.apikey.ApiKeyTokenFilter
+import com.example.auth.apikey.ApiKeyAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -12,6 +12,10 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import java.security.SecureRandom
+
+// TODO API Key endpoints should not be accessible with api key
+// TODO APiKey should probably be an interface
 
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",
@@ -25,16 +29,21 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 class SecurityConfiguration {
 
     @Bean
-    fun configure(http: HttpSecurity, apiKeyTokenFilter: ApiKeyTokenFilter): SecurityFilterChain {
+    fun configure(http: HttpSecurity, apiKeyAuthenticationFilter: ApiKeyAuthenticationFilter): SecurityFilterChain {
         http
             .csrf().ignoringAntMatchers("/**")
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
-            .and().addFilterBefore(apiKeyTokenFilter, BasicAuthenticationFilter::class.java).authorizeRequests()
+            .and().addFilterBefore(apiKeyAuthenticationFilter, BasicAuthenticationFilter::class.java).authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
+    }
+
+    @Bean
+    fun secureRandom(): SecureRandom {
+        return SecureRandom()
     }
 
     private fun jwtAuthenticationConverter(): JwtAuthenticationConverter {

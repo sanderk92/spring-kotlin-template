@@ -1,8 +1,8 @@
 package com.example
 
-import com.example.auth.AuthenticatedUserRepository
+import com.example.auth.apikey.model.ApiKeyUserService
 import com.example.auth.SecurityConfiguration
-import com.example.auth.apikey.ApiKeyTokenFilter
+import com.example.auth.apikey.ApiKeyAuthenticationFilter
 import com.example.auth.apikey.HashGenerator
 import com.example.common.jwtString
 import com.example.common.randomJwt
@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
 @WebMvcTest
-@Import(value = [SecurityConfiguration::class, TestController::class, ApiKeyTokenFilter::class])
+@Import(value = [SecurityConfiguration::class, TestController::class, ApiKeyAuthenticationFilter::class])
 class TestControllerTest {
 
     @TestConfiguration
@@ -31,7 +31,7 @@ class TestControllerTest {
         fun jwtDecoder() = mockk<JwtDecoder>()
 
         @Bean
-        fun userRepository() = mockk<AuthenticatedUserRepository>()
+        fun userRepository() = mockk<ApiKeyUserService>()
 
         @Bean
         fun hashGenerator() = mockk<HashGenerator>()
