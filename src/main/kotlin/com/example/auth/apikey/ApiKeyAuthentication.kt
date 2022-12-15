@@ -23,12 +23,12 @@ data class ApiKeyAuthentication(
         return hashedKey
     }
 
-    override fun getDetails(): String {
-        return "N/A"
+    override fun getPrincipal(): String {
+        return hashedKey
     }
 
-    override fun getPrincipal(): String {
-        return principal
+    override fun getDetails(): String {
+        return "N/A"
     }
 
     override fun isAuthenticated(): Boolean {
