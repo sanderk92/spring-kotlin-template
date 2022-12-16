@@ -20,6 +20,7 @@ import java.security.SecureRandom
 // TODO APiKey should probably be an interface
 // TODO Should improve configurability
 // TODO JWTs should always have a user in the db
+// TODO add Integration test configuration
 
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",
