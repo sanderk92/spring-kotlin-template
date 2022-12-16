@@ -7,6 +7,7 @@ import com.example.security.apikey.model.ApiKeyView
 import com.example.config.AuthSchemes
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,6 +15,7 @@ import java.security.Principal
 
 @RestController
 @RequestMapping("/apikey")
+@Tag(name = "API keys", description = "Manage api keys for the current user")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
     private val userService: ApiKeyUserService
