@@ -1,5 +1,7 @@
-package com.example.auth
+package com.example.security
 
+import com.example.security.apikey.model.ApiKeyAuthorities.READ_AUTHORITY
+import com.example.security.apikey.model.ApiKeyUserRoles.USER_ROLE
 import com.example.config.AuthSchemes.APIKEY
 import com.example.config.AuthSchemes.OAUTH2
 import io.swagger.v3.oas.annotations.Operation
@@ -7,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PostAuthorize
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,7 +25,7 @@ class CurrentUserController {
         security = [SecurityRequirement(name = OAUTH2), SecurityRequirement(name = APIKEY)]
     )
     @GetMapping("/me")
-    @PostAuthorize("hasAuthority('USER') or hasAuthority('READ')")
+    @PreAuthorize("hasAuthority('$USER_ROLE') or hasAuthority('$READ_AUTHORITY') or false")
     fun getCurrentUser(
 
         @Parameter(hidden = true)

@@ -1,7 +1,7 @@
-package com.example.auth.apikey
+package com.example.security.apikey
 
-import com.example.auth.apikey.model.ApiKeyUser
-import com.example.auth.apikey.model.ApiKeyUserService
+import com.example.security.apikey.model.ApiKeyUser
+import com.example.security.apikey.model.ApiKeyUserService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.web.filter.OncePerRequestFilter
@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse
 
 private const val API_KEY_HEADER = "apikey"
 
-@Service
 class ApiKeyAuthenticationFilter(
     private val userRepository: ApiKeyUserService,
     private val hashGenerator: HashGenerator,

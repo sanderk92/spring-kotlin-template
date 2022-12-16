@@ -1,4 +1,4 @@
-package com.example.auth.apikey.model
+package com.example.security.apikey.model
 
 import java.util.*
 

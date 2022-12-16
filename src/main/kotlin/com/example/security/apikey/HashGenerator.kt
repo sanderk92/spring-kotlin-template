@@ -1,4 +1,4 @@
-package com.example.auth.apikey
+package com.example.security.apikey
 
 import com.nimbusds.jose.util.Base64
 import org.springframework.stereotype.Service

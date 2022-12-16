@@ -1,6 +1,9 @@
-package com.example.auth
+package com.example.config
 
-import com.example.auth.apikey.ApiKeyAuthenticationFilter
+import com.example.security.apikey.ApiKeyAuthenticationFilter
+import com.example.security.apikey.HashGenerator
+import com.example.security.apikey.Sha256HashGenerator
+import com.example.security.apikey.model.ApiKeyUserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -16,8 +19,7 @@ import java.security.SecureRandom
 
 // TODO APiKey should probably be an interface
 // TODO Should improve configurability
-// TODO JWTs should always have a user
-// TODO Proper test support
+// TODO JWTs should always have a user in the db
 
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",
@@ -27,18 +29,18 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 )
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
-class SecurityConfiguration {
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+class SecurityConfig(private val apiKeyUserService: ApiKeyUserService) {
 
     @Bean
-    fun configure(http: HttpSecurity, apiKeyAuthenticationFilter: ApiKeyAuthenticationFilter): SecurityFilterChain {
+    fun configure(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf().ignoringAntMatchers("/**")
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
-            .and().addFilterBefore(apiKeyAuthenticationFilter, BasicAuthenticationFilter::class.java).authorizeRequests()
+            .and().addFilterBefore(apiKeyAuthenticationFilter(), BasicAuthenticationFilter::class.java).authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
     }
@@ -46,6 +48,16 @@ class SecurityConfiguration {
     @Bean
     fun secureRandom(): SecureRandom {
         return SecureRandom()
+    }
+
+    @Bean
+    fun hashGenerator(): HashGenerator {
+        return Sha256HashGenerator()
+    }
+
+    @Bean
+    fun apiKeyAuthenticationFilter(): ApiKeyAuthenticationFilter {
+        return ApiKeyAuthenticationFilter(apiKeyUserService, hashGenerator())
     }
 
     private fun jwtAuthenticationConverter(): JwtAuthenticationConverter {

@@ -1,4 +1,4 @@
-package com.example.auth.apikey
+package com.example.security.apikey
 
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority

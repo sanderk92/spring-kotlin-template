@@ -1,15 +1,15 @@
-package com.example.auth.apikey
+package com.example.security.apikey
 
-import com.example.auth.apikey.model.ApiKey
-import com.example.auth.apikey.model.ApiKeyAuthorities
-import com.example.auth.apikey.model.ApiKeyRequest
+import com.example.security.apikey.model.ApiKey
+import com.example.security.apikey.model.ApiKeyAuthorities
+import com.example.security.apikey.model.ApiKeyRequest
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.util.*
 import java.util.Collections.unmodifiableList
 
 interface ApiKeyService {
-    fun createFrom(entry: ApiKeyRequest): ApiKey
+    fun createFrom(request: ApiKeyRequest): ApiKey
     fun hash(apiKey: ApiKey): ApiKey
 }
 

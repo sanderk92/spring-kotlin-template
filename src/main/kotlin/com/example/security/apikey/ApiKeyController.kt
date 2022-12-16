@@ -1,15 +1,14 @@
-package com.example.auth.apikey
+package com.example.security.apikey
 
-import com.example.auth.apikey.model.ApiKey
-import com.example.auth.apikey.model.ApiKeyRequest
-import com.example.auth.apikey.model.ApiKeyUserService
-import com.example.auth.apikey.model.ApiKeyView
+import com.example.security.apikey.model.ApiKey
+import com.example.security.apikey.model.ApiKeyRequest
+import com.example.security.apikey.model.ApiKeyUserService
+import com.example.security.apikey.model.ApiKeyView
 import com.example.config.AuthSchemes
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PostAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 

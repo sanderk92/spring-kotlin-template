@@ -1,7 +1,7 @@
-package com.example.auth.dev
+package com.example.security.dev
 
-import com.example.auth.apikey.ApiKeyService
-import com.example.auth.apikey.model.ApiKeyRequest
+import com.example.security.apikey.ApiKeyService
+import com.example.security.apikey.model.ApiKeyRequest
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import java.util.*
