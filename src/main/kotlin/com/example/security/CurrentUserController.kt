@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PostAuthorize
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,7 +26,7 @@ class CurrentUserController {
         security = [SecurityRequirement(name = OAUTH2), SecurityRequirement(name = APIKEY)]
     )
     @GetMapping("/me")
-    @PreAuthorize("hasAuthority('$USER_ROLE') or hasAuthority('$READ_AUTHORITY') or false")
+    @PreAuthorize("hasAuthority('$USER_ROLE') or hasAuthority('$READ_AUTHORITY')")
     fun getCurrentUser(
 
         @Parameter(hidden = true)
