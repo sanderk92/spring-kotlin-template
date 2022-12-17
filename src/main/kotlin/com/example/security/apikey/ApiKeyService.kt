@@ -1,41 +1,39 @@
 package com.example.security.apikey
 
-import com.example.security.apikey.model.ApiKey
 import com.example.security.apikey.model.ApiKeyAuthorities
-import com.example.security.apikey.model.ApiKeyRequest
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
-import java.util.*
 import java.util.Collections.unmodifiableList
 
-interface ApiKeyService {
-    fun createFrom(request: ApiKeyRequest): ApiKey
-    fun hash(apiKey: ApiKey): ApiKey
-}
+data class ApiKeyRequest(
+    val name: String,
+    val read: Boolean,
+    val write: Boolean,
+    val delete: Boolean,
+)
+
+data class ApiKeyEntry(
+    val key: String,
+    val name: String,
+    val authorities: List<String>,
+)
 
 @Service
-class SecureRandomApiKeyService(
+class ApiKeyService(
     private val secureRandom: SecureRandom,
     private val hashGenerator: HashGenerator,
-): ApiKeyService {
+) {
     private val apiKeyLength = 50
     private val characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-    /**
-     * Generate an [ApiKey] with a high entropy plain text key value.
-     */
-    override fun createFrom(request: ApiKeyRequest): ApiKey = ApiKey(
-        id = UUID.randomUUID().toString(),
-        key = buildKey(),
+    fun create(request: ApiKeyRequest) = ApiKeyEntry(
         name = request.name,
-        authorities = authoritiesFrom(request),
+        key = buildKey(),
+        authorities = authoritiesFrom(request)
     )
 
-    /**
-     * Hash the key value of the given [ApiKey].
-     */
-    override fun hash(apiKey: ApiKey): ApiKey = apiKey.copy(
-        key = hashGenerator.hash(apiKey.key)
+    fun hash(entry: ApiKeyEntry) = entry.copy(
+        key = hashGenerator.hash(entry.key)
     )
 
     private fun buildKey(): String {
@@ -49,13 +47,13 @@ class SecureRandomApiKeyService(
     private fun authoritiesFrom(model: ApiKeyRequest): List<String> {
         val authorities = mutableListOf<String>()
         if (model.read) {
-            authorities.add(ApiKeyAuthorities.READ_AUTHORITY)
+            authorities.add(ApiKeyAuthorities.READ)
         }
         if (model.write) {
-            authorities.add(ApiKeyAuthorities.WRITE_AUTHORITY)
+            authorities.add(ApiKeyAuthorities.WRITE)
         }
         if (model.delete) {
-            authorities.add(ApiKeyAuthorities.DELETE_AUTHORITY)
+            authorities.add(ApiKeyAuthorities.DELETE)
         }
         return unmodifiableList(authorities)
     }

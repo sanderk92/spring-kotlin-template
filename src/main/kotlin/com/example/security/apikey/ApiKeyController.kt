@@ -1,10 +1,8 @@
 package com.example.security.apikey
 
-import com.example.security.apikey.model.ApiKey
-import com.example.security.apikey.model.ApiKeyRequest
-import com.example.security.apikey.model.ApiKeyUserService
-import com.example.security.apikey.model.ApiKeyView
 import com.example.config.AuthSchemes
+import com.example.security.apikey.model.ApiKeyEntity
+import com.example.security.apikey.model.UserEntityService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -12,13 +10,14 @@ import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
+import java.util.*
 
 @RestController
 @RequestMapping("/apikey")
 @Tag(name = "API keys", description = "Manage api keys for the current user")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
-    private val userService: ApiKeyUserService
+    private val userService: UserEntityService
 ) {
     @Operation(
         description = "Get all API keys for the current user",
@@ -26,8 +25,8 @@ class ApiKeyController(
     )
     @GetMapping
     fun getApiKeys(principal: Principal): ResponseEntity<List<ApiKeyView>> =
-        userService.findById(principal.name)
-            .map { user -> user.apiKeys.map(ApiKey::asView) }
+        userService.findById(UUID.fromString(principal.name))
+            .map { user -> user.apiKeys.map(ApiKeyEntity::asView) }
             .map { apiKeys -> ResponseEntity.ok(apiKeys) }
             .orElse(ResponseEntity.status(FORBIDDEN).build())
 
@@ -36,12 +35,13 @@ class ApiKeyController(
         security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @PostMapping
-    fun createApiKey(principal: Principal, request: ApiKeyRequest): ResponseEntity<ApiKey> {
-        val newApiKey = apiKeyService.createFrom(request)
-        val hashedApiKey = apiKeyService.hash(newApiKey)
+    fun createApiKey(principal: Principal, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
+        val unHashedApiKeyEntry = apiKeyService.create(request)
+        val hashedApiKeyEntry = apiKeyService.hash(unHashedApiKeyEntry)
 
-        return userService.addApiKey(principal.name, hashedApiKey)
-            .map { ResponseEntity.ok(newApiKey) }
+
+        return userService.addApiKey(UUID.fromString(principal.name), hashedApiKeyEntry)
+            .map { ResponseEntity.ok(unHashedApiKeyEntry) }
             .orElse(ResponseEntity.status(FORBIDDEN).build())
     }
 
@@ -51,11 +51,17 @@ class ApiKeyController(
     )
     @DeleteMapping("/{id}")
     fun deleteApiKey(principal: Principal, @PathVariable id: String): ResponseEntity<Void> =
-        userService.deleteApiKey(principal.name, id)
+        userService.deleteApiKey(UUID.fromString(principal.name), UUID.fromString(id))
             .let { ResponseEntity.ok().build() }
 }
 
-private fun ApiKey.asView() = ApiKeyView(
+data class ApiKeyView(
+    val id: UUID,
+    val name: String,
+    val authorities: List<String>,
+)
+
+private fun ApiKeyEntity.asView() = ApiKeyView(
     id = id,
     name = name,
     authorities = authorities,

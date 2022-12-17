@@ -1,9 +1,10 @@
 package com.example.security.dev
 
-import com.example.security.apikey.model.ApiKey
-import com.example.security.apikey.model.ApiKeyUser
+import com.example.security.apikey.model.ApiKeyEntity
+import com.example.security.apikey.model.UserEntity
+import java.util.*
 
 data class InMemoryUser(
-    override val id: String,
-    override val apiKeys: List<ApiKey>,
-) : ApiKeyUser
+    override val id: UUID,
+    override val apiKeys: List<ApiKeyEntity>,
+) : UserEntity

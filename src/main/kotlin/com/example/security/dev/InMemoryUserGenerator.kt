@@ -1,7 +1,7 @@
 package com.example.security.dev
 
+import com.example.security.apikey.ApiKeyRequest
 import com.example.security.apikey.ApiKeyService
-import com.example.security.apikey.model.ApiKeyRequest
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import java.util.*
@@ -17,26 +17,30 @@ class InMemoryUserGenerator(
 ) {
     @PostConstruct
     fun generate() {
-        val apiKeyRequest = ApiKeyRequest(
+        val request = ApiKeyRequest(
             name = "development key",
             read = true,
             write = true,
             delete = true
         )
 
-        val devApiKey = apiKeyService.createFrom(apiKeyRequest).copy(
-            key = TEST_API_KEY
+        val unHashedEntry = apiKeyService.create(request).copy(key = TEST_API_KEY)
+        val hashedEntry = apiKeyService.hash(unHashedEntry)
+
+        val apiKey = ApiKey(
+            id = UUID.randomUUID(),
+            key = hashedEntry.key,
+            name = hashedEntry.name,
+            authorities = hashedEntry.authorities,
         )
 
-        val hashedDevApiKey = apiKeyService.hash(devApiKey)
-
-        val user = InMemoryUser(
-            id = UUID.randomUUID().toString(),
-            apiKeys = listOf(hashedDevApiKey),
+        val inMemoryUser = InMemoryUser(
+            id = UUID.randomUUID(),
+            apiKeys = listOf(apiKey),
         )
 
-        inMemoryUserRepository.store(user)
+        inMemoryUserRepository.store(inMemoryUser)
 
-        println("GENERATED TEST API KEY: '$TEST_API_KEY' FOR USER '$user'")
+        println("GENERATED TEST API KEY: '$TEST_API_KEY' FOR USER '$inMemoryUser'")
     }
 }

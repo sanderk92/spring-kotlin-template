@@ -1,8 +1,7 @@
 package com.example.security
 
-import com.example.config.TestSecurityConfig
-import com.example.security.apikey.model.ApiKeyAuthorities.READ_AUTHORITY
-import com.example.security.apikey.model.ApiKeyUserRoles.USER_ROLE
+import com.example.config.EnableGlobalMethodSecurity
+import com.example.security.apikey.model.ApiKeyAuthorities.READ
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.hasItem
 import org.junit.jupiter.api.Test
@@ -17,8 +16,8 @@ import org.springframework.test.web.servlet.get
 private const val USERNAME = "username"
 
 @WebMvcTest
-@Import(value = [CurrentUserController::class, TestSecurityConfig::class])
-class CurrentUserControllerTest {
+@Import(value = [CurrentUserController::class, EnableGlobalMethodSecurity::class])
+class CurrentInMemoryUserControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -34,7 +33,7 @@ class CurrentUserControllerTest {
 
     @Test
     @WithMockUser(username = USERNAME, roles = [], authorities = [])
-    fun `User which has no authorities gets a 403`() {
+    fun `User with no authorities gets a 403`() {
         mvc.get("/me") {
         }.andExpect {
             status { isForbidden() }
@@ -42,24 +41,13 @@ class CurrentUserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = USERNAME, authorities = [USER_ROLE])
-    fun `User which has 'User' authority gets a 200`() {
+    @WithMockUser(username = USERNAME, authorities = [READ])
+    fun `User with 'Read' authority gets a 200`() {
         mvc.get("/me") {
         }.andExpect {
             status { isOk() }
             jsonPath("$.id", equalTo(USERNAME))
-            jsonPath("$.authorities", hasItem(USER_ROLE))
-        }
-    }
-
-    @Test
-    @WithMockUser(username = USERNAME, authorities = [READ_AUTHORITY])
-    fun `User which has 'Read' authority gets a 200`() {
-        mvc.get("/me") {
-        }.andExpect {
-            status { isOk() }
-            jsonPath("$.id", equalTo(USERNAME))
-            jsonPath("$.authorities", hasItem(READ_AUTHORITY))
+            jsonPath("$.authorities", hasItem(READ))
         }
     }
 }

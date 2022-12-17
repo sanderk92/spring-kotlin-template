@@ -2,8 +2,7 @@ package com.example.config
 
 import com.example.security.apikey.ApiKeyAuthenticationFilter
 import com.example.security.apikey.HashGenerator
-import com.example.security.apikey.Sha256HashGenerator
-import com.example.security.apikey.model.ApiKeyUserService
+import com.example.security.apikey.model.UserEntityService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -17,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import java.security.SecureRandom
 
-// TODO APiKey should probably be an interface
 // TODO Should improve configurability
 // TODO JWTs should always have a user in the db
 // TODO add Integration test configuration
@@ -31,7 +29,10 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class SecurityConfig(private val apiKeyUserService: ApiKeyUserService) {
+class SecurityConfig(
+    private val userEntityService: UserEntityService,
+    private val hashGenerator: HashGenerator,
+) {
 
     @Bean
     fun configure(http: HttpSecurity): SecurityFilterChain {
@@ -41,7 +42,8 @@ class SecurityConfig(private val apiKeyUserService: ApiKeyUserService) {
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
-            .and().addFilterBefore(apiKeyAuthenticationFilter(), BasicAuthenticationFilter::class.java).authorizeRequests()
+            .and().addFilterBefore(apiKeyAuthenticationFilter(), BasicAuthenticationFilter::class.java)
+            .authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
     }
@@ -52,13 +54,8 @@ class SecurityConfig(private val apiKeyUserService: ApiKeyUserService) {
     }
 
     @Bean
-    fun hashGenerator(): HashGenerator {
-        return Sha256HashGenerator()
-    }
-
-    @Bean
     fun apiKeyAuthenticationFilter(): ApiKeyAuthenticationFilter {
-        return ApiKeyAuthenticationFilter(apiKeyUserService, hashGenerator())
+        return ApiKeyAuthenticationFilter(userEntityService, hashGenerator)
     }
 
     private fun jwtAuthenticationConverter(): JwtAuthenticationConverter {

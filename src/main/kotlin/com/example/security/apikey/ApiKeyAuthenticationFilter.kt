@@ -1,9 +1,8 @@
 package com.example.security.apikey
 
-import com.example.security.apikey.model.ApiKeyUser
-import com.example.security.apikey.model.ApiKeyUserService
+import com.example.security.apikey.model.UserEntity
+import com.example.security.apikey.model.UserEntityService
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.stereotype.Service
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.*
 import javax.servlet.FilterChain
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 private const val API_KEY_HEADER = "apikey"
 
 class ApiKeyAuthenticationFilter(
-    private val userRepository: ApiKeyUserService,
+    private val userRepository: UserEntityService,
     private val hashGenerator: HashGenerator,
 ) : OncePerRequestFilter() {
 
@@ -30,7 +29,6 @@ class ApiKeyAuthenticationFilter(
                 val authentication = ApiKeyAuthentication(user.id, hashedApiKey, authorities)
 
                 val securityContext = SecurityContextHolder.createEmptyContext()
-                authentication.isAuthenticated = true
                 securityContext.authentication = authentication
                 SecurityContextHolder.setContext(securityContext)
             }
@@ -42,5 +40,5 @@ class ApiKeyAuthenticationFilter(
 private fun HttpServletRequest.apiKeyHeader(): Optional<String> =
     Optional.ofNullable(this.getHeader(API_KEY_HEADER))
 
-private fun ApiKeyUser.authoritiesFor(apiKey: String): List<String> =
+private fun UserEntity.authoritiesFor(apiKey: String): List<String> =
     this.apiKeys.firstOrNull { it.key == apiKey }?.authorities ?: emptyList()
