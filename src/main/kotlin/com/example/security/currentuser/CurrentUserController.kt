@@ -2,13 +2,10 @@ package com.example.security.currentuser
 
 import com.example.config.AuthSchemes.APIKEY
 import com.example.config.AuthSchemes.OAUTH2
-import com.example.security.apikey.model.ApiKeyAuthorities.READ
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,21 +22,16 @@ class CurrentUserController {
         security = [SecurityRequirement(name = OAUTH2), SecurityRequirement(name = APIKEY)]
     )
     @GetMapping("/me")
-    fun getCurrentUser(
-
-        @Parameter(hidden = true)
-        authentication: Authentication,
-
-    ): ResponseEntity<CurrentUser> =
+    fun getCurrentUser(principal: Authentication): ResponseEntity<CurrentUserInformation> =
         ResponseEntity.ok(
-            CurrentUser(
-                id = authentication.name,
-                authorities = authentication.authorities.map(GrantedAuthority::getAuthority)
+            CurrentUserInformation(
+                id = principal.name,
+                authorities = principal.authorities.map(GrantedAuthority::getAuthority)
             )
         )
 }
 
-data class CurrentUser(
+data class CurrentUserInformation(
     val id: String,
     val authorities: List<String>,
 )

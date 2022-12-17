@@ -1,6 +1,6 @@
 package com.example.security.currentuser
 
-import com.example.PRINCIPAL_NAME
+import com.example.security.PRINCIPAL_NAME
 import com.example.config.EnableGlobalMethodSecurity
 import com.example.security.apikey.model.ApiKeyAuthorities
 import org.hamcrest.CoreMatchers.equalTo
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.get
 
 @WebMvcTest
 @Import(value = [CurrentUserController::class, EnableGlobalMethodSecurity::class])
-class CurrentUserControllerTest {
+class CurrentUserInformationControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc

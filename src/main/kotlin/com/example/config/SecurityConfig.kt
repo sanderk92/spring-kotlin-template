@@ -1,8 +1,6 @@
 package com.example.config
 
 import com.example.security.apikey.ApiKeyAuthenticationFilter
-import com.example.security.apikey.HashGenerator
-import com.example.security.apikey.model.UserEntityService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -12,9 +10,8 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import java.security.SecureRandom
 
 // TODO JWTs should always have a user in the db
 // TODO unit test all components
@@ -40,7 +37,7 @@ class SecurityConfig(
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
-            .and().addFilterBefore(apiKeyAuthenticationFilter, BasicAuthenticationFilter::class.java)
+            .and().addFilterAfter(apiKeyAuthenticationFilter, BearerTokenAuthenticationFilter::class.java)
             .authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()

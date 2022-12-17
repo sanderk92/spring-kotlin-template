@@ -6,6 +6,7 @@ import java.util.*
 interface UserEntityService {
     fun findById(userId: UUID): UserEntity?
     fun findByApiKey(apiKey: String): UserEntity?
+    fun createIfNotExists(userId: UUID)
     fun addApiKey(userId: UUID, entry: ApiKeyEntry): UserEntity?
     fun deleteApiKey(userId: UUID, apiKeyId: UUID)
 }

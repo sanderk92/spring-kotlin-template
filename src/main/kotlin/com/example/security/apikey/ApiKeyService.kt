@@ -16,12 +16,12 @@ class ApiKeyService(
 
     fun create(request: ApiKeyRequest) = ApiKeyEntry(
         name = request.name,
-        key = buildKey(),
+        key = UnHashedApiKeyString(buildKey()),
         authorities = authoritiesFrom(request)
     )
 
     fun hash(entry: ApiKeyEntry) = entry.copy(
-        key = hashGenerator.hash(entry.key)
+        key = HashedApiKeyString(hashGenerator.hash(entry.key.value))
     )
 
     private fun buildKey(): String {
@@ -55,7 +55,14 @@ data class ApiKeyRequest(
 )
 
 data class ApiKeyEntry(
-    val key: String,
+    val key: ApiKeyString,
     val name: String,
     val authorities: List<String>,
 )
+
+sealed interface ApiKeyString {
+    val value: String
+}
+
+data class HashedApiKeyString(override val value: String) : ApiKeyString
+data class UnHashedApiKeyString(override val value: String) : ApiKeyString

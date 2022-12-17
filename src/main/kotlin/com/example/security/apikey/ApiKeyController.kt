@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
@@ -26,7 +27,7 @@ class ApiKeyController(
         security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @GetMapping
-    fun getApiKeys(principal: Principal): ResponseEntity<List<ApiKeyView>> =
+    fun getApiKeys(principal: Authentication): ResponseEntity<List<ApiKeyView>> =
         userService.findById(UUID.fromString(principal.name))?.apiKeys
             ?.map(ApiKeyEntity::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
@@ -37,7 +38,7 @@ class ApiKeyController(
         security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @PostMapping
-    fun createApiKey(principal: Principal, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
+    fun createApiKey(principal: Authentication, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKeyEntry = apiKeyService.create(request)
         val hashedApiKeyEntry = apiKeyService.hash(unHashedApiKeyEntry)
 
@@ -51,7 +52,7 @@ class ApiKeyController(
         security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @DeleteMapping("/{id}")
-    fun deleteApiKey(principal: Principal, @PathVariable id: String): ResponseEntity<Void> =
+    fun deleteApiKey(principal: Authentication, @PathVariable id: String): ResponseEntity<Void> =
         userService.deleteApiKey(UUID.fromString(principal.name), UUID.fromString(id))
             .let { ResponseEntity.ok().build() }
 }
