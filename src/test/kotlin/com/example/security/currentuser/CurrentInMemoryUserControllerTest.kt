@@ -31,17 +31,8 @@ class CurrentInMemoryUserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = USERNAME, roles = [], authorities = [])
-    fun `User with no authorities gets a 403`() {
-        mvc.get("/me") {
-        }.andExpect {
-            status { isForbidden() }
-        }
-    }
-
-    @Test
     @WithMockUser(username = USERNAME, authorities = [ApiKeyAuthorities.READ])
-    fun `User with 'Read' authority gets a 200`() {
+    fun `User which is authenticated get a 200`() {
         mvc.get("/me") {
         }.andExpect {
             status { isOk() }

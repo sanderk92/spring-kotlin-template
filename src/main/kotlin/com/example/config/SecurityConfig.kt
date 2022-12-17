@@ -17,7 +17,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import java.security.SecureRandom
 
 // TODO JWTs should always have a user in the db
-// TODO add Integration test configuration
+// TODO unit test all components
+// TODO integration test configuration
 
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",

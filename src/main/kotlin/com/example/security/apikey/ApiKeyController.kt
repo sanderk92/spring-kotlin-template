@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
@@ -40,7 +41,7 @@ class ApiKeyController(
         val hashedApiKeyEntry = apiKeyService.hash(unHashedApiKeyEntry)
 
         return userService.addApiKey(UUID.fromString(principal.name), hashedApiKeyEntry)
-            ?.let{ ResponseEntity.ok(unHashedApiKeyEntry) }
+            ?.let { ResponseEntity.ok(unHashedApiKeyEntry) }
             ?: ResponseEntity.status(FORBIDDEN).build()
     }
 
@@ -49,6 +50,7 @@ class ApiKeyController(
         security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @DeleteMapping("/{id}")
+    @PreAuthorize("true")
     fun deleteApiKey(principal: Principal, @PathVariable id: String): ResponseEntity<Void> =
         userService.deleteApiKey(UUID.fromString(principal.name), UUID.fromString(id))
             .let { ResponseEntity.ok().build() }

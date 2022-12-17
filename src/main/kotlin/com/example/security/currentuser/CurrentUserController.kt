@@ -25,7 +25,6 @@ class CurrentUserController {
         security = [SecurityRequirement(name = OAUTH2), SecurityRequirement(name = APIKEY)]
     )
     @GetMapping("/me")
-    @PreAuthorize("hasAuthority('$READ')")
     fun getCurrentUser(
 
         @Parameter(hidden = true)
