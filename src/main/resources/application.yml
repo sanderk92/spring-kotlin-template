@@ -1,5 +1,8 @@
 spring:
   security:
+    api-key:
+      path: "/apikey"
+      header: "apikey"
     oauth2:
       resourceserver:
         jwt:

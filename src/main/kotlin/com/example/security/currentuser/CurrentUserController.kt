@@ -1,4 +1,4 @@
-package com.example.security
+package com.example.security.currentuser
 
 import com.example.config.AuthSchemes.APIKEY
 import com.example.config.AuthSchemes.OAUTH2

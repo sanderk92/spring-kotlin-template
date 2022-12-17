@@ -1,9 +1,8 @@
-package com.example.security
+package com.example.security.currentuser
 
 import com.example.config.EnableGlobalMethodSecurity
-import com.example.security.apikey.model.ApiKeyAuthorities.READ
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.hasItem
+import com.example.security.apikey.model.ApiKeyAuthorities
+import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -41,13 +40,13 @@ class CurrentInMemoryUserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = USERNAME, authorities = [READ])
+    @WithMockUser(username = USERNAME, authorities = [ApiKeyAuthorities.READ])
     fun `User with 'Read' authority gets a 200`() {
         mvc.get("/me") {
         }.andExpect {
             status { isOk() }
-            jsonPath("$.id", equalTo(USERNAME))
-            jsonPath("$.authorities", hasItem(READ))
+            jsonPath("$.id", CoreMatchers.equalTo(USERNAME))
+            jsonPath("$.authorities", CoreMatchers.hasItem(ApiKeyAuthorities.READ))
         }
     }
 }

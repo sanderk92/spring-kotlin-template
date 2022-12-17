@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import java.security.SecureRandom
 
-// TODO Should improve configurability
 // TODO JWTs should always have a user in the db
 // TODO add Integration test configuration
 
@@ -30,8 +29,7 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
-    private val userEntityService: UserEntityService,
-    private val hashGenerator: HashGenerator,
+    private val apiKeyAuthenticationFilter: ApiKeyAuthenticationFilter,
 ) {
 
     @Bean
@@ -42,20 +40,10 @@ class SecurityConfig(
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
-            .and().addFilterBefore(apiKeyAuthenticationFilter(), BasicAuthenticationFilter::class.java)
+            .and().addFilterBefore(apiKeyAuthenticationFilter, BasicAuthenticationFilter::class.java)
             .authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
-    }
-
-    @Bean
-    fun secureRandom(): SecureRandom {
-        return SecureRandom()
-    }
-
-    @Bean
-    fun apiKeyAuthenticationFilter(): ApiKeyAuthenticationFilter {
-        return ApiKeyAuthenticationFilter(userEntityService, hashGenerator)
     }
 
     private fun jwtAuthenticationConverter(): JwtAuthenticationConverter {

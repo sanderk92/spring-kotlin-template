@@ -13,7 +13,7 @@ import java.security.Principal
 import java.util.*
 
 @RestController
-@RequestMapping("/apikey")
+@RequestMapping("\${spring.security.api-key.path}")
 @Tag(name = "API keys", description = "Manage api keys for the current user")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,

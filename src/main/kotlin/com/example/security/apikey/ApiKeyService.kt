@@ -5,22 +5,10 @@ import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.util.Collections.unmodifiableList
 
-data class ApiKeyRequest(
-    val name: String,
-    val read: Boolean,
-    val write: Boolean,
-    val delete: Boolean,
-)
-
-data class ApiKeyEntry(
-    val key: String,
-    val name: String,
-    val authorities: List<String>,
-)
-
 @Service
 class ApiKeyService(
-    private val secureRandom: SecureRandom,
+    @Suppress("SpringJavaInjectionPointsAutowiringInspection")
+    private val secureRandom: SecureRandom = SecureRandom(),
     private val hashGenerator: HashGenerator,
 ) {
     private val apiKeyLength = 50
@@ -58,3 +46,16 @@ class ApiKeyService(
         return unmodifiableList(authorities)
     }
 }
+
+data class ApiKeyRequest(
+    val name: String,
+    val read: Boolean,
+    val write: Boolean,
+    val delete: Boolean,
+)
+
+data class ApiKeyEntry(
+    val key: String,
+    val name: String,
+    val authorities: List<String>,
+)
