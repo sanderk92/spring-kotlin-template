@@ -1,8 +1,10 @@
 package com.example.security.currentuser
 
+import com.example.PRINCIPAL_NAME
 import com.example.config.EnableGlobalMethodSecurity
 import com.example.security.apikey.model.ApiKeyAuthorities
-import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.hasItem
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -12,18 +14,16 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
-private const val USERNAME = "username"
-
 @WebMvcTest
 @Import(value = [CurrentUserController::class, EnableGlobalMethodSecurity::class])
-class CurrentInMemoryUserControllerTest {
+class CurrentUserControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc
 
     @Test
     @WithAnonymousUser
-    fun `User which is unauthenticated gets a 401`() {
+    fun `Unauthenticated user gets a 401 when retrieving user information`() {
         mvc.get("/me") {
         }.andExpect {
             status { isUnauthorized() }
@@ -31,13 +31,13 @@ class CurrentInMemoryUserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = USERNAME, authorities = [ApiKeyAuthorities.READ])
-    fun `User which is authenticated get a 200`() {
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [ApiKeyAuthorities.READ])
+    fun `Authenticated user can retrieve user information`() {
         mvc.get("/me") {
         }.andExpect {
             status { isOk() }
-            jsonPath("$.id", CoreMatchers.equalTo(USERNAME))
-            jsonPath("$.authorities", CoreMatchers.hasItem(ApiKeyAuthorities.READ))
+            jsonPath("$.id", equalTo(PRINCIPAL_NAME))
+            jsonPath("$.authorities", hasItem(ApiKeyAuthorities.READ))
         }
     }
 }

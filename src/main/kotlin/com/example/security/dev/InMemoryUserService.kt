@@ -1,7 +1,6 @@
 package com.example.security.dev
 
 import com.example.security.apikey.ApiKeyEntry
-import com.example.security.apikey.model.UserEntity
 import com.example.security.apikey.model.UserEntityService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
@@ -31,23 +30,23 @@ class InMemoryUserService : UserEntityService {
                 name = entry.key
             )
 
-            val updatedInMemoryUser = InMemoryUser(
+            val updatedUser = InMemoryUser(
                 id = currentUser.id,
                 apiKeys = currentUser.apiKeys.plus(newApiKey)
             )
             inMemoryUsers.remove(currentUser)
-            inMemoryUsers.add(updatedInMemoryUser)
-            updatedInMemoryUser
+            inMemoryUsers.add(updatedUser)
+            updatedUser
         }
 
     override fun deleteApiKey(userId: UUID, apiKeyId: UUID) {
         findById(userId)?.let { currentUser ->
-            val updatedInMemoryUser = InMemoryUser(
+            val updatedUser = InMemoryUser(
                 id = currentUser.id,
                 apiKeys = currentUser.apiKeys.filterNot { it.id == apiKeyId }
             )
             inMemoryUsers.remove(currentUser)
-            inMemoryUsers.add(updatedInMemoryUser)
+            inMemoryUsers.add(updatedUser)
         }
     }
 }

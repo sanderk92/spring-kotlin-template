@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus.FORBIDDEN
+import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -29,7 +30,7 @@ class ApiKeyController(
         userService.findById(UUID.fromString(principal.name))?.apiKeys
             ?.map(ApiKeyEntity::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
-            ?: ResponseEntity.status(FORBIDDEN).build()
+            ?: ResponseEntity.status(NOT_FOUND).build()
 
     @Operation(
         description = "Add a new API key to the current user",
@@ -42,7 +43,7 @@ class ApiKeyController(
 
         return userService.addApiKey(UUID.fromString(principal.name), hashedApiKeyEntry)
             ?.let { ResponseEntity.ok(unHashedApiKeyEntry) }
-            ?: ResponseEntity.status(FORBIDDEN).build()
+            ?: ResponseEntity.status(NOT_FOUND).build()
     }
 
     @Operation(
@@ -50,7 +51,6 @@ class ApiKeyController(
         security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
     )
     @DeleteMapping("/{id}")
-    @PreAuthorize("true")
     fun deleteApiKey(principal: Principal, @PathVariable id: String): ResponseEntity<Void> =
         userService.deleteApiKey(UUID.fromString(principal.name), UUID.fromString(id))
             .let { ResponseEntity.ok().build() }

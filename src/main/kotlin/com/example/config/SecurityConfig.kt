@@ -18,7 +18,6 @@ import java.security.SecureRandom
 
 // TODO JWTs should always have a user in the db
 // TODO unit test all components
-// TODO integration test configuration
 
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",
