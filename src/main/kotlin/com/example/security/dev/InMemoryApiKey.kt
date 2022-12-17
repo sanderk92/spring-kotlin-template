@@ -1,13 +1,13 @@
 package com.example.security.dev
 
-import com.example.security.apikey.model.ApiKeyEntity
+import com.example.security.apikey.model.ApiKey
 import java.time.Instant
 import java.util.UUID
 
-data class ApiKey(
+data class InMemoryApiKey(
     override val id: UUID,
     override val key: String,
     override val name: String,
     override val authorities: List<String>,
     val created: Instant = Instant.now(),
-) : ApiKeyEntity
+) : ApiKey

@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.get
 
 @WebMvcTest
 @Import(value = [CurrentUserController::class, EnableGlobalMethodSecurity::class])
-class CurrentUserInformationControllerTest {
+class CurrentUserControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc

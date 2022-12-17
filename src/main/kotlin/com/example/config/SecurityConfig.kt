@@ -14,9 +14,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
 
-// TODO JWTs should always have a user in the db
-// TODO unit test all components
-
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",
     "/swagger-ui/**",

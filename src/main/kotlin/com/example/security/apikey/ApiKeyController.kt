@@ -1,18 +1,15 @@
 package com.example.security.apikey
 
 import com.example.config.AuthSchemes
-import com.example.security.apikey.model.ApiKeyEntity
-import com.example.security.apikey.model.UserEntityService
+import com.example.security.apikey.model.ApiKey
+import com.example.security.apikey.model.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
-import java.security.Principal
 import java.util.*
 
 @RestController
@@ -20,7 +17,7 @@ import java.util.*
 @Tag(name = "API keys", description = "Manage api keys for the current user")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
-    private val userService: UserEntityService
+    private val userService: UserService
 ) {
     @Operation(
         description = "Get all API keys for the current user",
@@ -29,7 +26,7 @@ class ApiKeyController(
     @GetMapping
     fun getApiKeys(principal: Authentication): ResponseEntity<List<ApiKeyView>> =
         userService.findById(UUID.fromString(principal.name))?.apiKeys
-            ?.map(ApiKeyEntity::asView)
+            ?.map(ApiKey::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.status(NOT_FOUND).build()
 
@@ -63,7 +60,7 @@ data class ApiKeyView(
     val authorities: List<String>,
 )
 
-private fun ApiKeyEntity.asView() = ApiKeyView(
+private fun ApiKey.asView() = ApiKeyView(
     id = id,
     name = name,
     authorities = authorities,

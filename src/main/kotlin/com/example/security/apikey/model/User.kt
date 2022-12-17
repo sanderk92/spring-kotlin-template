@@ -2,7 +2,7 @@ package com.example.security.apikey.model
 
 import java.util.*
 
-interface UserEntity {
+interface User {
     val id: UUID
-    val apiKeys: List<ApiKeyEntity>
+    val apiKeys: List<ApiKey>
 }

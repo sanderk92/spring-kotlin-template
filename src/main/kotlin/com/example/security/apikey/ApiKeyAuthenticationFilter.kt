@@ -1,7 +1,7 @@
 package com.example.security.apikey
 
-import com.example.security.apikey.model.UserEntity
-import com.example.security.apikey.model.UserEntityService
+import com.example.security.apikey.model.User
+import com.example.security.apikey.model.UserService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Service
 class ApiKeyAuthenticationFilter(
-    private val userRepository: UserEntityService,
+    private val userService: UserService,
     private val hashGenerator: HashGenerator,
     @Value("\${spring.security.api-key.path}") private val apiKeyPath: String,
     @Value("\${spring.security.api-key.header}") private val apiKeyHeader: String,
@@ -26,7 +26,7 @@ class ApiKeyAuthenticationFilter(
         request.getHeader(apiKeyHeader)?.also { apiKey ->
 
             val hashedApiKey = hashGenerator.hash(apiKey)
-            userRepository.findByApiKey(hashedApiKey)?.also { user ->
+            userService.findByApiKey(hashedApiKey)?.also { user ->
 
                 val authorities = user.authoritiesFor(hashedApiKey)
                 val authentication = ApiKeyAuthentication(user.id, hashedApiKey, authorities)
@@ -40,5 +40,5 @@ class ApiKeyAuthenticationFilter(
     }
 }
 
-private fun UserEntity.authoritiesFor(apiKey: String): List<String> =
+private fun User.authoritiesFor(apiKey: String): List<String> =
     this.apiKeys.firstOrNull { it.key == apiKey }?.authorities ?: emptyList()

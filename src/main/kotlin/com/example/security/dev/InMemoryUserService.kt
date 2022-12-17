@@ -1,14 +1,14 @@
 package com.example.security.dev
 
 import com.example.security.apikey.ApiKeyEntry
-import com.example.security.apikey.model.UserEntityService
+import com.example.security.apikey.model.UserService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 @ConditionalOnProperty("feature.in-memory-users")
-class InMemoryUserService : UserEntityService {
+class InMemoryUserService : UserService {
 
     private val users = mutableListOf<InMemoryUser>()
 
@@ -29,7 +29,7 @@ class InMemoryUserService : UserEntityService {
 
     override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryUser? =
         findById(userId)?.let { currentUser ->
-            val newApiKey = ApiKey(
+            val newInMemoryApiKey = InMemoryApiKey(
                 id = UUID.randomUUID(),
                 key = entry.key.value,
                 name = entry.name,
@@ -38,7 +38,7 @@ class InMemoryUserService : UserEntityService {
 
             val updatedUser = InMemoryUser(
                 id = currentUser.id,
-                apiKeys = currentUser.apiKeys.plus(newApiKey)
+                apiKeys = currentUser.apiKeys.plus(newInMemoryApiKey)
             )
 
             replace(currentUser, updatedUser)

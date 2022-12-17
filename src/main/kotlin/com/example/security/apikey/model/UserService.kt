@@ -3,10 +3,10 @@ package com.example.security.apikey.model
 import com.example.security.apikey.ApiKeyEntry
 import java.util.*
 
-interface UserEntityService {
-    fun findById(userId: UUID): UserEntity?
-    fun findByApiKey(apiKey: String): UserEntity?
+interface UserService {
+    fun findById(userId: UUID): User?
+    fun findByApiKey(apiKey: String): User?
     fun createIfNotExists(userId: UUID)
-    fun addApiKey(userId: UUID, entry: ApiKeyEntry): UserEntity?
+    fun addApiKey(userId: UUID, entry: ApiKeyEntry): User?
     fun deleteApiKey(userId: UUID, apiKeyId: UUID)
 }
