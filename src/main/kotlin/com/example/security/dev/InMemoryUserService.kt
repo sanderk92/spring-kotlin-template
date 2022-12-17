@@ -16,14 +16,14 @@ class InMemoryUserService : UserEntityService {
     fun store(inMemoryUser: InMemoryUser): InMemoryUser =
         inMemoryUser.also(inMemoryUsers::add)
 
-    override fun findById(userId: UUID): Optional<UserEntity> =
-        Optional.ofNullable(inMemoryUsers.firstOrNull { user -> user.id == userId })
+    override fun findById(userId: UUID): InMemoryUser? =
+        inMemoryUsers.firstOrNull { user -> user.id == userId }
 
-    override fun findByApiKey(apiKey: String): Optional<UserEntity> =
-        Optional.ofNullable(inMemoryUsers.firstOrNull { user -> user.apiKeys.any { it.key == apiKey } })
+    override fun findByApiKey(apiKey: String): InMemoryUser? =
+       inMemoryUsers.firstOrNull { user -> user.apiKeys.any { it.key == apiKey } }
 
-    override fun addApiKey(userId: UUID, entry: ApiKeyEntry): Optional<UserEntity> =
-        findById(userId).map { currentUser ->
+    override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryUser? =
+        findById(userId)?.let { currentUser ->
             val newApiKey = ApiKey(
                 id = UUID.randomUUID(),
                 key = entry.key,
@@ -41,7 +41,7 @@ class InMemoryUserService : UserEntityService {
         }
 
     override fun deleteApiKey(userId: UUID, apiKeyId: UUID) {
-        findById(userId).ifPresent { currentUser ->
+        findById(userId)?.let { currentUser ->
             val updatedInMemoryUser = InMemoryUser(
                 id = currentUser.id,
                 apiKeys = currentUser.apiKeys.filterNot { it.id == apiKeyId }

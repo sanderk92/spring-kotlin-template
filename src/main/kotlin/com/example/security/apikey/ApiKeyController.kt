@@ -25,10 +25,10 @@ class ApiKeyController(
     )
     @GetMapping
     fun getApiKeys(principal: Principal): ResponseEntity<List<ApiKeyView>> =
-        userService.findById(UUID.fromString(principal.name))
-            .map { user -> user.apiKeys.map(ApiKeyEntity::asView) }
-            .map { apiKeys -> ResponseEntity.ok(apiKeys) }
-            .orElse(ResponseEntity.status(FORBIDDEN).build())
+        userService.findById(UUID.fromString(principal.name))?.apiKeys
+            ?.map(ApiKeyEntity::asView)
+            ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
+            ?: ResponseEntity.status(FORBIDDEN).build()
 
     @Operation(
         description = "Add a new API key to the current user",
@@ -39,10 +39,9 @@ class ApiKeyController(
         val unHashedApiKeyEntry = apiKeyService.create(request)
         val hashedApiKeyEntry = apiKeyService.hash(unHashedApiKeyEntry)
 
-
         return userService.addApiKey(UUID.fromString(principal.name), hashedApiKeyEntry)
-            .map { ResponseEntity.ok(unHashedApiKeyEntry) }
-            .orElse(ResponseEntity.status(FORBIDDEN).build())
+            ?.let{ ResponseEntity.ok(unHashedApiKeyEntry) }
+            ?: ResponseEntity.status(FORBIDDEN).build()
     }
 
     @Operation(

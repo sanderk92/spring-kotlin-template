@@ -21,9 +21,10 @@ class ApiKeyAuthenticationFilter(
     }
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        request.apiKeyHeader().ifPresent { apiKey ->
+        request.getHeader(API_KEY_HEADER)?.also { apiKey ->
+
             val hashedApiKey = hashGenerator.hash(apiKey)
-            userRepository.findByApiKey(hashedApiKey).ifPresent { user ->
+            userRepository.findByApiKey(hashedApiKey)?.also { user ->
 
                 val authorities = user.authoritiesFor(hashedApiKey)
                 val authentication = ApiKeyAuthentication(user.id, hashedApiKey, authorities)
@@ -36,9 +37,6 @@ class ApiKeyAuthenticationFilter(
         chain.doFilter(request, response)
     }
 }
-
-private fun HttpServletRequest.apiKeyHeader(): Optional<String> =
-    Optional.ofNullable(this.getHeader(API_KEY_HEADER))
 
 private fun UserEntity.authoritiesFor(apiKey: String): List<String> =
     this.apiKeys.firstOrNull { it.key == apiKey }?.authorities ?: emptyList()
