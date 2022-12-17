@@ -1,4 +1,4 @@
-package com.example.security.currentuser
+package com.example.security.user
 
 import com.example.config.AuthSchemes.APIKEY
 import com.example.config.AuthSchemes.OAUTH2
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping
 @Tag(name = "User", description = "Retrieve information about the current user")
-class CurrentUserController {
+class CurrentUserController() {
 
     @Operation(
         description = "Get the currently authorized user",

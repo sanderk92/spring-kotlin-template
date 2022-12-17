@@ -1,6 +1,7 @@
 package com.example.config
 
 import com.example.security.apikey.ApiKeyAuthenticationFilter
+import com.example.security.user.CreateUserFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -26,7 +27,8 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
-    private val apiKeyAuthenticationFilter: ApiKeyAuthenticationFilter,
+    private val apiKeyFilter: ApiKeyAuthenticationFilter,
+    private val createUserFilter: CreateUserFilter,
 ) {
 
     @Bean
@@ -37,7 +39,9 @@ class SecurityConfig(
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
-            .and().addFilterAfter(apiKeyAuthenticationFilter, BearerTokenAuthenticationFilter::class.java)
+            .and()
+            .addFilterAfter(createUserFilter, BearerTokenAuthenticationFilter::class.java)
+            .addFilterAfter(apiKeyFilter, createUserFilter::class.java)
             .authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()

@@ -1,4 +1,4 @@
-package com.example.security.apikey.model
+package com.example.security.apikey
 
 object ApiKeyAuthorities {
     const val READ = "READ"

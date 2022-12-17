@@ -1,8 +1,8 @@
-package com.example.security.currentuser
+package com.example.security.user
 
 import com.example.security.PRINCIPAL_NAME
 import com.example.config.EnableGlobalMethodSecurity
-import com.example.security.apikey.model.ApiKeyAuthorities
+import com.example.security.apikey.ApiKeyAuthorities
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.hasItem
 import org.junit.jupiter.api.Test

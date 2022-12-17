@@ -1,6 +1,5 @@
 package com.example.security.apikey
 
-import com.example.security.apikey.model.ApiKeyAuthorities
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.util.Collections.unmodifiableList
