@@ -11,9 +11,8 @@ spring:
           client-id: public
 
 springdoc:
-  oAuthFlow:
-    authUrl: http://localhost:8081/auth/realms/master/protocol/openid-connect/auth
-    tokenUrl: http://localhost:8081/auth/realms/master/protocol/openid-connect/token
+  oidc:
+    url: http://localhost:8081/auth/realms/master/.well-known/openid-configuration
   swagger-ui:
     oauth:
       client-id: public

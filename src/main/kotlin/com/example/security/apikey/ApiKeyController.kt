@@ -1,6 +1,6 @@
 package com.example.security.apikey
 
-import com.example.config.AuthSchemes
+import com.example.config.SecuritySchemes
 import com.example.security.apikey.model.ApiKey
 import com.example.security.apikey.model.UserService
 import io.swagger.v3.oas.annotations.Operation
@@ -21,18 +21,19 @@ class ApiKeyController(
 ) {
     @Operation(
         description = "Get all API keys for the current user",
-        security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
+        security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
     @GetMapping
     fun getApiKeys(principal: Authentication): ResponseEntity<List<ApiKeyView>> =
-        userService.findById(UUID.fromString(principal.name))?.apiKeys
+        userService.findById(UUID.fromString(principal.name))
+            ?.apiKeys
             ?.map(ApiKey::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.status(NOT_FOUND).build()
 
     @Operation(
         description = "Add a new API key to the current user",
-        security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
+        security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
     @PostMapping
     fun createApiKey(principal: Authentication, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
@@ -46,7 +47,7 @@ class ApiKeyController(
 
     @Operation(
         description = "Delete an API key from the current user",
-        security = [SecurityRequirement(name = AuthSchemes.OAUTH2)]
+        security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
     @DeleteMapping("/{id}")
     fun deleteApiKey(principal: Authentication, @PathVariable id: String): ResponseEntity<Void> =
