@@ -24,8 +24,8 @@ class ApiKeyController(
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
     @GetMapping
-    fun getApiKeys(principal: Authentication): ResponseEntity<List<ApiKeyView>> =
-        userService.findById(UUID.fromString(principal.name))
+    fun getApiKeys(authentication: Authentication): ResponseEntity<List<ApiKeyView>> =
+        userService.findById(UUID.fromString(authentication.name))
             ?.apiKeys
             ?.map(ApiKey::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
@@ -36,11 +36,11 @@ class ApiKeyController(
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
     @PostMapping
-    fun createApiKey(principal: Authentication, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
+    fun createApiKey(authentication: Authentication, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKeyEntry = apiKeyService.create(request)
         val hashedApiKeyEntry = apiKeyService.hash(unHashedApiKeyEntry)
 
-        return userService.addApiKey(UUID.fromString(principal.name), hashedApiKeyEntry)
+        return userService.addApiKey(UUID.fromString(authentication.name), hashedApiKeyEntry)
             ?.let { ResponseEntity.ok(unHashedApiKeyEntry) }
             ?: ResponseEntity.status(NOT_FOUND).build()
     }
@@ -50,8 +50,8 @@ class ApiKeyController(
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
     @DeleteMapping("/{id}")
-    fun deleteApiKey(principal: Authentication, @PathVariable id: String): ResponseEntity<Void> =
-        userService.deleteApiKey(UUID.fromString(principal.name), UUID.fromString(id))
+    fun deleteApiKey(authentication: Authentication, @PathVariable id: String): ResponseEntity<Void> =
+        userService.deleteApiKey(UUID.fromString(authentication.name), UUID.fromString(id))
             .let { ResponseEntity.ok().build() }
 }
 

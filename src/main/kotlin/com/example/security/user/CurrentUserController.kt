@@ -22,11 +22,11 @@ class CurrentUserController {
         security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
     )
     @GetMapping("/me")
-    fun getCurrentUser(principal: Authentication): ResponseEntity<CurrentUserInformation> =
+    fun getCurrentUser(authentication: Authentication): ResponseEntity<CurrentUserInformation> =
         ResponseEntity.ok(
             CurrentUserInformation(
-                id = principal.name,
-                authorities = principal.authorities.map(GrantedAuthority::getAuthority)
+                id = authentication.name,
+                authorities = authentication.authorities.map(GrantedAuthority::getAuthority)
             )
         )
 }
