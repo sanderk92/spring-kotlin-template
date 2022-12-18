@@ -1,43 +1,44 @@
 package com.example.security.apikey
 
-import com.example.PRINCIPAL_NAME
+import com.example.config.EnableAspectOrientedProgramming
+import com.example.security.PRINCIPAL_NAME
 import com.example.config.EnableGlobalMethodSecurity
-import com.example.security.apikey.model.ApiKeyAuthorities.READ
-import com.example.security.apikey.model.ApiKeyEntity
-import com.example.security.apikey.model.UserEntity
-import com.example.security.apikey.model.UserEntityService
+import com.example.security.apiKey
+import com.example.security.apiKeyRequest
+import com.example.security.apikey.model.UserService
+import com.example.security.user
+import com.example.security.user.CurrentUserController
+import com.example.security.user.CurrentUserExtractorAspect
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
-import java.util.*
-
-private val apiKey = StubApiKey(
-    id = UUID.randomUUID(),
-    key = "key",
-    name = "name",
-    authorities = listOf(READ)
-)
-
-private val user = StubUserEntity(
-    id = UUID.fromString(PRINCIPAL_NAME),
-    apiKeys = listOf(apiKey),
-)
+import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.context.WebApplicationContext
 
 @WebMvcTest
-@Import(value = [ApiKeyController::class, EnableGlobalMethodSecurity::class])
+@Import(value = [
+    ApiKeyController::class,
+    CurrentUserExtractorAspect::class,
+    EnableGlobalMethodSecurity::class,
+    EnableAspectOrientedProgramming::class,
+])
 class ApiKeyControllerTest {
 
     @TestConfiguration
@@ -47,7 +48,7 @@ class ApiKeyControllerTest {
         fun apiKeyService() = mockk<ApiKeyService>()
 
         @Bean
-        fun userService() = mockk<UserEntityService>()
+        fun userService() = mockk<UserService>()
     }
 
     @Autowired
@@ -60,7 +61,7 @@ class ApiKeyControllerTest {
     private lateinit var apiKeyService: ApiKeyService
 
     @Autowired
-    private lateinit var userService: UserEntityService
+    private lateinit var userService: UserService
 
     @Test
     @WithAnonymousUser
@@ -83,16 +84,3 @@ class ApiKeyControllerTest {
         }
     }
 }
-
-data class StubUserEntity(
-    override val id: UUID,
-    override val apiKeys: List<ApiKeyEntity>
-): UserEntity
-
-data class StubApiKey(
-    override val id: UUID,
-    override val key: String,
-    override val name: String,
-    override val authorities: List<String>,
-
-): ApiKeyEntity

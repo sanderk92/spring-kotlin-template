@@ -3,12 +3,14 @@ package com.example.security.apikey
 import com.example.config.SecuritySchemes
 import com.example.security.apikey.model.ApiKey
 import com.example.security.apikey.model.UserService
+import com.example.security.user.CurrentUser
+import com.example.security.user.CurrentUserExtractor
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -23,9 +25,10 @@ class ApiKeyController(
         description = "Get all API keys for the current user",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
+    @CurrentUserExtractor
     @GetMapping
-    fun getApiKeys(authentication: Authentication): ResponseEntity<List<ApiKeyView>> =
-        userService.findById(UUID.fromString(authentication.name))
+    fun getApiKeys(@Parameter(hidden=true) currentUser: CurrentUser): ResponseEntity<List<ApiKeyView>> =
+        userService.findById(currentUser.id)
             ?.apiKeys
             ?.map(ApiKey::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
@@ -35,12 +38,13 @@ class ApiKeyController(
         description = "Add a new API key to the current user",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
+    @CurrentUserExtractor
     @PostMapping
-    fun createApiKey(authentication: Authentication, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
+    fun createApiKey(@Parameter(hidden=true) currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKeyEntry = apiKeyService.create(request)
         val hashedApiKeyEntry = apiKeyService.hash(unHashedApiKeyEntry)
 
-        return userService.addApiKey(UUID.fromString(authentication.name), hashedApiKeyEntry)
+        return userService.addApiKey(currentUser.id, hashedApiKeyEntry)
             ?.let { ResponseEntity.ok(unHashedApiKeyEntry) }
             ?: ResponseEntity.status(NOT_FOUND).build()
     }
@@ -49,9 +53,10 @@ class ApiKeyController(
         description = "Delete an API key from the current user",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
     )
+    @CurrentUserExtractor
     @DeleteMapping("/{id}")
-    fun deleteApiKey(authentication: Authentication, @PathVariable id: String): ResponseEntity<Void> =
-        userService.deleteApiKey(UUID.fromString(authentication.name), UUID.fromString(id))
+    fun deleteApiKey(@Parameter(hidden=true) currentUser: CurrentUser, @PathVariable id: UUID): ResponseEntity<Void> =
+        userService.deleteApiKey(currentUser.id, id)
             .let { ResponseEntity.ok().build() }
 }
 

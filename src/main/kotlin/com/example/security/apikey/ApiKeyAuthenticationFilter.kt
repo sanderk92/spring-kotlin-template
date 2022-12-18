@@ -29,7 +29,7 @@ class ApiKeyAuthenticationFilter(
             userService.findByApiKey(hashedApiKey)?.also { user ->
 
                 val authorities = user.authoritiesFor(hashedApiKey)
-                val authentication = ApiKeyAuthentication(user.id, hashedApiKey, authorities)
+                val authentication = ApiKeyAuthentication(user.id.toString(), hashedApiKey, authorities)
 
                 val securityContext = SecurityContextHolder.createEmptyContext()
                 securityContext.authentication = authentication

@@ -1,5 +1,6 @@
 package com.example.security.user
 
+import com.example.config.EnableAspectOrientedProgramming
 import com.example.security.PRINCIPAL_NAME
 import com.example.config.EnableGlobalMethodSecurity
 import com.example.security.apikey.ApiKeyAuthorities
@@ -15,7 +16,12 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 
 @WebMvcTest
-@Import(value = [CurrentUserController::class, EnableGlobalMethodSecurity::class])
+@Import(value = [
+    CurrentUserController::class,
+    CurrentUserExtractorAspect::class,
+    EnableGlobalMethodSecurity::class,
+    EnableAspectOrientedProgramming::class,
+])
 class CurrentUserControllerTest {
 
     @Autowired

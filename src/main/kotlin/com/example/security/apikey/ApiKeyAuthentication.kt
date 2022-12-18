@@ -5,22 +5,15 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.*
 
-class ApiKeyAuthentication private constructor(
-    private val principal: String,
+class ApiKeyAuthentication(
+    private val name: String,
     private val hashedKey: String,
     private val authorities: List<String>,
-    private var isAuthenticated: Boolean,
+    private var isAuthenticated: Boolean = true,
 ) : Authentication {
 
-    constructor(userId: UUID, apiKey: String, authorities: List<String>) : this(
-        principal = userId.toString(),
-        hashedKey = apiKey,
-        authorities = authorities,
-        isAuthenticated = true,
-    )
-
     override fun getName(): String {
-        return principal
+        return name
     }
 
     override fun getAuthorities(): List<GrantedAuthority> {
