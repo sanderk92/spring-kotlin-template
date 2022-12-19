@@ -13,15 +13,15 @@ import java.util.*
 @Component
 class CurrentUserExtractorAspect {
 
-    @Pointcut("@annotation(com.example.security.user.CurrentUserExtractor)")
-    fun hasCurrentUserExtractorAnnotation() {
+    @Pointcut("@annotation(com.example.security.user.ExtractCurrentUser)")
+    fun hasAnnotation() {
     }
 
     @Pointcut("args(currentUser, ..)")
-    fun hasCurrentUserAsFirstArg(currentUser: CurrentUser) {
+    fun hasFirstArg(currentUser: CurrentUser) {
     }
 
-    @Before("hasCurrentUserExtractorAnnotation() && hasCurrentUserAsFirstArg(currentUser)")
+    @Before("hasAnnotation() && hasFirstArg(currentUser)")
     fun setUserId(currentUser: CurrentUser) {
         val authentication = SecurityContextHolder.getContext().authentication
         setIdField(authentication, currentUser)

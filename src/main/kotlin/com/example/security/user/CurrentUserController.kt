@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "User", description = "Retrieve information about the current user")
 class CurrentUserController {
 
+    @GetMapping("/me")
+    @ExtractCurrentUser
     @Operation(
         description = "Get the currently authorized user",
         security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
     )
-    @CurrentUserExtractor
-    @GetMapping("/me")
     fun getCurrentUser(@Parameter(hidden = true) currentUser: CurrentUser): ResponseEntity<CurrentUser> =
         ResponseEntity.ok(currentUser)
 }

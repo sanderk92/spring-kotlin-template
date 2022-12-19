@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.get
 @WebMvcTest
 @Import(value = [
     CurrentUserController::class,
-    CurrentUserExtractorAspect::class,
     EnableGlobalMethodSecurity::class,
     EnableAspectOrientedProgramming::class,
 ])

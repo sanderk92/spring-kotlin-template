@@ -1,4 +1,4 @@
 package com.example.security.user
 
 @Target(AnnotationTarget.FUNCTION)
-annotation class CurrentUserExtractor
+annotation class ExtractCurrentUser
