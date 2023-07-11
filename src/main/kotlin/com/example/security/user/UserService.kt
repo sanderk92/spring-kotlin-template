@@ -1,5 +1,6 @@
-package com.example.security.apikey
+package com.example.security.user
 
+import com.example.security.apikey.ApiKeyEntry
 import java.util.*
 
 interface UserService {

@@ -1,5 +1,7 @@
 package com.example.security.apikey
 
+import com.example.security.user.User
+import com.example.security.user.UserService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service

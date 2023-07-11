@@ -1,6 +1,5 @@
 package com.example.security.user
 
-import com.example.security.apikey.UserService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.web.filter.OncePerRequestFilter

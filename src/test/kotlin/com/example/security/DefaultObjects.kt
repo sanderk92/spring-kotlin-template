@@ -7,7 +7,7 @@ import com.example.security.apikey.ApiKeyEntry
 import com.example.security.apikey.ApiKeyRequest
 import com.example.security.apikey.UnHashedApiKeyString
 import com.example.security.apikey.ApiKey
-import com.example.security.apikey.User
+import com.example.security.user.User
 import java.util.*
 
 const val PRINCIPAL_NAME = "ef2db5bb-b7a0-4ff3-99dc-a7d95dc1e84c"

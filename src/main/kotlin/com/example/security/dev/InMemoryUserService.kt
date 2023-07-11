@@ -1,7 +1,7 @@
 package com.example.security.dev
 
 import com.example.security.apikey.ApiKeyEntry
-import com.example.security.apikey.UserService
+import com.example.security.user.UserService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import java.util.*

@@ -3,6 +3,7 @@ package com.example.security.apikey
 import com.example.config.SecuritySchemes.OIDC
 import com.example.security.user.CurrentUser
 import com.example.security.user.ExtractCurrentUser
+import com.example.security.user.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
