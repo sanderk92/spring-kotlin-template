@@ -1,6 +1,6 @@
 package com.example.security.dev
 
-import com.example.security.apikey.interfaces.User
+import com.example.security.apikey.User
 import java.util.*
 
 data class InMemoryUser(

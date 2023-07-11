@@ -1,4 +1,4 @@
-package com.example.security.apikey.interfaces
+package com.example.security.apikey
 
 import java.util.*
 

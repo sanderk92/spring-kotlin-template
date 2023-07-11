@@ -3,7 +3,6 @@ package com.example.security.apikey
 import com.example.config.EnableAspectOrientedProgramming
 import com.example.config.EnableGlobalMethodSecurity
 import com.example.security.*
-import com.example.security.apikey.interfaces.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.mockk.every
 import io.mockk.mockk
