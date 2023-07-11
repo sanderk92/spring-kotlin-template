@@ -1,4 +1,4 @@
-package com.example.security.apikey.model
+package com.example.security.apikey.interfaces
 
 import java.util.UUID
 

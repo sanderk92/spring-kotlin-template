@@ -1,7 +1,7 @@
 package com.example.config
 
 import com.example.security.apikey.ApiKeyAuthenticationFilter
-import com.example.security.user.CurrentUserCreatorFilter
+import com.example.security.user.CurrentUserStorageFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -25,20 +25,20 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     private val apiKeyFilter: ApiKeyAuthenticationFilter,
-    private val currentUserCreatorFilter: CurrentUserCreatorFilter,
+    private val currentUserStorageFilter: CurrentUserStorageFilter,
 ) {
 
     @Bean
     fun configure(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf().ignoringAntMatchers("/**")
-            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
             .and()
-            .addFilterAfter(currentUserCreatorFilter, BearerTokenAuthenticationFilter::class.java)
-            .addFilterAfter(apiKeyFilter, currentUserCreatorFilter::class.java)
+            .addFilterAfter(currentUserStorageFilter, BearerTokenAuthenticationFilter::class.java)
+            .addFilterAfter(apiKeyFilter, currentUserStorageFilter::class.java)
             .authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()

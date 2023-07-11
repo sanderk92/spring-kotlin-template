@@ -1,6 +1,6 @@
 package com.example.security.dev
 
-import com.example.security.apikey.model.ApiKey
+import com.example.security.apikey.interfaces.ApiKey
 import java.time.Instant
 import java.util.UUID
 

@@ -1,8 +1,8 @@
 package com.example.security.apikey
 
 import com.example.config.SecuritySchemes.OIDC
-import com.example.security.apikey.model.ApiKey
-import com.example.security.apikey.model.UserService
+import com.example.security.apikey.interfaces.ApiKey
+import com.example.security.apikey.interfaces.UserService
 import com.example.security.user.CurrentUser
 import com.example.security.user.ExtractCurrentUser
 import io.swagger.v3.oas.annotations.Operation

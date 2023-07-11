@@ -8,12 +8,12 @@ spring:
         jwt:
           jwk-set-uri: http://localhost:8081/auth/realms/master/protocol/openid-connect/certs
         opaquetoken:
-          client-id: public
+          client-id: app
 
 springdoc:
   oidc:
     url: http://localhost:8081/auth/realms/master/.well-known/openid-configuration
   swagger-ui:
     oauth:
-      client-id: public
+      client-id: app
       use-pkce-with-authorization-code-grant: true
