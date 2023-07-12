@@ -32,7 +32,7 @@ class SecurityConfig(
     fun configure(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf().ignoringAntMatchers("/**")
-            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             .and().authorizeRequests()
             .antMatchers(*PUBLIC_ENDPOINTS).permitAll()
             .anyRequest().authenticated()
