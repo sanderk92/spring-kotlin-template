@@ -3,10 +3,10 @@ package com.example.security
 import com.example.security.apikey.ApiKeyAuthorities.DELETE
 import com.example.security.apikey.ApiKeyAuthorities.READ
 import com.example.security.apikey.ApiKeyAuthorities.WRITE
-import com.example.security.apikey.ApiKeyEntry
 import com.example.security.apikey.ApiKeyRequest
 import com.example.security.apikey.UnHashedApiKeyEntry
 import com.example.security.apikey.ApiKey
+import com.example.security.apikey.HashedApiKeyEntry
 import com.example.security.user.User
 import java.util.*
 
@@ -19,8 +19,14 @@ val apiKeyRequest = ApiKeyRequest(
     delete = true,
 )
 
-val apiKeyEntry = ApiKeyEntry(
-    key = UnHashedApiKeyEntry("apikey"),
+val unHashedApiKeyEntry = UnHashedApiKeyEntry(
+    key = "apikey",
+    name = "apikey name",
+    authorities = emptyList()
+)
+
+val hashedApiKeyEntry = HashedApiKeyEntry(
+    key = "apikey",
     name = "apikey name",
     authorities = emptyList()
 )

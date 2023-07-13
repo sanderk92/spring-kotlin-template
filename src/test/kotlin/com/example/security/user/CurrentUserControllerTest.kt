@@ -38,7 +38,7 @@ class CurrentUserControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME, authorities = [ApiKeyAuthorities.READ])
     fun `Authenticated user can retrieve user information`() {
-        mvc.get("/me") {
+        mvc.get("/user") {
         }.andExpect {
             status { isOk() }
             jsonPath("$.id", equalTo(PRINCIPAL_NAME))

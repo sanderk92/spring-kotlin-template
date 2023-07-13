@@ -90,9 +90,6 @@ class ApiKeyControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can create api keys`() {
-        val unHashedApiKeyEntry = apiKeyEntry
-        val hashedApiKeyEntry = apiKeyEntry.copy(key = HashedApiKeyEntry("abc"))
-
         every { apiKeyService.create(any()) } returns unHashedApiKeyEntry
         every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
         every { userService.addApiKey(any(), any()) } returns user
@@ -106,7 +103,7 @@ class ApiKeyControllerTest {
             content { equalTo(objectMapper.writeValueAsString(unHashedApiKeyEntry)) }
         }
         verify { apiKeyService.create(apiKeyRequest) }
-        verify { apiKeyService.hash(apiKeyEntry) }
+        verify { apiKeyService.hash(unHashedApiKeyEntry) }
         verify { userService.addApiKey(user.id, hashedApiKeyEntry) }
     }
 
