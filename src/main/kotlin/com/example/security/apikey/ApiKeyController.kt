@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("\${spring.security.api-key.path}")
@@ -37,13 +38,13 @@ class ApiKeyController(
     @Operation(summary = "Create a new API key for the current user", security = [SecurityRequirement(name = OIDC)])
     fun createApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
-        @RequestBody request: ApiKeyRequest,
+        @RequestBody @Valid request: ApiKeyRequest,
     ): ResponseEntity<ApiKeyEntry> {
-        val unHashedApiKeyEntry = apiKeyService.create(request)
-        val hashedApiKeyEntry = apiKeyService.hash(unHashedApiKeyEntry)
+        val unHashedApiKey = apiKeyService.create(request)
+        val hashedApiKey = apiKeyService.hash(unHashedApiKey)
 
-        return userService.addApiKey(currentUser.id, hashedApiKeyEntry)
-            ?.let { ResponseEntity.ok(unHashedApiKeyEntry) }
+        return userService.addApiKey(currentUser.id, hashedApiKey)
+            ?.let { ResponseEntity.ok(unHashedApiKey) }
             ?: ResponseEntity.status(NOT_FOUND).build()
     }
 

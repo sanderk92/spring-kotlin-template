@@ -2,7 +2,6 @@ package com.example.security.dev
 
 import com.example.security.apikey.ApiKeyRequest
 import com.example.security.apikey.ApiKeyService
-import com.example.security.apikey.UnHashedApiKeyString
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import java.util.*
@@ -29,7 +28,7 @@ class InMemoryUserGenerator(
 
         val hashedEntry = request
             .let(apiKeyService::create)
-            .copy(key = UnHashedApiKeyString(DEV_API_KEY))
+            .copy(key = DEV_API_KEY)
             .let(apiKeyService::hash)
 
         inMemoryUserRepository.createIfNotExists(userId)

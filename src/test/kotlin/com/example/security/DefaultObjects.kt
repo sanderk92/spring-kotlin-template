@@ -5,7 +5,7 @@ import com.example.security.apikey.ApiKeyAuthorities.READ
 import com.example.security.apikey.ApiKeyAuthorities.WRITE
 import com.example.security.apikey.ApiKeyEntry
 import com.example.security.apikey.ApiKeyRequest
-import com.example.security.apikey.UnHashedApiKeyString
+import com.example.security.apikey.UnHashedApiKeyEntry
 import com.example.security.apikey.ApiKey
 import com.example.security.user.User
 import java.util.*
@@ -20,7 +20,7 @@ val apiKeyRequest = ApiKeyRequest(
 )
 
 val apiKeyEntry = ApiKeyEntry(
-    key = UnHashedApiKeyString("apikey"),
+    key = UnHashedApiKeyEntry("apikey"),
     name = "apikey name",
     authorities = emptyList()
 )

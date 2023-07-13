@@ -3,24 +3,27 @@ package com.example.security.apikey
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.util.Collections.unmodifiableList
+import javax.validation.constraints.AssertTrue
+import javax.validation.constraints.NotBlank
 
 @Service
 class ApiKeyService(
-    @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-    private val secureRandom: SecureRandom = SecureRandom(),
+    private val secureRandom: SecureRandom,
     private val hashGenerator: HashGenerator,
 ) {
     private val apiKeyLength = 50
     private val characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-    fun create(request: ApiKeyRequest) = ApiKeyEntry(
+    fun create(request: ApiKeyRequest) = UnHashedApiKeyEntry(
         name = request.name,
-        key = UnHashedApiKeyString(buildKey()),
-        authorities = authoritiesFrom(request)
+        authorities = authoritiesFrom(request),
+        key = buildKey()
     )
 
-    fun hash(entry: ApiKeyEntry) = entry.copy(
-        key = HashedApiKeyString(hashGenerator.hash(entry.key.value))
+    fun hash(entry: UnHashedApiKeyEntry) = HashedApiKeyEntry(
+        name = entry.name,
+        authorities = entry.authorities,
+        key = hashGenerator.hash(entry.key),
     )
 
     private fun buildKey(): String {
@@ -47,21 +50,27 @@ class ApiKeyService(
 }
 
 data class ApiKeyRequest(
+    @field:NotBlank
     val name: String,
     val read: Boolean,
     val write: Boolean,
     val delete: Boolean,
 )
 
-data class ApiKeyEntry(
-    val key: ApiKeyString,
-    val name: String,
-    val authorities: List<String>,
-)
-
-sealed interface ApiKeyString {
-    val value: String
+sealed interface ApiKeyEntry {
+    val key: String
+    val name: String
+    val authorities: List<String>
 }
 
-data class HashedApiKeyString(override val value: String) : ApiKeyString
-data class UnHashedApiKeyString(override val value: String) : ApiKeyString
+data class HashedApiKeyEntry(
+    override val key: String,
+    override val name: String,
+    override val authorities: List<String>,
+) : ApiKeyEntry
+
+data class UnHashedApiKeyEntry(
+    override val key: String,
+    override val name: String,
+    override val authorities: List<String>,
+) : ApiKeyEntry

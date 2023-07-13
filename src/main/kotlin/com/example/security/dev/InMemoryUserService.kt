@@ -31,7 +31,7 @@ class InMemoryUserService : UserService {
         findById(userId)?.let { currentUser ->
             val newInMemoryApiKey = InMemoryApiKey(
                 id = UUID.randomUUID(),
-                key = entry.key.value,
+                key = entry.key,
                 name = entry.name,
                 authorities = entry.authorities
             )

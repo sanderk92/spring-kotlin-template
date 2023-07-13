@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
+import java.security.SecureRandom
 
 private val PUBLIC_ENDPOINTS = arrayOf(
     "/sso/login",
@@ -42,6 +43,11 @@ class SecurityConfig(
             .authorizeRequests()
             .and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
+    }
+
+    @Bean
+    fun secureRandom(): SecureRandom {
+        return SecureRandom()
     }
 
     private fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
