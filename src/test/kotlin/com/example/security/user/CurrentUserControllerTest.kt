@@ -29,7 +29,7 @@ class CurrentUserControllerTest {
     @Test
     @WithAnonymousUser
     fun `Unauthenticated user gets a 401 when retrieving user information`() {
-        mvc.get("/me") {
+        mvc.get("/user") {
         }.andExpect {
             status { isUnauthorized() }
         }
