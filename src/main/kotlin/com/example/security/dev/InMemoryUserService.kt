@@ -18,16 +18,11 @@ class InMemoryUserService : UserService {
     override fun findByApiKey(apiKey: String): InMemoryUser? =
         users.firstOrNull { user -> user.apiKeys.any { it.key == apiKey } }
 
-    override fun createIfNotExists(userId: UUID) {
-        findById(userId) ?: users.add(
-            InMemoryUser(
-                id = userId,
-                apiKeys = emptyList(),
-            )
-        )
-    }
+    override fun createIfNotExists(userId: UUID): InMemoryUser =
+        findById(userId) ?: InMemoryUser(userId, emptyList())
+            .also(users::add)
 
-    override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryUser? =
+    override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryApiKey? =
         findById(userId)?.let { currentUser ->
             val newInMemoryApiKey = InMemoryApiKey(
                 id = UUID.randomUUID(),
@@ -42,6 +37,7 @@ class InMemoryUserService : UserService {
             )
 
             replace(currentUser, updatedUser)
+            newInMemoryApiKey
         }
 
     override fun deleteApiKey(userId: UUID, apiKeyId: UUID) {
@@ -55,10 +51,9 @@ class InMemoryUserService : UserService {
         }
     }
 
-    private fun replace(currentUser: InMemoryUser, updatedUser: InMemoryUser): InMemoryUser {
+    private fun replace(currentUser: InMemoryUser, updatedUser: InMemoryUser) {
         users.remove(currentUser)
         users.add(updatedUser)
-        return updatedUser
     }
 }
 
