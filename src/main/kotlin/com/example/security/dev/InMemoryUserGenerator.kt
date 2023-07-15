@@ -2,10 +2,10 @@ package com.example.security.dev
 
 import com.example.security.apikey.ApiKeyRequest
 import com.example.security.apikey.ApiKeyService
+import jakarta.annotation.PostConstruct
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import java.util.*
-import javax.annotation.PostConstruct
 
 private const val DEV_API_KEY = "dev-api-key"
 

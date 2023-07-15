@@ -1,10 +1,9 @@
 package com.example.security.apikey
 
+import jakarta.validation.constraints.NotBlank
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.util.Collections.unmodifiableList
-import javax.validation.constraints.AssertTrue
-import javax.validation.constraints.NotBlank
 
 @Service
 class ApiKeyService(
