@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("\${spring.security.api-key.path}")
-@Tag(name = "Apikeys", description = "Manage api keys for the current user")
+@RequestMapping("\${security.api-key.path}")
+@Tag(name = "APIKeys", description = "Manage api keys for the current user")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
     private val userService: UserService
 ) {
     @GetMapping
     @ExtractCurrentUser
-    @Operation(summary = "Get all API keys for the current user", security = [SecurityRequirement(name = OIDC)])
+    @Operation(summary = "Get all api keys for the current user", security = [SecurityRequirement(name = OIDC)])
     fun getApiKeys(
         @Parameter(hidden = true) currentUser: CurrentUser,
     ): ResponseEntity<List<ApiKeyView>> =
@@ -35,7 +35,7 @@ class ApiKeyController(
 
     @PostMapping
     @ExtractCurrentUser
-    @Operation(summary = "Create a new API key for the current user", security = [SecurityRequirement(name = OIDC)])
+    @Operation(summary = "Create a new api key for the current user", security = [SecurityRequirement(name = OIDC)])
     fun createApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
         @RequestBody @Valid request: ApiKeyRequest,
@@ -50,7 +50,7 @@ class ApiKeyController(
 
     @DeleteMapping("/{id}")
     @ExtractCurrentUser
-    @Operation(summary = "Delete an API key of the current user", security = [SecurityRequirement(name = OIDC)])
+    @Operation(summary = "Delete an api key of the current user", security = [SecurityRequirement(name = OIDC)])
     fun deleteApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
         @PathVariable id: UUID,

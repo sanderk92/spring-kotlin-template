@@ -21,13 +21,13 @@ val apiKeyRequest = ApiKeyRequest(
 
 val unHashedApiKeyEntry = UnHashedApiKeyEntry(
     key = "apikey",
-    name = "apikey name",
+    name = "apikeyName",
     authorities = emptyList()
 )
 
 val hashedApiKeyEntry = HashedApiKeyEntry(
     key = "apikey",
-    name = "apikey name",
+    name = "apikeyName",
     authorities = emptyList()
 )
 
@@ -40,5 +40,8 @@ val apiKey = object : ApiKey {
 
 val user = object : User {
     override val id = UUID.fromString(PRINCIPAL_NAME)
+    override val email = "email"
+    override val firstName = "firstName"
+    override val lastName = "lastName"
     override val apiKeys = listOf(apiKey)
 }

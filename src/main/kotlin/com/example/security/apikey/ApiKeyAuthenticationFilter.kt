@@ -1,6 +1,5 @@
 package com.example.security.apikey
 
-import com.example.security.user.User
 import com.example.security.user.UserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -14,8 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 class ApiKeyAuthenticationFilter(
     private val userService: UserService,
     private val hashGenerator: HashGenerator,
-    @Value("\${spring.security.api-key.path}") private val apiKeyPath: String,
-    @Value("\${spring.security.api-key.header}") private val apiKeyHeader: String,
+    @Value("\${security.api-key.path}") private val apiKeyPath: String,
 ) : OncePerRequestFilter() {
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
@@ -23,12 +21,12 @@ class ApiKeyAuthenticationFilter(
     }
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        request.getHeader(apiKeyHeader)?.also { apiKey ->
+        request.getHeader("apikey")?.also { apiKey ->
 
             val hashedApiKey = hashGenerator.hash(apiKey)
             userService.findByApiKey(hashedApiKey)?.also { user ->
 
-                val authorities = user.authoritiesFor(hashedApiKey)
+                val authorities = user.apiKeys.firstOrNull { it.key == apiKey }?.authorities ?: emptyList()
                 val authentication = ApiKeyAuthentication(user.id.toString(), hashedApiKey, authorities)
 
                 val securityContext = SecurityContextHolder.createEmptyContext()
@@ -39,6 +37,3 @@ class ApiKeyAuthenticationFilter(
         chain.doFilter(request, response)
     }
 }
-
-private fun User.authoritiesFor(apiKey: String): List<String> =
-    this.apiKeys.firstOrNull { it.key == apiKey }?.authorities ?: emptyList()

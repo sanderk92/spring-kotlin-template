@@ -11,7 +11,7 @@ import java.util.*
 
 @Aspect
 @Component
-class CurrentUserExtractorAspect {
+class ExtractCurrentUserAspect {
 
     @Pointcut("@annotation(com.example.security.user.ExtractCurrentUser)")
     fun hasAnnotation() {

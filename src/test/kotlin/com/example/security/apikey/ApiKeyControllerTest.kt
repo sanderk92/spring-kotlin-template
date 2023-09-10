@@ -92,7 +92,7 @@ class ApiKeyControllerTest {
     fun `Authenticated user can create api keys`() {
         every { apiKeyService.create(any()) } returns unHashedApiKeyEntry
         every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
-        every { userService.addApiKey(any(), any()) } returns user
+        every { userService.addApiKey(any(), any()) } returns apiKey
 
         mvc.post("/apikey") {
             with(csrf())

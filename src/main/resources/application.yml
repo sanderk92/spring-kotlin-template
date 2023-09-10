@@ -1,8 +1,9 @@
+server:
+  servlet:
+    context-path: "/api"
+
 spring:
   security:
-    api-key:
-      path: "/apikey"
-      header: "apikey"
     oauth2:
       resourceserver:
         jwt:
@@ -17,3 +18,13 @@ springdoc:
     oauth:
       client-id: app
       use-pkce-with-authorization-code-grant: true
+
+security:
+  api-key:
+    path: "/apikey"
+  token:
+    claims:
+      email: "email"
+      first-name: "given_name"
+      last-name: "family_name"
+      authorities: "realm_access.roles"

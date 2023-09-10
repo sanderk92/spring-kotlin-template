@@ -6,11 +6,9 @@ import java.security.SecureRandom
 import java.util.Collections.unmodifiableList
 
 @Service
-class ApiKeyService(
-    private val secureRandom: SecureRandom,
-    private val hashGenerator: HashGenerator,
-) {
+class ApiKeyService(private val hashGenerator: HashGenerator) {
     private val apiKeyLength = 50
+    private val secureRandom = SecureRandom()
     private val characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     fun create(request: ApiKeyRequest) = UnHashedApiKeyEntry(

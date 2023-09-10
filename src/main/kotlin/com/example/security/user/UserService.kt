@@ -7,7 +7,7 @@ import java.util.*
 interface UserService {
     fun findById(userId: UUID): User?
     fun findByApiKey(apiKey: String): User?
-    fun createIfNotExists(userId: UUID): User
+    fun findOrCreate(userId: UUID, email: String, firstName: String, lastName: String): User
     fun addApiKey(userId: UUID, entry: ApiKeyEntry): ApiKey?
     fun deleteApiKey(userId: UUID, apiKeyId: UUID)
 }
