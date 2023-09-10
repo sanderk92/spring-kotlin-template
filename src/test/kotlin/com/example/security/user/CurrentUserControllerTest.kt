@@ -42,12 +42,10 @@ class CurrentUserControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME, authorities = ["test"])
     fun `Authenticated user can search users`() {
-        every { userService.search(user.email, user.firstName, user.lastName) } returns listOf(user)
+        every { userService.search("some-query") } returns listOf(user)
 
         mvc.get("/user") {
-            param("email", user.email)
-            param("firstName", user.firstName)
-            param("lastName", user.lastName)
+            param("query", "some-query")
         }.andExpect {
             status { isOk() }
             jsonPath("$.size()", equalTo(1))

@@ -23,11 +23,12 @@ class InMemoryUserService : UserService {
     override fun findOrCreate(userId: UUID, email: String, firstName: String, lastName: String): InMemoryUser =
         findById(userId) ?: InMemoryUser(userId, email, firstName, lastName, emptyList()).also(users::add)
 
-    override fun search(email: String?, firstName: String?, lastName: String?): List<User> =
-        users
-            .filter { user -> email?.let { user.email.contains(it) } ?: true }
-            .filter { user -> firstName?.let { user.firstName.contains(it) } ?: true }
-            .filter { user -> lastName?.let { user.lastName.contains(it) } ?: true }
+    override fun search(query: String): List<User> {
+        val emailContaining = users.filter { it.email.contains(query) }
+        val firstNameContaining = users.filter { it.firstName.contains(query) }
+        val lastNameContaining = users.filter { it.lastName.contains(query) }
+        return emailContaining.plus(firstNameContaining).plus(lastNameContaining).distinct()
+    }
 
     override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryApiKey? =
         findById(userId)?.let { currentUser ->

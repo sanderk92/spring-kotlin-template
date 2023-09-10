@@ -24,12 +24,8 @@ class CurrentUserController(private val userService: UserService) {
         summary = "Search for users with the specified parameters",
         security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
     )
-    fun searchUsers(
-        @RequestParam(required = false) email: String?,
-        @RequestParam(required = false) firstName: String?,
-        @RequestParam(required = false) lastName: String?
-    ): ResponseEntity<List<UserView>> =
-        userService.search(email, firstName, lastName)
+    fun searchUsers(@RequestParam query: String): ResponseEntity<List<UserView>> =
+        userService.search(query)
             .map { UserView(it.id, it.email, it.firstName, it.lastName) }
             .let { ResponseEntity.ok(it) }
 
