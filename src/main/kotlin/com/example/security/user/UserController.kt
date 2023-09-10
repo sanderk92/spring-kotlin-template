@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -20,17 +21,39 @@ class CurrentUserController(private val userService: UserService) {
     @GetMapping
     @ExtractCurrentUser
     @Operation(
+        summary = "Search for users with the specified parameters",
+        security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
+    )
+    fun searchUsers(
+        @RequestParam(required = false) email: String?,
+        @RequestParam(required = false) firstName: String?,
+        @RequestParam(required = false) lastName: String?
+    ): ResponseEntity<List<UserView>> =
+        userService.search(email, firstName, lastName)
+            .map { UserView(it.id, it.email, it.firstName, it.lastName) }
+            .let { ResponseEntity.ok(it) }
+
+    @GetMapping("/me")
+    @ExtractCurrentUser
+    @Operation(
         summary = "Get the currently authorized user",
         security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
     )
-    fun getCurrentUser(@Parameter(hidden = true) currentUser: CurrentUser): ResponseEntity<UserView> =
+    fun getCurrentUser(@Parameter(hidden = true) currentUser: CurrentUser): ResponseEntity<CurrentUserView> =
         userService.findById(currentUser.id)
-            ?.let { UserView(it.id, it.email, it.firstName, it.lastName, currentUser.authorities) }
+            ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.authorities) }
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 }
 
 data class UserView(
+    val id: UUID,
+    val email: String,
+    val firstName: String,
+    val lastName: String,
+)
+
+data class CurrentUserView(
     val id: UUID,
     val email: String,
     val firstName: String,

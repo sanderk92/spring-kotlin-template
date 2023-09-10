@@ -40,8 +40,27 @@ class CurrentUserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = ["test"])
+    fun `Authenticated user can search users`() {
+        every { userService.search(user.email, user.firstName, user.lastName) } returns listOf(user)
+
+        mvc.get("/user") {
+            param("email", user.email)
+            param("firstName", user.firstName)
+            param("lastName", user.lastName)
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.size()", equalTo(1))
+            jsonPath("$[0].id", equalTo(user.id.toString()))
+            jsonPath("$[0].email", equalTo(user.email))
+            jsonPath("$[0].firstName", equalTo(user.firstName))
+            jsonPath("$[0].lastName", equalTo(user.lastName))
+        }
+    }
+
+    @Test
     @WithAnonymousUser
-    fun `Unauthenticated user gets a 401 when retrieving user information`() {
+    fun `Unauthenticated user gets a 401 when searching users`() {
         mvc.get("/user") {
         }.andExpect {
             status { isUnauthorized() }
@@ -53,7 +72,7 @@ class CurrentUserControllerTest {
     fun `Authenticated user can retrieve user information`() {
         every { userService.findById(user.id) } returns user
 
-        mvc.get("/user") {
+        mvc.get("/user/me") {
         }.andExpect {
             status { isOk() }
             jsonPath("$.id", equalTo(user.id.toString()))
@@ -61,6 +80,15 @@ class CurrentUserControllerTest {
             jsonPath("$.firstName", equalTo(user.firstName))
             jsonPath("$.lastName", equalTo(user.lastName))
             jsonPath("$.authorities", hasItem("test"))
+        }
+    }
+
+    @Test
+    @WithAnonymousUser
+    fun `Unauthenticated user gets a 401 when retrieving user information`() {
+        mvc.get("/user/me") {
+        }.andExpect {
+            status { isUnauthorized() }
         }
     }
 }

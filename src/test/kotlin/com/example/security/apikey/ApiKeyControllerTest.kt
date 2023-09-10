@@ -57,15 +57,6 @@ class ApiKeyControllerTest {
     private lateinit var userService: UserService
 
     @Test
-    @WithAnonymousUser
-    fun `Unauthenticated user cannot retrieve api keys`() {
-        mvc.get("/apikey") {
-        }.andExpect {
-            status { isUnauthorized() }
-        }
-    }
-
-    @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can retrieve api keys`() {
         every { userService.findById(user.id) } returns user
@@ -79,9 +70,8 @@ class ApiKeyControllerTest {
 
     @Test
     @WithAnonymousUser
-    fun `Unauthenticated user cannot create api keys`() {
-        mvc.post("/apikey") {
-            with(csrf())
+    fun `Unauthenticated user cannot retrieve api keys`() {
+        mvc.get("/apikey") {
         }.andExpect {
             status { isUnauthorized() }
         }
@@ -109,8 +99,8 @@ class ApiKeyControllerTest {
 
     @Test
     @WithAnonymousUser
-    fun `Unauthenticated user cannot delete api keys`() {
-        mvc.delete("/apikey/${apiKey.id}") {
+    fun `Unauthenticated user cannot create api keys`() {
+        mvc.post("/apikey") {
             with(csrf())
         }.andExpect {
             status { isUnauthorized() }
@@ -129,5 +119,15 @@ class ApiKeyControllerTest {
         }
 
         verify { userService.deleteApiKey(user.id, apiKey.id) }
+    }
+
+    @Test
+    @WithAnonymousUser
+    fun `Unauthenticated user cannot delete api keys`() {
+        mvc.delete("/apikey/${apiKey.id}") {
+            with(csrf())
+        }.andExpect {
+            status { isUnauthorized() }
+        }
     }
 }

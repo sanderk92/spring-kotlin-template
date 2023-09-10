@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
 
 @Service
-class CurrentUserStorageFilter(
+class StoreUserFilter(
     private val userService: UserService,
     @Value("\${security.token.claims.email}") private val emailClaim: String,
     @Value("\${security.token.claims.first-name}") private val firstNameClaim: String,

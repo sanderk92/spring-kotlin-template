@@ -1,7 +1,7 @@
 package com.example.config
 
 import com.example.security.apikey.ApiKeyAuthenticationFilter
-import com.example.security.user.CurrentUserStorageFilter
+import com.example.security.user.StoreUserFilter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -27,7 +27,7 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     private val apiKeyFilter: ApiKeyAuthenticationFilter,
-    private val currentUserStorageFilter: CurrentUserStorageFilter,
+    private val storeUserFilter: StoreUserFilter,
 ) {
 
     @Bean
@@ -39,8 +39,8 @@ class SecurityConfig(
                 .requestMatchers(*PUBLIC_ENDPOINTS).permitAll()
                 .anyRequest().authenticated()
             }
-            .addFilterAfter(currentUserStorageFilter, BearerTokenAuthenticationFilter::class.java)
-            .addFilterAfter(apiKeyFilter, currentUserStorageFilter::class.java)
+            .addFilterAfter(storeUserFilter, BearerTokenAuthenticationFilter::class.java)
+            .addFilterAfter(apiKeyFilter, storeUserFilter::class.java)
             .oauth2ResourceServer { server -> server
                 .jwt(Customizer.withDefaults())
             }

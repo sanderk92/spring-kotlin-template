@@ -1,10 +1,12 @@
 package com.example.security.dev
 
 import com.example.security.apikey.ApiKeyEntry
+import com.example.security.user.User
 import com.example.security.user.UserService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.time.measureTime
 
 @Service
 @ConditionalOnProperty("feature.in-memory-users")
@@ -20,6 +22,12 @@ class InMemoryUserService : UserService {
 
     override fun findOrCreate(userId: UUID, email: String, firstName: String, lastName: String): InMemoryUser =
         findById(userId) ?: InMemoryUser(userId, email, firstName, lastName, emptyList()).also(users::add)
+
+    override fun search(email: String?, firstName: String?, lastName: String?): List<User> =
+        users
+            .filter { user -> email?.let { user.email.contains(it) } ?: true }
+            .filter { user -> firstName?.let { user.firstName.contains(it) } ?: true }
+            .filter { user -> lastName?.let { user.lastName.contains(it) } ?: true }
 
     override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryApiKey? =
         findById(userId)?.let { currentUser ->
