@@ -6,13 +6,16 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.NotBlank
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
+@Validated
 @RestController
 @RequestMapping("/user")
 @Tag(name = "User", description = "Retrieve information about the current user")
@@ -24,7 +27,7 @@ class CurrentUserController(private val userService: UserService) {
         summary = "Search for users with the specified parameters",
         security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
     )
-    fun searchUsers(@RequestParam query: String): ResponseEntity<List<UserView>> =
+    fun searchUsers(@Parameter(required = true) @RequestParam @NotBlank query: String): ResponseEntity<List<UserView>> =
         userService.search(query)
             .map { UserView(it.id, it.email, it.firstName, it.lastName) }
             .let { ResponseEntity.ok(it) }
