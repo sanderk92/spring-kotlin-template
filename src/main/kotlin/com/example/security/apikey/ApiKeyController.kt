@@ -11,9 +11,11 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
+@Validated
 @RestController
 @RequestMapping("\${security.api-key.path}")
 @Tag(name = "APIKeys", description = "Manage api keys for the current user")
@@ -38,7 +40,7 @@ class ApiKeyController(
     @Operation(summary = "Create a new api key for the current user", security = [SecurityRequirement(name = OIDC)])
     fun createApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
-        @RequestBody @Valid request: ApiKeyRequest,
+        @Parameter(description = "The details of the api key to create") @RequestBody @Valid request: ApiKeyRequest,
     ): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKey = apiKeyService.create(request)
         val hashedApiKey = apiKeyService.hash(unHashedApiKey)
@@ -53,7 +55,7 @@ class ApiKeyController(
     @Operation(summary = "Delete an api key of the current user", security = [SecurityRequirement(name = OIDC)])
     fun deleteApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
-        @PathVariable id: UUID,
+        @Parameter(description = "The id of the api key to delete") @PathVariable id: UUID,
     ): ResponseEntity<Void> =
         userService.deleteApiKey(currentUser.id, id)
             .let { ResponseEntity.ok().build() }

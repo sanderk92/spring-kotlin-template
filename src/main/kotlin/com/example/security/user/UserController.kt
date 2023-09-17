@@ -4,9 +4,14 @@ import com.example.config.SecuritySchemes.APIKEY
 import com.example.config.SecuritySchemes.OIDC
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotBlank
+import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,9 +30,11 @@ class CurrentUserController(private val userService: UserService) {
     @ExtractCurrentUser
     @Operation(
         summary = "Search for users with the specified parameters",
-        security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
+        security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)],
     )
-    fun searchUsers(@Parameter(required = true) @RequestParam @NotBlank query: String): ResponseEntity<List<UserView>> =
+    fun searchUsers(
+        @Parameter(description = "Query user by first or last name and email") @RequestParam @NotBlank query: String
+    ): ResponseEntity<List<UserView>> =
         userService.search(query)
             .map { UserView(it.id, it.email, it.firstName, it.lastName) }
             .let { ResponseEntity.ok(it) }
@@ -38,7 +45,9 @@ class CurrentUserController(private val userService: UserService) {
         summary = "Get the currently authorized user",
         security = [SecurityRequirement(name = OIDC), SecurityRequirement(name = APIKEY)]
     )
-    fun getCurrentUser(@Parameter(hidden = true) currentUser: CurrentUser): ResponseEntity<CurrentUserView> =
+    fun getCurrentUser(
+        @Parameter(hidden = true) currentUser: CurrentUser
+    ): ResponseEntity<CurrentUserView> =
         userService.findById(currentUser.id)
             ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.authorities) }
             ?.let { ResponseEntity.ok(it) }
