@@ -2,7 +2,7 @@ package com.example.security.dev
 
 import com.example.security.apikey.ApiKey
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 data class InMemoryApiKey(
     override val id: UUID,

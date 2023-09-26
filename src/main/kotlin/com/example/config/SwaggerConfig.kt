@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
 import io.swagger.v3.oas.annotations.security.SecurityScheme
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.servers.Server
 import org.springdoc.core.models.GroupedOpenApi
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -26,19 +28,23 @@ object SecuritySchemes {
     openIdConnectUrl = "\${springdoc.oidc.url}",
 )
 @Configuration
-class SwaggerConfiguration {
+class SwaggerConfiguration(
+    @Value("\${springdoc.openapi.host}") private val server: String,
+    @Value("\${springdoc.openapi.version}") private val version: String,
+) {
 
     @Bean
     fun api(): GroupedOpenApi = GroupedOpenApi.builder()
-        .group("Test")
+        .group("API")
         .pathsToMatch("/**")
         .build()
 
     @Bean
     fun apiInfo(): OpenAPI = OpenAPI()
+        .addServersItem(Server().also { it.url = server })
         .info(
-            Info().title("Test")
-                .description("Test")
-                .version("1.0")
+            Info().title("API")
+                .description("API docs")
+                .version(version)
         )
 }

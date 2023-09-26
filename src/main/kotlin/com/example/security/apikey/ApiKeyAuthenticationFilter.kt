@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 class ApiKeyAuthenticationFilter(
     private val userService: UserService,
     private val hashGenerator: HashGenerator,
-    @Value("\${security.api-key.path}") private val apiKeyPath: String,
+    @Value("\${spring.security.api-key.path}") private val apiKeyPath: String,
 ) : OncePerRequestFilter() {
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {

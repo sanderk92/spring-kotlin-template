@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -17,8 +18,8 @@ import java.util.*
 
 @Validated
 @RestController
-@RequestMapping("\${security.api-key.path}")
-@Tag(name = "APIKeys", description = "Manage api keys for the current user")
+@RequestMapping("\${spring.security.api-key.path}")
+@Tag(name = "Keys", description = "Manage api keys for the current user")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
     private val userService: UserService
@@ -60,6 +61,14 @@ class ApiKeyController(
         userService.deleteApiKey(currentUser.id, id)
             .let { ResponseEntity.ok().build() }
 }
+
+data class ApiKeyRequest(
+    @field:NotBlank
+    val name: String,
+    val read: Boolean,
+    val write: Boolean,
+    val delete: Boolean,
+)
 
 data class ApiKeyView(
     val id: UUID,

@@ -61,7 +61,7 @@ class ApiKeyControllerTest {
     fun `Authenticated user can retrieve api keys`() {
         every { userService.findById(user.id) } returns user
 
-        mvc.get("/apikey") {
+        mvc.get("/key") {
         }.andExpect {
             status { isOk() }
             content { equalTo(objectMapper.writeValueAsString(user)) }
@@ -71,7 +71,7 @@ class ApiKeyControllerTest {
     @Test
     @WithAnonymousUser
     fun `Unauthenticated user cannot retrieve api keys`() {
-        mvc.get("/apikey") {
+        mvc.get("/key") {
         }.andExpect {
             status { isUnauthorized() }
         }
@@ -84,7 +84,7 @@ class ApiKeyControllerTest {
         every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
         every { userService.addApiKey(any(), any()) } returns apiKey
 
-        mvc.post("/apikey") {
+        mvc.post("/key") {
             with(csrf())
             content = objectMapper.writeValueAsString(apiKeyRequest)
             contentType = MediaType.APPLICATION_JSON
@@ -100,7 +100,7 @@ class ApiKeyControllerTest {
     @Test
     @WithAnonymousUser
     fun `Unauthenticated user cannot create api keys`() {
-        mvc.post("/apikey") {
+        mvc.post("/key") {
             with(csrf())
         }.andExpect {
             status { isUnauthorized() }
@@ -112,7 +112,7 @@ class ApiKeyControllerTest {
     fun `Authenticated user can delete api keys`() {
         every { userService.deleteApiKey(any(), any()) } returns Unit
 
-        mvc.delete("/apikey/${apiKey.id}") {
+        mvc.delete("/key/${apiKey.id}") {
             with(csrf())
         }.andExpect {
             status { isOk() }
@@ -124,7 +124,7 @@ class ApiKeyControllerTest {
     @Test
     @WithAnonymousUser
     fun `Unauthenticated user cannot delete api keys`() {
-        mvc.delete("/apikey/${apiKey.id}") {
+        mvc.delete("/key/${apiKey.id}") {
             with(csrf())
         }.andExpect {
             status { isUnauthorized() }

@@ -1,5 +1,6 @@
 package com.example.config
 
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
@@ -14,6 +15,7 @@ class ExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiResponses
     fun handle(exception: ConstraintViolationException): ProblemDetail =
         ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).also {
             it.title = "validation failed"

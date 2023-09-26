@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
+    id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
 }
 
 group = "com.example"
@@ -40,4 +41,11 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--spring.profiles.active=openapi"))
+    }
 }

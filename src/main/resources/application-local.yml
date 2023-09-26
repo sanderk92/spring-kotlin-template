@@ -1,2 +1,22 @@
 feature:
-  in-memory-users: true
+  users:
+    generate: true
+    in-memory: true
+
+springdoc:
+  openapi:
+    host: http://localhost:8080/api
+  oidc:
+    url: http://localhost:8081/auth/realms/master/.well-known/openid-configuration
+  swagger-ui:
+    oauth:
+      client-id: app
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/auth/realms/master/protocol/openid-connect/certs
+        opaquetoken:
+          client-id: app

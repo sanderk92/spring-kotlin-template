@@ -4,6 +4,7 @@ import com.example.config.EnableAspectOrientedProgramming
 import com.example.config.EnableGlobalMethodSecurity
 import com.example.security.PRINCIPAL_NAME
 import com.example.security.user
+import com.example.security.user.CurrentUserController.Companion.USER_CONTROLLER_ENDPOINTS
 import io.mockk.every
 import io.mockk.mockk
 import org.hamcrest.CoreMatchers.equalTo
@@ -44,7 +45,7 @@ class CurrentUserControllerTest {
     fun `Authenticated user can search users`() {
         every { userService.search("some-query") } returns listOf(user)
 
-        mvc.get("/user") {
+        mvc.get(USER_CONTROLLER_ENDPOINTS) {
             param("query", "some-query")
         }.andExpect {
             status { isOk() }
@@ -59,7 +60,7 @@ class CurrentUserControllerTest {
     @Test
     @WithAnonymousUser
     fun `Unauthenticated user gets a 401 when searching users`() {
-        mvc.get("/user") {
+        mvc.get(USER_CONTROLLER_ENDPOINTS) {
         }.andExpect {
             status { isUnauthorized() }
         }
@@ -70,7 +71,7 @@ class CurrentUserControllerTest {
     fun `Authenticated user can retrieve user information`() {
         every { userService.findById(user.id) } returns user
 
-        mvc.get("/user/me") {
+        mvc.get("$USER_CONTROLLER_ENDPOINTS/me") {
         }.andExpect {
             status { isOk() }
             jsonPath("$.id", equalTo(user.id.toString()))
@@ -84,7 +85,7 @@ class CurrentUserControllerTest {
     @Test
     @WithAnonymousUser
     fun `Unauthenticated user gets a 401 when retrieving user information`() {
-        mvc.get("/user/me") {
+        mvc.get("$USER_CONTROLLER_ENDPOINTS/me") {
         }.andExpect {
             status { isUnauthorized() }
         }

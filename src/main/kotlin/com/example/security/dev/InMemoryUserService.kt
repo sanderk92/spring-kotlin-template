@@ -6,10 +6,9 @@ import com.example.security.user.UserService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.time.measureTime
 
 @Service
-@ConditionalOnProperty("feature.in-memory-users")
+@ConditionalOnProperty("feature.users.in-memory")
 class InMemoryUserService : UserService {
 
     private val users = mutableListOf<InMemoryUser>()

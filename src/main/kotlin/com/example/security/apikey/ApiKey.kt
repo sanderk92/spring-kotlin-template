@@ -1,6 +1,6 @@
 package com.example.security.apikey
 
-import java.util.UUID
+import java.util.*
 
 interface ApiKey {
     val id: UUID

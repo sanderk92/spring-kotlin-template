@@ -3,7 +3,6 @@ package com.example.security.apikey
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import java.util.*
 
 class ApiKeyAuthentication(
     private val name: String,

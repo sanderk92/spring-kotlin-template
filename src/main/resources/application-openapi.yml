@@ -1,0 +1,13 @@
+# Profile that allows to start the application, but only for generating the open api documentation
+# It is required that the information contained in this file is correct for publishing, as it is
+# potentially included in the resulting spec. No other classes other than the controllers are
+# actually required to function.
+
+feature:
+  users:
+    in-memory: true
+
+# TODO Update when available
+APPLICATION_HOST: "https://todo.com/"
+OIDC_PROVIDER_URL: "https://todo.com"
+OIDC_CLIENT_ID: "unused"

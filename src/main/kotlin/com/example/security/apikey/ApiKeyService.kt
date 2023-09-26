@@ -1,6 +1,5 @@
 package com.example.security.apikey
 
-import jakarta.validation.constraints.NotBlank
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
 import java.util.Collections.unmodifiableList
@@ -45,14 +44,6 @@ class ApiKeyService(private val hashGenerator: HashGenerator) {
         return unmodifiableList(authorities)
     }
 }
-
-data class ApiKeyRequest(
-    @field:NotBlank
-    val name: String,
-    val read: Boolean,
-    val write: Boolean,
-    val delete: Boolean,
-)
 
 sealed interface ApiKeyEntry {
     val key: String

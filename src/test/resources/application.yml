@@ -4,13 +4,13 @@ server:
 
 springdoc:
   openapi:
-    version: 0.0.1
-    host: ${APPLICATION_HOST}
+    version: test
+    host: http://localhost:8080/
   oidc:
-    url: ${OIDC_PROVIDER_URL}
+    url: http://localhost:8080/
   swagger-ui:
     oauth:
-      client-id: ${OIDC_CLIENT_ID}
+      client-id: client
       use-pkce-with-authorization-code-grant: true
 
 spring:
@@ -26,6 +26,6 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${OIDC_PROVIDER_URL}
+          jwk-set-uri: http://localhost:8080
         opaquetoken:
-          client-id: ${OIDC_CLIENT_ID}
+          client-id: client

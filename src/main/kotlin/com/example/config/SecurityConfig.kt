@@ -3,6 +3,7 @@ package com.example.config
 import com.example.security.apikey.ApiKeyAuthenticationFilter
 import com.example.security.user.StoreUserFilter
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
@@ -53,7 +54,7 @@ class SecurityConfig(
      * claim must be an array containing the actual authorities.
      */
     @Bean
-    fun jwtAuthConverter(@Value("\${security.token.claims.authorities}") claim: String): JwtAuthenticationConverter {
+    fun jwtAuthConverter(@Value("\${spring.security.token.claims.authorities}") claim: String): JwtAuthenticationConverter {
         val claimStructure = claim.split(".")
 
         if (claimStructure.isEmpty()) {

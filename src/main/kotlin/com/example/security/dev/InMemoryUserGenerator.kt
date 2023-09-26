@@ -3,14 +3,14 @@ package com.example.security.dev
 import com.example.security.apikey.ApiKeyRequest
 import com.example.security.apikey.ApiKeyService
 import jakarta.annotation.PostConstruct
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import java.util.*
 
 private const val DEV_API_KEY = "dev-api-key"
 
 @Component
-@ConditionalOnBean(InMemoryUserService::class)
+@ConditionalOnProperty("feature.users.generate")
 class InMemoryUserGenerator(
     private val inMemoryUserRepository: InMemoryUserService,
     private val apiKeyService: ApiKeyService,

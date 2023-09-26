@@ -2,16 +2,12 @@ package com.example.security.user
 
 import com.example.config.SecuritySchemes.APIKEY
 import com.example.config.SecuritySchemes.OIDC
+import com.example.security.user.CurrentUserController.Companion.USER_CONTROLLER_ENDPOINTS
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.ArraySchema
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotBlank
-import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,9 +18,13 @@ import java.util.*
 
 @Validated
 @RestController
-@RequestMapping("/user")
+@RequestMapping(USER_CONTROLLER_ENDPOINTS)
 @Tag(name = "User", description = "Retrieve information about the current user")
 class CurrentUserController(private val userService: UserService) {
+
+    companion object {
+        const val USER_CONTROLLER_ENDPOINTS = "/users"
+    }
 
     @GetMapping
     @ExtractCurrentUser
