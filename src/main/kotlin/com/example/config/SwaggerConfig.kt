@@ -10,6 +10,9 @@ import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import org.springframework.web.util.UriComponentsBuilder
 
 object SecuritySchemes {
     const val APIKEY = "apikey"
@@ -29,7 +32,6 @@ object SecuritySchemes {
 )
 @Configuration
 class SwaggerConfiguration(
-    @Value("\${springdoc.openapi.host}") private val server: String,
     @Value("\${springdoc.openapi.version}") private val version: String,
 ) {
 
@@ -40,8 +42,18 @@ class SwaggerConfiguration(
         .build()
 
     @Bean
+    @Profile("!openapi")
     fun apiInfo(): OpenAPI = OpenAPI()
-        .addServersItem(Server().also { it.url = server })
+        .info(
+            Info().title("API")
+                .description("API docs")
+                .version(version)
+        )
+
+    @Bean
+    @Profile("openapi")
+    fun apiInfoOpenApiProfile(@Value("\${springdoc.openapi.host}") host: String): OpenAPI = OpenAPI()
+        .addServersItem(Server().also { it.url = host })
         .info(
             Info().title("API")
                 .description("API docs")

@@ -5,7 +5,6 @@ server:
 springdoc:
   openapi:
     version: 0.0.1
-    host: ${APPLICATION_HOST}
   oidc:
     url: ${OIDC_PROVIDER_CONFIG_URL}
   swagger-ui:

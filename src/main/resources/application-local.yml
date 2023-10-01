@@ -1,9 +1,8 @@
+OIDC_PROVIDER_CONFIG_URL: https://todo.com/
+OIDC_PROVIDER_JWK_URL: https://todo.com/
+OIDC_CLIENT_ID: unused
+
 feature:
   users:
     generate: true
     in-memory: true
-
-APPLICATION_HOST: http://localhost:8080/api
-OIDC_PROVIDER_CONFIG_URL: https://todo.com/
-OIDC_PROVIDER_JWK_URL: https://todo.com/
-OIDC_CLIENT_ID: unused
