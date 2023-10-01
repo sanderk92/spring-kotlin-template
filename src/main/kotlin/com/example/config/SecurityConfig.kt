@@ -50,7 +50,7 @@ class SecurityConfig(
 
     /**
      * A custom [JwtAuthenticationConverter] capable of extracting authorities from a nested claim, specified by dot
-     * notation. For example Keycloak's claim 'realm_access.roles'. Each intermediate claim must be a map, the last
+     * notation. For example the Keycloak claim 'realm_access.roles'. Each intermediate claim must be a map, the last
      * claim must be an array containing the actual authorities.
      */
     @Bean

@@ -1,6 +1,6 @@
-OIDC_PROVIDER_CONFIG_URL: https://todo.com/
-OIDC_PROVIDER_JWK_URL: https://todo.com/
-OIDC_CLIENT_ID: unused
+OIDC_PROVIDER_CONFIG_URL: http://localhost:8081/auth/realms/master/.well-known/openid-configuration
+OIDC_PROVIDER_JWK_URL: http://localhost:8081/auth/realms/master/protocol/openid-connect/certs
+OIDC_CLIENT_ID: app
 
 feature:
   users:
