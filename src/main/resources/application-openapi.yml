@@ -1,6 +1,8 @@
 OIDC_PROVIDER_CONFIG_URL: https://todo.com/
 OIDC_PROVIDER_JWK_URL: https://todo.com/
-OIDC_CLIENT_ID: unused
+OIDC_SERVER_CLIENT_ID: unused
+OIDC_SERVER_CLIENT_SECRET: unused
+OIDC_SWAGGER_CLIENT_ID: unused
 
 feature:
   users:

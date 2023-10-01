@@ -9,4 +9,5 @@ interface User {
     val firstName: String
     val lastName: String
     val apiKeys: List<ApiKey>
+    val authorities: List<UserAuthority>
 }

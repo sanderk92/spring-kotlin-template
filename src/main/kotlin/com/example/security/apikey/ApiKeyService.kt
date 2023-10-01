@@ -1,8 +1,8 @@
 package com.example.security.apikey
 
+import com.example.controller.ApiKeyRequest
 import org.springframework.stereotype.Service
 import java.security.SecureRandom
-import java.util.Collections.unmodifiableList
 
 @Service
 class ApiKeyService(private val hashGenerator: HashGenerator) {
@@ -11,15 +11,19 @@ class ApiKeyService(private val hashGenerator: HashGenerator) {
     private val characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     fun create(request: ApiKeyRequest) = UnHashedApiKeyEntry(
+        key = buildKey(),
         name = request.name,
-        authorities = authoritiesFrom(request),
-        key = buildKey()
+        read = request.read,
+        write = request.write,
+        delete = request.delete,
     )
 
     fun hash(entry: UnHashedApiKeyEntry) = HashedApiKeyEntry(
-        name = entry.name,
-        authorities = entry.authorities,
         key = hashGenerator.hash(entry.key),
+        name = entry.name,
+        read = entry.read,
+        write = entry.write,
+        delete = entry.delete,
     )
 
     private fun buildKey(): String {
@@ -29,36 +33,28 @@ class ApiKeyService(private val hashGenerator: HashGenerator) {
         }
         return apiKeyBuilder.toString()
     }
-
-    private fun authoritiesFrom(model: ApiKeyRequest): List<String> {
-        val authorities = mutableListOf<String>()
-        if (model.read) {
-            authorities.add(ApiKeyAuthorities.READ)
-        }
-        if (model.write) {
-            authorities.add(ApiKeyAuthorities.WRITE)
-        }
-        if (model.delete) {
-            authorities.add(ApiKeyAuthorities.DELETE)
-        }
-        return unmodifiableList(authorities)
-    }
 }
 
 sealed interface ApiKeyEntry {
     val key: String
     val name: String
-    val authorities: List<String>
+    val read: Boolean
+    val write: Boolean
+    val delete: Boolean
 }
 
 data class HashedApiKeyEntry(
     override val key: String,
     override val name: String,
-    override val authorities: List<String>,
+    override val read: Boolean,
+    override val write: Boolean,
+    override val delete: Boolean,
 ) : ApiKeyEntry
 
 data class UnHashedApiKeyEntry(
     override val key: String,
     override val name: String,
-    override val authorities: List<String>,
+    override val read: Boolean,
+    override val write: Boolean,
+    override val delete: Boolean,
 ) : ApiKeyEntry

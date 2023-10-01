@@ -8,6 +8,8 @@ data class InMemoryApiKey(
     override val id: UUID,
     override val key: String,
     override val name: String,
-    override val authorities: List<String>,
+    override val read: Boolean,
+    override val write: Boolean,
+    override val delete: Boolean,
     val created: Instant = Instant.now(),
 ) : ApiKey

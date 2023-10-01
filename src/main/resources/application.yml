@@ -7,7 +7,7 @@ springdoc:
     url: ${OIDC_PROVIDER_CONFIG_URL}
   swagger-ui:
     oauth:
-      client-id: ${OIDC_CLIENT_ID}
+      client-id: ${OIDC_SWAGGER_CLIENT_ID}
       use-pkce-with-authorization-code-grant: true
 
 spring:
@@ -15,15 +15,20 @@ spring:
     api-key:
       path: "/key"
       header: "apikey"
-    token:
-      claims:
-        email: "email"
-        first-name: "given_name"
-        last-name: "family_name"
-        authorities: "realm_access.roles"
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: ${OIDC_PROVIDER_JWK_URL}
         opaquetoken:
-          client-id: ${OIDC_CLIENT_ID}
+          client-id: ${OIDC_SERVER_CLIENT_ID}
+          client-secret: ${OIDC_SERVER_CLIENT_SECRET}
+    token:
+      role-mappings: {
+        user: [ 'READ', 'WRITE', 'DELETE' ],
+        admin: [ 'READ', 'WRITE', 'DELETE', 'ADMIN' ]
+      }
+      claims:
+        email: "email"
+        first-name: "given_name"
+        last-name: "family_name"
+        authorities: "realm_access.roles"

@@ -1,5 +1,6 @@
 package com.example.security.apikey
 
+import com.example.security.user.UserAuthority
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -7,16 +8,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 class ApiKeyAuthentication(
     private val name: String,
     private val hashedKey: String,
-    private val authorities: List<String>,
+    private val authorities: List<UserAuthority>,
     private var isAuthenticated: Boolean = true,
 ) : Authentication {
 
     override fun getName(): String {
         return name
-    }
-
-    override fun getAuthorities(): List<GrantedAuthority> {
-        return authorities.map(::SimpleGrantedAuthority).toMutableList()
     }
 
     override fun getCredentials(): String {
@@ -37,5 +34,11 @@ class ApiKeyAuthentication(
 
     override fun setAuthenticated(isAuthenticated: Boolean) {
         this.isAuthenticated = isAuthenticated
+    }
+
+    override fun getAuthorities(): List<GrantedAuthority> {
+        return authorities
+            .map(UserAuthority::toString)
+            .map(::SimpleGrantedAuthority).toMutableList()
     }
 }

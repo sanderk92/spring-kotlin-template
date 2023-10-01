@@ -2,6 +2,7 @@ package com.example.security.dev
 
 import com.example.security.apikey.ApiKeyEntry
 import com.example.security.user.User
+import com.example.security.user.UserAuthority
 import com.example.security.user.UserService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
@@ -19,8 +20,8 @@ class InMemoryUserService : UserService {
     override fun findByApiKey(apiKey: String): InMemoryUser? =
         users.firstOrNull { user -> user.apiKeys.any { it.key == apiKey } }
 
-    override fun findOrCreate(userId: UUID, email: String, firstName: String, lastName: String): InMemoryUser =
-        findById(userId) ?: InMemoryUser(userId, email, firstName, lastName, emptyList()).also(users::add)
+    override fun create(userId: UUID, email: String, firstName: String, lastName: String): InMemoryUser =
+        InMemoryUser(userId, email, firstName, lastName, emptyList(), emptyList()).also(users::add)
 
     override fun search(query: String): List<User> {
         val emailContaining = users.filter { it.email.contains(query) }
@@ -29,13 +30,30 @@ class InMemoryUserService : UserService {
         return emailContaining.plus(firstNameContaining).plus(lastNameContaining).distinct()
     }
 
+    override fun update(userId: UUID, authorities: List<UserAuthority>): InMemoryUser? =
+        findById(userId)?.let { currentUser ->
+            val updatedUser = InMemoryUser(
+                id = currentUser.id,
+                email = currentUser.email,
+                firstName = currentUser.firstName,
+                lastName = currentUser.lastName,
+                apiKeys = currentUser.apiKeys,
+                authorities = authorities,
+            )
+
+            replace(currentUser, updatedUser)
+            updatedUser
+        }
+
     override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryApiKey? =
         findById(userId)?.let { currentUser ->
             val newInMemoryApiKey = InMemoryApiKey(
                 id = UUID.randomUUID(),
                 key = entry.key,
                 name = entry.name,
-                authorities = entry.authorities
+                read = entry.read,
+                write = entry.write,
+                delete = entry.delete,
             )
 
             val updatedUser = InMemoryUser(
@@ -43,7 +61,9 @@ class InMemoryUserService : UserService {
                 email = currentUser.email,
                 firstName = currentUser.firstName,
                 lastName = currentUser.lastName,
-                apiKeys = currentUser.apiKeys.plus(newInMemoryApiKey)
+                apiKeys = currentUser.apiKeys.plus(newInMemoryApiKey),
+                authorities = listOf(),
+
             )
 
             replace(currentUser, updatedUser)
@@ -57,7 +77,8 @@ class InMemoryUserService : UserService {
                 email = currentUser.email,
                 firstName = currentUser.firstName,
                 lastName = currentUser.lastName,
-                apiKeys = currentUser.apiKeys.filterNot { it.id == apiKeyId }
+                apiKeys = currentUser.apiKeys.filterNot { it.id == apiKeyId },
+                authorities = listOf(),
             )
 
             replace(currentUser, updatedUser)

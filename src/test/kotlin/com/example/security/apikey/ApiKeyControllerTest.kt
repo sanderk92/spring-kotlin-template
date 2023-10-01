@@ -1,7 +1,8 @@
 package com.example.security.apikey
 
-import com.example.config.EnableAspectOrientedProgramming
-import com.example.config.EnableGlobalMethodSecurity
+import com.example.controller.ApiKeyController
+import com.example.util.EnableAspectOrientedProgramming
+import com.example.util.EnableGlobalMethodSecurity
 import com.example.security.*
 import com.example.security.user.UserService
 import com.fasterxml.jackson.databind.ObjectMapper

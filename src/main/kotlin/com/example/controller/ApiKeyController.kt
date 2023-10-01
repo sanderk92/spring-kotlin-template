@@ -1,35 +1,28 @@
-package com.example.security.apikey
+package com.example.controller
 
-import com.example.config.SecuritySchemes.OIDC
+import com.example.controller.docs.ApiKeyInterface
+import com.example.security.apikey.ApiKey
+import com.example.security.apikey.ApiKeyEntry
+import com.example.security.apikey.ApiKeyService
 import com.example.security.user.CurrentUser
 import com.example.security.user.ExtractCurrentUser
 import com.example.security.user.UserService
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
-@Validated
 @RestController
 @RequestMapping("\${spring.security.api-key.path}")
-@Tag(name = "Keys", description = "Manage api keys for the current user")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
     private val userService: UserService
-) {
+) : ApiKeyInterface {
+
     @GetMapping
     @ExtractCurrentUser
-    @Operation(summary = "Get all api keys for the current user", security = [SecurityRequirement(name = OIDC)])
-    fun getApiKeys(
-        @Parameter(hidden = true) currentUser: CurrentUser,
-    ): ResponseEntity<List<ApiKeyView>> =
+    override fun getApiKeys(currentUser: CurrentUser): ResponseEntity<List<ApiKeyView>> =
         userService.findById(currentUser.id)
             ?.apiKeys
             ?.map(ApiKey::asView)
@@ -38,11 +31,7 @@ class ApiKeyController(
 
     @PostMapping
     @ExtractCurrentUser
-    @Operation(summary = "Create a new api key for the current user", security = [SecurityRequirement(name = OIDC)])
-    fun createApiKey(
-        @Parameter(hidden = true) currentUser: CurrentUser,
-        @Parameter(description = "The details of the api key to create") @RequestBody @Valid request: ApiKeyRequest,
-    ): ResponseEntity<ApiKeyEntry> {
+    override fun createApiKey(currentUser: CurrentUser, @RequestBody request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKey = apiKeyService.create(request)
         val hashedApiKey = apiKeyService.hash(unHashedApiKey)
 
@@ -53,11 +42,7 @@ class ApiKeyController(
 
     @DeleteMapping("/{id}")
     @ExtractCurrentUser
-    @Operation(summary = "Delete an api key of the current user", security = [SecurityRequirement(name = OIDC)])
-    fun deleteApiKey(
-        @Parameter(hidden = true) currentUser: CurrentUser,
-        @Parameter(description = "The id of the api key to delete") @PathVariable id: UUID,
-    ): ResponseEntity<Void> =
+    override fun deleteApiKey(currentUser: CurrentUser, @PathVariable id: UUID): ResponseEntity<Void> =
         userService.deleteApiKey(currentUser.id, id)
             .let { ResponseEntity.ok().build() }
 }
@@ -73,11 +58,15 @@ data class ApiKeyRequest(
 data class ApiKeyView(
     val id: UUID,
     val name: String,
-    val authorities: List<String>,
+    val read: Boolean,
+    val write: Boolean,
+    val delete: Boolean,
 )
 
 private fun ApiKey.asView() = ApiKeyView(
     id = id,
     name = name,
-    authorities = authorities,
+    read = read,
+    write = write,
+    delete = delete,
 )

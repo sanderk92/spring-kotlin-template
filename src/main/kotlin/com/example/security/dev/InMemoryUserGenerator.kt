@@ -1,6 +1,6 @@
 package com.example.security.dev
 
-import com.example.security.apikey.ApiKeyRequest
+import com.example.controller.ApiKeyRequest
 import com.example.security.apikey.ApiKeyService
 import jakarta.annotation.PostConstruct
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -31,7 +31,7 @@ class InMemoryUserGenerator(
             .copy(key = DEV_API_KEY)
             .let(apiKeyService::hash)
 
-        inMemoryUserRepository.findOrCreate(userId, "dev@user.com", "dev", "user")
+        inMemoryUserRepository.create(userId, "dev@user.com", "dev", "user")
         inMemoryUserRepository.addApiKey(userId, hashedEntry)
 
         println("GENERATED DEV API KEY: '$DEV_API_KEY'")

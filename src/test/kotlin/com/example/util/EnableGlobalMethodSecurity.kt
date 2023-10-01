@@ -1,4 +1,4 @@
-package com.example.config
+package com.example.util
 
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 

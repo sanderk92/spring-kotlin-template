@@ -1,10 +1,11 @@
 package com.example.security.user
 
-import com.example.config.EnableAspectOrientedProgramming
-import com.example.config.EnableGlobalMethodSecurity
+import com.example.controller.UserController
+import com.example.util.EnableAspectOrientedProgramming
+import com.example.util.EnableGlobalMethodSecurity
 import com.example.security.PRINCIPAL_NAME
 import com.example.security.user
-import com.example.security.user.CurrentUserController.Companion.USER_CONTROLLER_ENDPOINTS
+import com.example.controller.UserController.Companion.USER_CONTROLLER_ENDPOINTS
 import io.mockk.every
 import io.mockk.mockk
 import org.hamcrest.CoreMatchers.equalTo
@@ -22,11 +23,11 @@ import org.springframework.test.web.servlet.get
 
 @WebMvcTest
 @Import(value = [
-    CurrentUserController::class,
+    UserController::class,
     EnableGlobalMethodSecurity::class,
     EnableAspectOrientedProgramming::class,
 ])
-class CurrentUserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc

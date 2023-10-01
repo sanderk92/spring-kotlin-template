@@ -6,6 +6,8 @@ interface ApiKey {
     val id: UUID
     val key: String
     val name: String
-    val authorities: List<String>
+    val read: Boolean
+    val write: Boolean
+    val delete: Boolean
 }
 

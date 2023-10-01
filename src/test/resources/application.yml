@@ -1,31 +1,10 @@
-server:
-  servlet:
-    context-path: "/api"
+OIDC_PROVIDER_CONFIG_URL: http://localhost:8081/auth/realms/master/.well-known/openid-configuration
+OIDC_PROVIDER_JWK_URL: http://localhost:8081/auth/realms/master/protocol/openid-connect/certs
+OIDC_SERVER_CLIENT_ID: app
+OIDC_SERVER_CLIENT_SECRET: APCtpS72ZgKV0HcDH06Pjp8MOhf9MTis
+OIDC_SWAGGER_CLIENT_ID: swagger
 
-springdoc:
-  openapi:
-    version: test
-    host: http://localhost:8080/
-  oidc:
-    url: http://localhost:8080/
-  swagger-ui:
-    oauth:
-      client-id: client
-      use-pkce-with-authorization-code-grant: true
-
-spring:
-  security:
-    api-key:
-      path: "/key"
-    token:
-      claims:
-        email: "email"
-        first-name: "given_name"
-        last-name: "family_name"
-        authorities: "realm_access.roles"
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8080
-        opaquetoken:
-          client-id: client
+feature:
+  users:
+    generate: true
+    in-memory: true

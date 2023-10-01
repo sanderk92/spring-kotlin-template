@@ -1,4 +1,4 @@
-package com.example.config
+package com.example.util
 
 import com.example.security.user.ExtractCurrentUserAspect
 import org.springframework.context.annotation.EnableAspectJAutoProxy

@@ -2,8 +2,8 @@ package com.example.config
 
 import com.example.security.apikey.ApiKeyAuthenticationFilter
 import com.example.security.user.StoreUserFilter
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+import com.example.security.user.JwtProperties
+import com.example.security.user.UserAuthority
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
@@ -50,28 +50,30 @@ class SecurityConfig(
 
     /**
      * A custom [JwtAuthenticationConverter] capable of extracting authorities from a nested claim, specified by dot
-     * notation. For example the Keycloak claim 'realm_access.roles'. Each intermediate claim must be a map, the last
-     * claim must be an array containing the actual authorities.
+     * notation. For example the Keycloak claim 'realm_access.roles'. All values inside the claim are translated to
+     * [UserAuthority] according to the configured role mappings.
      */
     @Bean
-    fun jwtAuthConverter(@Value("\${spring.security.token.claims.authorities}") claim: String): JwtAuthenticationConverter {
-        val claimStructure = claim.split(".")
+    fun jwtAuthConverter(jwtProperties: JwtProperties): JwtAuthenticationConverter {
+        val claimStructure = jwtProperties.claims.authorities.split(".")
 
         if (claimStructure.isEmpty()) {
-            throw ConfigurationException("Invalid claim for extracting authorities: '$claim'")
+            throw ConfigurationException("Invalid claim for extracting authorities: '${jwtProperties.claims.authorities}'")
         }
 
-        val jwtAuthenticationConverter = JwtAuthenticationConverter()
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter { jwt ->
-            var map: Map<*, *> = jwt.claims
+        return JwtAuthenticationConverter().also { converter ->
+            converter.setJwtGrantedAuthoritiesConverter { jwt ->
+                var map: Map<*, *> = jwt.claims
 
-            claimStructure.dropLast(1)
-                .forEach { claim -> map = map[claim] as Map<*, *> }
+                claimStructure.dropLast(1)
+                    .forEach { claim -> map = map[claim] as Map<*, *> }
 
-            claimStructure.last()
-                .let { map[it] as List<*> }
-                .map { SimpleGrantedAuthority(it.toString()) }
+                claimStructure.last()
+                    .let { map[it] as List<*> }
+                    .flatMap { jwtProperties.roleMappings[it.toString()] ?: emptyList() }
+                    .distinct()
+                    .map { SimpleGrantedAuthority(it.role) }
+            }
         }
-        return jwtAuthenticationConverter
     }
 }
