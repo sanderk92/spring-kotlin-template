@@ -16,6 +16,7 @@ spring:
   security:
     api-key:
       path: "/key"
+      header: "apikey"
     token:
       claims:
         email: "email"

@@ -14,6 +14,7 @@ class ApiKeyAuthenticationFilter(
     private val userService: UserService,
     private val hashGenerator: HashGenerator,
     @Value("\${spring.security.api-key.path}") private val apiKeyPath: String,
+    @Value("\${spring.security.api-key.header}") private val apiKeyHeader: String,
 ) : OncePerRequestFilter() {
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
@@ -21,7 +22,7 @@ class ApiKeyAuthenticationFilter(
     }
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        request.getHeader("apikey")?.also { apiKey ->
+        request.getHeader(apiKeyHeader)?.also { apiKey ->
 
             val hashedApiKey = hashGenerator.hash(apiKey)
             userService.findByApiKey(hashedApiKey)?.also { user ->
