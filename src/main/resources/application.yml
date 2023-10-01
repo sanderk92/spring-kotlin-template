@@ -3,8 +3,6 @@ server:
     context-path: "/api"
 
 springdoc:
-  openapi:
-    version: 0.0.1
   oidc:
     url: ${OIDC_PROVIDER_CONFIG_URL}
   swagger-ui:

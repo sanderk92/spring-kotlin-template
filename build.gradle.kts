@@ -49,3 +49,7 @@ openApi {
         args.set(listOf("--spring.profiles.active=openapi"))
     }
 }
+
+springBoot {
+    buildInfo()
+}

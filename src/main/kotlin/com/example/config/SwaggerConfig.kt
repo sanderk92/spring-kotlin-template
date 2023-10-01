@@ -8,11 +8,11 @@ import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.servers.Server
 import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.info.BuildProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import org.springframework.web.util.UriComponentsBuilder
+
 
 object SecuritySchemes {
     const val APIKEY = "apikey"
@@ -32,9 +32,8 @@ object SecuritySchemes {
 )
 @Configuration
 class SwaggerConfiguration(
-    @Value("\${springdoc.openapi.version}") private val version: String,
+    private val buildProperties: BuildProperties,
 ) {
-
     @Bean
     fun api(): GroupedOpenApi = GroupedOpenApi.builder()
         .group("API")
@@ -47,7 +46,7 @@ class SwaggerConfiguration(
         .info(
             Info().title("API")
                 .description("API docs")
-                .version(version)
+                .version(buildProperties.version)
         )
 
     @Bean
@@ -57,6 +56,6 @@ class SwaggerConfiguration(
         .info(
             Info().title("API")
                 .description("API docs")
-                .version(version)
+                .version(buildProperties.version)
         )
 }
