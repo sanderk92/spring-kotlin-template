@@ -7,7 +7,7 @@ springdoc:
     version: 0.0.1
     host: ${APPLICATION_HOST}
   oidc:
-    url: ${OIDC_PROVIDER_URL}
+    url: ${OIDC_PROVIDER_CONFIG_URL}
   swagger-ui:
     oauth:
       client-id: ${OIDC_CLIENT_ID}
@@ -26,6 +26,6 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${OIDC_PROVIDER_URL}
+          jwk-set-uri: ${OIDC_PROVIDER_JWK_URL}
         opaquetoken:
           client-id: ${OIDC_CLIENT_ID}
