@@ -2,6 +2,7 @@ package com.example.security.dev
 
 import com.example.controller.ApiKeyRequest
 import com.example.security.apikey.ApiKeyService
+import com.example.security.user.UserAuthority.*
 import jakarta.annotation.PostConstruct
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
@@ -17,7 +18,13 @@ class InMemoryUserGenerator(
 ) {
     @PostConstruct
     fun generate() {
-        val userId = UUID.randomUUID()
+        val user = inMemoryUserRepository.create(
+            userId = UUID.randomUUID(),
+            email = "dev@user.com",
+            firstName = "dev",
+            lastName = "user",
+            authorities = listOf(READ, WRITE, DELETE, ADMIN)
+        )
 
         val request = ApiKeyRequest(
             name = "development key",
@@ -26,13 +33,12 @@ class InMemoryUserGenerator(
             delete = true
         )
 
-        val hashedEntry = request
+        val hashedApiKey = request
             .let(apiKeyService::create)
             .copy(key = DEV_API_KEY)
             .let(apiKeyService::hash)
 
-        inMemoryUserRepository.create(userId, "dev@user.com", "dev", "user")
-        inMemoryUserRepository.addApiKey(userId, hashedEntry)
+        inMemoryUserRepository.addApiKey(user.id, hashedApiKey)
 
         println("GENERATED DEV API KEY: '$DEV_API_KEY'")
     }

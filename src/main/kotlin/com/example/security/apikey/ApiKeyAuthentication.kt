@@ -38,7 +38,7 @@ class ApiKeyAuthentication(
 
     override fun getAuthorities(): List<GrantedAuthority> {
         return authorities
-            .map(UserAuthority::toString)
+            .map(UserAuthority::role)
             .map(::SimpleGrantedAuthority).toMutableList()
     }
 }

@@ -20,8 +20,8 @@ class InMemoryUserService : UserService {
     override fun findByApiKey(apiKey: String): InMemoryUser? =
         users.firstOrNull { user -> user.apiKeys.any { it.key == apiKey } }
 
-    override fun create(userId: UUID, email: String, firstName: String, lastName: String): InMemoryUser =
-        InMemoryUser(userId, email, firstName, lastName, emptyList(), emptyList()).also(users::add)
+    override fun create(userId: UUID, email: String, firstName: String, lastName: String, authorities: List<UserAuthority>): InMemoryUser =
+        InMemoryUser(userId, email, firstName, lastName, emptyList(), authorities).also(users::add)
 
     override fun search(query: String): List<User> {
         val emailContaining = users.filter { it.email.contains(query) }
@@ -62,7 +62,7 @@ class InMemoryUserService : UserService {
                 firstName = currentUser.firstName,
                 lastName = currentUser.lastName,
                 apiKeys = currentUser.apiKeys.plus(newInMemoryApiKey),
-                authorities = listOf(),
+                authorities = currentUser.authorities,
 
             )
 
@@ -78,7 +78,7 @@ class InMemoryUserService : UserService {
                 firstName = currentUser.firstName,
                 lastName = currentUser.lastName,
                 apiKeys = currentUser.apiKeys.filterNot { it.id == apiKeyId },
-                authorities = listOf(),
+                authorities = currentUser.authorities,
             )
 
             replace(currentUser, updatedUser)

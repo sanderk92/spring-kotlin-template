@@ -35,18 +35,19 @@ class StoreUserFilter(
         }
     }
 
-    private fun extractUserAuthorities(authentication: JwtAuthenticationToken): List<UserAuthority> =
-        authentication.authorities
-            .map(GrantedAuthority::getAuthority)
-            .mapNotNull(UserAuthority::valueOfRole)
-
     private fun createUser(authentication: JwtAuthenticationToken) =
         userService.create(
             userId = UUID.fromString(authentication.name),
             email = extractEmail(authentication),
             firstName = extractFirstName(authentication),
             lastName = extractLastName(authentication),
+            authorities = extractUserAuthorities(authentication)
         )
+
+    private fun extractUserAuthorities(authentication: JwtAuthenticationToken): List<UserAuthority> =
+        authentication.authorities
+            .map(GrantedAuthority::getAuthority)
+            .mapNotNull(UserAuthority::valueOfRole)
 
     private fun extractEmail(authentication: JwtAuthenticationToken) =
         authentication.tokenAttributes[claims.email]?.toString()

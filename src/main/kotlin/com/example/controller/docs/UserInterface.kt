@@ -15,6 +15,7 @@ interface UserInterface {
 
     @Operation(
         summary = "Search for users with the specified parameters",
+        description = "Accessible with role READ",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC), SecurityRequirement(name = SecuritySchemes.APIKEY)],
     )
     fun searchUsers(
@@ -22,7 +23,8 @@ interface UserInterface {
     ): ResponseEntity<List<UserView>>
 
     @Operation(
-        summary = "Get the currently authenticated user",
+        summary = "Get the details of the currently active authentication",
+        description = "Accessible with role READ",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC), SecurityRequirement(name = SecuritySchemes.APIKEY)]
     )
     fun getCurrentUser(
