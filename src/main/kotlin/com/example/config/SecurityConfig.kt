@@ -1,8 +1,8 @@
 package com.example.config
 
 import com.example.security.apikey.ApiKeyAuthenticationFilter
-import com.example.security.user.StoreUserFilter
 import com.example.security.user.JwtProperties
+import com.example.security.user.StoreUserFilter
 import com.example.security.user.UserAuthority
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
