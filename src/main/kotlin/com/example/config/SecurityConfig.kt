@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
@@ -35,16 +36,18 @@ class SecurityConfig(
     fun configure(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf(Customizer.withDefaults())
-            .sessionManagement(Customizer.withDefaults())
             .authorizeHttpRequests { auth -> auth
                 .requestMatchers(*PUBLIC_ENDPOINTS).permitAll()
                 .anyRequest().authenticated()
             }
-            .addFilterAfter(storeUserFilter, BearerTokenAuthenticationFilter::class.java)
-            .addFilterAfter(apiKeyFilter, storeUserFilter::class.java)
+            .sessionManagement {  session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            }
             .oauth2ResourceServer { server -> server
                 .jwt(Customizer.withDefaults())
             }
+            .addFilterAfter(storeUserFilter, BearerTokenAuthenticationFilter::class.java)
+            .addFilterAfter(apiKeyFilter, storeUserFilter::class.java)
         return http.build()
     }
 

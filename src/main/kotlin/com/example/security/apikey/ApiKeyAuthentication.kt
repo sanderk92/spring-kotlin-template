@@ -3,8 +3,10 @@ package com.example.security.apikey
 import com.example.security.user.UserAuthority
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.Transient
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
+@Transient
 class ApiKeyAuthentication(
     private val name: String,
     private val hashedKey: String,
