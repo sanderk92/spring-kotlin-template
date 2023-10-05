@@ -3,7 +3,6 @@ package com.template.config
 import com.template.security.apikey.ApiKeyAuthenticationFilter
 import com.template.security.user.JwtProperties
 import com.template.security.user.UserStorageFilter
-import com.template.security.user.UserAuthority
 import javax.naming.ConfigurationException
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -78,7 +77,7 @@ class SecurityConfig(
                     .let { map[it] as List<*> }
                     .flatMap { jwtProperties.roleMappings[it.toString()] ?: emptyList() }
                     .distinct()
-                    .map { SimpleGrantedAuthority(it.role) }
+                    .map { SimpleGrantedAuthority(it.value()) }
             }
         }
     }

@@ -44,7 +44,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = ["ROLE_READ"])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.value])
     fun `Authenticated user can search users`() {
         every { userService.search("some-query") } returns listOf(user)
 
@@ -70,7 +70,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = ["ROLE_READ"])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.value])
     fun `Authenticated user can retrieve user information`() {
         every { userService.findById(user.id) } returns user
 
@@ -81,7 +81,7 @@ class UserControllerTest {
             jsonPath("$.email", equalTo(user.email))
             jsonPath("$.firstName", equalTo(user.firstName))
             jsonPath("$.lastName", equalTo(user.lastName))
-            jsonPath("$.authorities", hasItem("READ"))
+            jsonPath("$.authorities", hasItem(UserAuthority.READ.name()))
         }
     }
 

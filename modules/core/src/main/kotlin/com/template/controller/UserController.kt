@@ -20,7 +20,7 @@ class UserController(
 
     override fun getCurrentUser(currentUser: CurrentUser): ResponseEntity<CurrentUserView> =
         userService.findById(currentUser.id)
-            ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.authorities) }
+            ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.authorities.map(UserAuthority::name)) }
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 }
@@ -37,5 +37,5 @@ data class CurrentUserView(
     val email: String,
     val firstName: String,
     val lastName: String,
-    val authorities: List<UserAuthority>,
+    val authorities: List<String>,
 )

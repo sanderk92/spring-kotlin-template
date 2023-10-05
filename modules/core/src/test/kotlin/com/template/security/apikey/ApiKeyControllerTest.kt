@@ -2,9 +2,9 @@ package com.template.security.apikey
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.template.controller.ApiKeyController
-import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.security.*
+import com.template.security.user.UserAuthority
 import com.template.security.user.UserService
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
@@ -60,7 +60,7 @@ class ApiKeyControllerTest {
     private lateinit var userService: UserService
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = ["ROLE_READ"])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.value])
     fun `Authenticated user can retrieve api keys`() {
         every { userService.findById(user.id) } returns user
 
@@ -81,7 +81,7 @@ class ApiKeyControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = ["ROLE_READ"])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.value])
     fun `Authenticated user can create api keys`() {
         every { apiKeyService.create(any()) } returns unHashedApiKeyEntry
         every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
