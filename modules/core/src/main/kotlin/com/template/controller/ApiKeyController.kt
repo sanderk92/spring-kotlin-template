@@ -5,7 +5,6 @@ import com.template.security.apikey.ApiKey
 import com.template.security.apikey.ApiKeyEntry
 import com.template.security.apikey.ApiKeyService
 import com.template.security.user.CurrentUser
-import com.template.security.user.ExtractCurrentUser
 import com.template.security.user.UserService
 import jakarta.validation.constraints.NotBlank
 import java.util.*
@@ -19,7 +18,6 @@ class ApiKeyController(
     private val userService: UserService
 ) : ApiKeyInterface {
 
-    @ExtractCurrentUser
     override fun getApiKeys(currentUser: CurrentUser): ResponseEntity<List<ApiKeyView>> =
         userService.findById(currentUser.id)
             ?.apiKeys
@@ -27,7 +25,6 @@ class ApiKeyController(
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.status(NOT_FOUND).build()
 
-    @ExtractCurrentUser
     override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKey = apiKeyService.create(request)
         val hashedApiKey = apiKeyService.hash(unHashedApiKey)
@@ -37,7 +34,6 @@ class ApiKeyController(
             ?: ResponseEntity.status(NOT_FOUND).build()
     }
 
-    @ExtractCurrentUser
     override fun deleteApiKey(currentUser: CurrentUser, id: UUID): ResponseEntity<Void> =
         userService.deleteApiKey(currentUser.id, id)
             .let { ResponseEntity.ok().build() }

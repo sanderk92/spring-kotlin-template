@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component
 
 @Aspect
 @Component
-class ExtractCurrentUserAspect {
+class CurrentUserAspect {
 
-    @Pointcut("@annotation(ExtractCurrentUser)")
-    fun hasAnnotation() {
+    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
+    fun isRestController() {
     }
 
     @Pointcut("args(currentUser, ..)")
     fun hasFirstArg(currentUser: CurrentUser) {
     }
 
-    @Before("hasAnnotation() && hasFirstArg(currentUser)")
+    @Before("isRestController() && hasFirstArg(currentUser)")
     fun setUserId(currentUser: CurrentUser) {
         val authentication = SecurityContextHolder.getContext().authentication
         setIdField(authentication, currentUser)

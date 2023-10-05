@@ -2,7 +2,6 @@ package com.template.controller
 
 import com.template.controller.interfaces.UserInterface
 import com.template.security.user.CurrentUser
-import com.template.security.user.ExtractCurrentUser
 import com.template.security.user.UserAuthority
 import com.template.security.user.UserService
 import java.util.*
@@ -19,7 +18,6 @@ class UserController(
             .map { UserView(it.id, it.email, it.firstName, it.lastName) }
             .let { ResponseEntity.ok(it) }
 
-    @ExtractCurrentUser
     override fun getCurrentUser(currentUser: CurrentUser): ResponseEntity<CurrentUserView> =
         userService.findById(currentUser.id)
             ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.authorities) }
