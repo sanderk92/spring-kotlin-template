@@ -1,1 +1,4 @@
-rootProject.name = "spring-security-keycloak"
+rootProject.name = "spring-kotlin-template"
+
+include("modules:core")
+include("modules:integration")
