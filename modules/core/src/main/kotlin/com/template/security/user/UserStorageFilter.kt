@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
-class StoreUserFilter(
+class UserStorageFilter(
     private val userService: UserService,
     private val claims: JwtClaims,
 ) : OncePerRequestFilter() {

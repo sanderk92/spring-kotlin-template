@@ -2,7 +2,7 @@ package com.template.config
 
 import com.template.security.apikey.ApiKeyAuthenticationFilter
 import com.template.security.user.JwtProperties
-import com.template.security.user.StoreUserFilter
+import com.template.security.user.UserStorageFilter
 import com.template.security.user.UserAuthority
 import javax.naming.ConfigurationException
 import org.springframework.context.annotation.Bean
@@ -29,7 +29,7 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     private val apiKeyFilter: ApiKeyAuthenticationFilter,
-    private val storeUserFilter: StoreUserFilter,
+    private val userStorageFilter: UserStorageFilter,
 ) {
 
     @Bean
@@ -49,8 +49,8 @@ class SecurityConfig(
                 server
                     .jwt(Customizer.withDefaults())
             }
-            .addFilterAfter(storeUserFilter, BearerTokenAuthenticationFilter::class.java)
-            .addFilterAfter(apiKeyFilter, storeUserFilter::class.java)
+            .addFilterAfter(userStorageFilter, BearerTokenAuthenticationFilter::class.java)
+            .addFilterAfter(apiKeyFilter, userStorageFilter::class.java)
         return http.build()
     }
 
