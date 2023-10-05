@@ -18,7 +18,7 @@ class ExceptionController : ExceptionInterface {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     override fun handle(exception: Throwable): ProblemDetail {
-        exception.stackTrace.forEach { println(it.toString()) }
+        exception.printStackTrace()
         return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR).also {
             it.title = "internal server error"
             it.detail = "an unexpected error occurred"
