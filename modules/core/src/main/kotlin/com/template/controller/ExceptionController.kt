@@ -1,6 +1,6 @@
 package com.template.controller
 
-import com.template.controller.docs.ExceptionInterface
+import com.template.controller.interfaces.ExceptionInterface
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus

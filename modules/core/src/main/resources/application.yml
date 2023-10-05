@@ -12,9 +12,6 @@ springdoc:
 
 spring:
   security:
-    api-key:
-      path: "/key"
-      header: "apikey"
     oauth2:
       resourceserver:
         jwt:

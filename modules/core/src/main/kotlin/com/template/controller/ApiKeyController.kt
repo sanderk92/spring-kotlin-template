@@ -1,6 +1,6 @@
 package com.template.controller
 
-import com.template.controller.docs.ApiKeyInterface
+import com.template.controller.interfaces.ApiKeyInterface
 import com.template.security.apikey.ApiKey
 import com.template.security.apikey.ApiKeyEntry
 import com.template.security.apikey.ApiKeyService
@@ -11,16 +11,14 @@ import jakarta.validation.constraints.NotBlank
 import java.util.*
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("\${spring.security.api-key.path}")
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
     private val userService: UserService
 ) : ApiKeyInterface {
 
-    @GetMapping
     @ExtractCurrentUser
     override fun getApiKeys(currentUser: CurrentUser): ResponseEntity<List<ApiKeyView>> =
         userService.findById(currentUser.id)
@@ -29,9 +27,8 @@ class ApiKeyController(
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.status(NOT_FOUND).build()
 
-    @PostMapping
     @ExtractCurrentUser
-    override fun createApiKey(currentUser: CurrentUser, @RequestBody request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
+    override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKey = apiKeyService.create(request)
         val hashedApiKey = apiKeyService.hash(unHashedApiKey)
 
@@ -40,9 +37,8 @@ class ApiKeyController(
             ?: ResponseEntity.status(NOT_FOUND).build()
     }
 
-    @DeleteMapping("/{id}")
     @ExtractCurrentUser
-    override fun deleteApiKey(currentUser: CurrentUser, @PathVariable id: UUID): ResponseEntity<Void> =
+    override fun deleteApiKey(currentUser: CurrentUser, id: UUID): ResponseEntity<Void> =
         userService.deleteApiKey(currentUser.id, id)
             .let { ResponseEntity.ok().build() }
 }

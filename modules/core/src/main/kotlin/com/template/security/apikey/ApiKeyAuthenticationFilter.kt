@@ -1,5 +1,6 @@
 package com.template.security.apikey
 
+import com.template.controller.interfaces.ApiKeyInterface
 import com.template.security.user.UserAuthority
 import com.template.security.user.UserService
 import jakarta.servlet.FilterChain
@@ -13,15 +14,14 @@ import org.springframework.web.filter.OncePerRequestFilter
 class ApiKeyAuthenticationFilter(
     private val userService: UserService,
     private val hashGenerator: HashGenerator,
-    private val properties: ApiKeyProperties,
 ) : OncePerRequestFilter() {
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
-        return request.servletPath.startsWith(properties.path)
+        return request.servletPath.startsWith(ApiKeyInterface.ENDPOINT)
     }
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        request.getHeader(properties.header)?.also { apiKey ->
+        request.getHeader("API-Key")?.also { apiKey ->
 
             val hashedApiKey = hashGenerator.hash(apiKey)
             userService.findByApiKey(hashedApiKey)?.also { user ->

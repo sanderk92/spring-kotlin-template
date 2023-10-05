@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
 object SecuritySchemes {
-    const val APIKEY = "apikey"
+    const val APIKEY = "API-Key"
     const val OIDC = "OIDC"
 }
 
