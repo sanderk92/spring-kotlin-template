@@ -37,7 +37,7 @@ class CurrentUserAspect {
     }
 
     private fun setAuthoritiesField(authentication: Authentication, currentUser: CurrentUser) {
-        val authorities = authentication.authorities.map(GrantedAuthority::toString).map(UserAuthority::valueOf)
+        val authorities = authentication.authorities.map(GrantedAuthority::toString).map(UserAuthority::valueOfRole)
         val authorityField = currentUser.javaClass.getDeclaredField(CurrentUser::authorities.name)
         authorityField.isAccessible = true
         authorityField.set(currentUser, authorities)

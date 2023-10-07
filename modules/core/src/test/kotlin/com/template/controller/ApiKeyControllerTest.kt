@@ -60,7 +60,7 @@ class ApiKeyControllerTest {
     private lateinit var userService: UserService
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
+    @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can retrieve api keys`() {
         every { userService.findById(user.id) } returns user
 

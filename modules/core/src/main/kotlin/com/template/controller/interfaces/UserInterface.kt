@@ -1,11 +1,9 @@
 package com.template.controller.interfaces
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.template.config.SecuritySchemes
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import com.template.security.user.CurrentUser
 import com.template.security.user.UserAuthority
-import com.template.security.user.UserAuthorityJsonSerializer
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -59,6 +57,5 @@ data class CurrentUserView(
     val email: String,
     val firstName: String,
     val lastName: String,
-    @JsonSerialize(contentUsing = UserAuthorityJsonSerializer::class)
-    val authorities: List<UserAuthority>,
+    val authorities: List<String>,
 )

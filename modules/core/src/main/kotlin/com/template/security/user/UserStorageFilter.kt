@@ -46,7 +46,7 @@ class UserStorageFilter(
     private fun extractUserAuthorities(authentication: JwtAuthenticationToken): List<UserAuthority> =
         authentication.authorities
             .map(GrantedAuthority::getAuthority)
-            .mapNotNull(UserAuthority::valueOf)
+            .mapNotNull(UserAuthority::valueOfRole)
 
     private fun extractEmail(authentication: JwtAuthenticationToken) =
         authentication.tokenAttributes[claims.email]?.toString()

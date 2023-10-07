@@ -46,7 +46,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
-    fun `Authenticated user can search users`() {
+    fun `Authorized user can search users`() {
         every { userService.search("some-query") } returns listOf(user)
 
         mvc.get(ENDPOINT) {
@@ -82,7 +82,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
-    fun `Authenticated user can retrieve user information`() {
+    fun `Authorized user can retrieve user information`() {
         every { userService.findById(user.id) } returns user
 
         mvc.get("$ENDPOINT/me") {

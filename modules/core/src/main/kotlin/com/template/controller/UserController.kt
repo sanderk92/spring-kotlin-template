@@ -21,7 +21,9 @@ class UserController(
 
     override fun getCurrentUser(currentUser: CurrentUser): ResponseEntity<CurrentUserView> =
         userService.findById(currentUser.id)
-            ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.authorities) }
+            ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.stringAuthorities()) }
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 }
+
+private fun CurrentUser.stringAuthorities() = this.authorities.map(UserAuthority::toString)
