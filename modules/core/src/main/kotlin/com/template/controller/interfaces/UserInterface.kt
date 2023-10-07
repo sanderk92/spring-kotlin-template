@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
-@Controller
 @RequestMapping(ENDPOINT)
 @Secured(UserAuthority.READ.value)
 @Tag(name = "User", description = "Retrieve information about the current user")

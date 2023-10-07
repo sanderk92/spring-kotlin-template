@@ -1,6 +1,7 @@
 package com.template.security.user
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding
+import org.springframework.context.ApplicationContextException
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
@@ -48,5 +49,6 @@ sealed interface UserAuthority {
 class UserAuthorityConverter : Converter<String, UserAuthority> {
     override fun convert(source: String): UserAuthority? {
         return UserAuthority.valueOf("ROLE_${source}")
+            ?: throw ApplicationContextException("UserAuthority '$source' does not exist")
     }
 }

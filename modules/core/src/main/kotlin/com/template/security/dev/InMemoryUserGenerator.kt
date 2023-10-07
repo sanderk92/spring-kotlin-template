@@ -8,7 +8,7 @@ import java.util.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 
-private const val DEV_API_KEY = "dev-api-key"
+private const val DEV_API_KEY = "dev"
 
 @Component
 @ConditionalOnProperty("feature.users.generate")

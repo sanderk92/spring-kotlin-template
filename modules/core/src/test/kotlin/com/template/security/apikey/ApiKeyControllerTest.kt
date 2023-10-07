@@ -2,6 +2,7 @@ package com.template.security.apikey
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.template.controller.ApiKeyController
+import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.security.*
 import com.template.security.user.UserAuthority
