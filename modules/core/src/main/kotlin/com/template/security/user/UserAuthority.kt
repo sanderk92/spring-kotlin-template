@@ -11,25 +11,25 @@ sealed interface UserAuthority {
 
     object READ : UserAuthority {
         const val role = "ROLE_READ"
-        override fun role() = role;
+        override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 
     object WRITE : UserAuthority {
         const val role = "ROLE_WRITE"
-        override fun role() = role;
+        override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 
     object DELETE : UserAuthority {
         const val role = "ROLE_DELETE"
-        override fun role() = role;
+        override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 
     object ADMIN : UserAuthority {
         const val role = "ROLE_ADMIN"
-        override fun role() = role;
+        override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 

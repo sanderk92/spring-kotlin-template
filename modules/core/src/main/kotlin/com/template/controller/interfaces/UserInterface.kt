@@ -31,7 +31,8 @@ interface UserInterface {
         security = [SecurityRequirement(name = SecuritySchemes.OIDC), SecurityRequirement(name = SecuritySchemes.APIKEY)],
     )
     fun searchUsers(
-        @Parameter(description = "Query user by first or last name and email") @RequestParam query: String
+        @Parameter(description = "Query user by first or last name and email") @RequestParam
+        query: String
     ): ResponseEntity<List<UserView>>
 
     @GetMapping("/me")

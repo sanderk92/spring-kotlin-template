@@ -40,7 +40,8 @@ interface ApiKeyInterface {
     )
     fun createApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
-        @Parameter(description = "The api key to create") @Valid @RequestBody request: ApiKeyCreateCommand,
+        @Parameter(description = "The api key to create") @Valid @RequestBody
+        request: ApiKeyCreateCommand,
     ): ResponseEntity<ApiKeyEntry>
 
     @DeleteMapping("/{id}")
@@ -51,7 +52,8 @@ interface ApiKeyInterface {
     )
     fun deleteApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
-        @Parameter(description = "The id of the api key to delete") @PathVariable  id: UUID,
+        @Parameter(description = "The id of the api key to delete") @PathVariable
+        id: UUID,
     ): ResponseEntity<Void>
 }
 
