@@ -20,8 +20,8 @@ sourceSets {
     }
 }
 
-val cucumberVersion = "7.8.1"
-val testContainersVersion = "1.17.6"
+val cucumberVersion = "7.14.0"
+val testContainersVersion = "1.19.1"
 
 dependencies {
     implementation(project(mapOf("path" to ":modules:core")))
