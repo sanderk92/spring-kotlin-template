@@ -77,7 +77,7 @@ class SecurityConfig(
                     .let { map[it] as List<*> }
                     .flatMap { jwtProperties.roleMappings[it.toString()] ?: emptyList() }
                     .distinct()
-                    .map { SimpleGrantedAuthority(it.value()) }
+                    .map { SimpleGrantedAuthority(it.role()) }
             }
         }
     }

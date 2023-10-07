@@ -1,6 +1,6 @@
 package com.template.security.dev
 
-import com.template.controller.ApiKeyRequest
+import com.template.controller.interfaces.ApiKeyCreateCommand
 import com.template.security.apikey.ApiKeyService
 import com.template.security.user.UserAuthority.*
 import jakarta.annotation.PostConstruct
@@ -26,7 +26,7 @@ class InMemoryUserGenerator(
             authorities = listOf(READ, WRITE, DELETE, ADMIN)
         )
 
-        val request = ApiKeyRequest(
+        val request = ApiKeyCreateCommand(
             name = "development key",
             read = true,
             write = true,

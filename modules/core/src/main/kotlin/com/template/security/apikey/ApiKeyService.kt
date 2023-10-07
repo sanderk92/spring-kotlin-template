@@ -1,6 +1,6 @@
 package com.template.security.apikey
 
-import com.template.controller.ApiKeyRequest
+import com.template.controller.interfaces.ApiKeyCreateCommand
 import java.security.SecureRandom
 import org.springframework.stereotype.Service
 
@@ -10,7 +10,7 @@ class ApiKeyService(private val hashGenerator: HashGenerator) {
     private val secureRandom = SecureRandom()
     private val characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-    fun create(request: ApiKeyRequest) = UnHashedApiKeyEntry(
+    fun create(request: ApiKeyCreateCommand) = UnHashedApiKeyEntry(
         key = buildKey(),
         name = request.name,
         read = request.read,

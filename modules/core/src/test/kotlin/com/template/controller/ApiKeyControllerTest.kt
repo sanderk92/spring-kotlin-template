@@ -1,10 +1,9 @@
-package com.template.security.apikey
+package com.template.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.template.controller.ApiKeyController
-import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
-import com.template.security.*
+import com.template.controller.objects.*
+import com.template.security.apikey.ApiKeyService
 import com.template.security.user.UserAuthority
 import com.template.security.user.UserService
 import com.template.util.EnableAspectOrientedProgramming
@@ -61,7 +60,7 @@ class ApiKeyControllerTest {
     private lateinit var userService: UserService
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.value])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
     fun `Authenticated user can retrieve api keys`() {
         every { userService.findById(user.id) } returns user
 
@@ -82,7 +81,7 @@ class ApiKeyControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.value])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
     fun `Authenticated user can create api keys`() {
         every { apiKeyService.create(any()) } returns unHashedApiKeyEntry
         every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
@@ -90,13 +89,13 @@ class ApiKeyControllerTest {
 
         mvc.post(ENDPOINT) {
             with(csrf())
-            content = objectMapper.writeValueAsString(apiKeyRequest)
+            content = objectMapper.writeValueAsString(apiKeyCreateCommand)
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
             status { isOk() }
             content { equalTo(objectMapper.writeValueAsString(unHashedApiKeyEntry)) }
         }
-        verify { apiKeyService.create(apiKeyRequest) }
+        verify { apiKeyService.create(apiKeyCreateCommand) }
         verify { apiKeyService.hash(unHashedApiKeyEntry) }
         verify { userService.addApiKey(user.id, hashedApiKeyEntry) }
     }
