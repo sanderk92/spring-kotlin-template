@@ -49,7 +49,7 @@ dependencies {
     testImplementation("org.testcontainers:mongodb:$testContainersVersion")
 }
 
-tasks.named("build") {
+tasks.named("compileKotlin") {
     dependsOn("openApiGenerate")
 }
 
