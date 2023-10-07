@@ -27,7 +27,10 @@ private val log = KotlinLogging.logger {}
     tags = "@Integration"
 )
 @CucumberContextConfiguration
-@SpringBootTest(classes = [Application::class])
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = [Application::class]
+)
 class CucumberTest {
 
     companion object {
@@ -55,7 +58,6 @@ class CucumberTest {
             registry.add("OIDC_SWAGGER_CLIENT_ID") { "test" }
             registry.add("feature.users.generate") { true }
             registry.add("feature.users.in-memory") { true }
-            registry.add("database.base-url", mongoContainer::getConnectionString)
         }
     }
 }

@@ -3,6 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.openapi.generator") version "7.0.1"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
 }
@@ -11,21 +12,32 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir("$buildDir/generated/src/main/kotlin")
+        }
+    }
+}
+
 val cucumberVersion = "7.8.1"
 val testContainersVersion = "1.17.6"
 
 dependencies {
-    testImplementation(project(mapOf("path" to ":modules:core")))
+    implementation(project(mapOf("path" to ":modules:core")))
 
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    testImplementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
 
+    implementation("org.springframework.boot:spring-boot-starter-webflux:3.1.4")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test")
 
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.vintage:junit-vintage-engine")
+    testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("org.wiremock:wiremock:3.2.0")
 
     testImplementation("io.cucumber:cucumber-spring:$cucumberVersion")
@@ -35,6 +47,27 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     testImplementation("org.testcontainers:mongodb:$testContainersVersion")
+}
+
+tasks.named("build") {
+    dependsOn("openApiGenerate")
+}
+
+tasks.named("openApiGenerate") {
+    dependsOn(":modules:core:generateOpenApiDocs")
+}
+
+openApiGenerate {
+    generatorName.set("kotlin")
+    library.set("jvm-spring-webclient")
+    inputSpec.set("${project(":modules:core").buildDir}/openapi.json")
+    outputDir.set("$buildDir/generated")
+    configOptions.set(mapOf(
+        "useSpringBoot3" to "true",
+    ))
+    additionalProperties.set(mapOf(
+        "serializationLibrary" to "jackson",
+    ))
 }
 
 val jar: Jar by tasks

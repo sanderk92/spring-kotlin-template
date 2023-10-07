@@ -8,6 +8,7 @@ import com.template.security.apikey.ApiKeyEntry
 import com.template.security.apikey.ApiKeyService
 import com.template.security.user.CurrentUser
 import com.template.security.user.UserService
+import jakarta.annotation.PostConstruct
 import java.util.*
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity

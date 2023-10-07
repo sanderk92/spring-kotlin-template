@@ -1,6 +1,6 @@
 @Integration
-Feature: Test environment works
+Feature: User
 
-  Scenario: Test environment works
+  Scenario: User information can be retrieved
 
-    Then test environment works
+    Then authenticated user can be retrieved
