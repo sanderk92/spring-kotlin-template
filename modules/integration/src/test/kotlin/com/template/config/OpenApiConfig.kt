@@ -15,7 +15,6 @@ class OpenApiConfig(
     @Bean
     fun webClient(): WebClient = WebClient.builder()
         .baseUrl("http://localhost:${context.webServer.port}/api/")
-        // Any token is required to trigger the BearerTokenJwtDecoder
         .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer $jwtString")
         .build()
 

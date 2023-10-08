@@ -16,6 +16,13 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
 
+private val PUBLIC_ENDPOINTS = arrayOf(
+    "/sso/login",
+    "/swagger-ui/**",
+    "/swagger-resources/**",
+    "/v3/api-docs/**"
+)
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -30,12 +37,7 @@ class SecurityConfig(
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers(
-                        "/sso/login",
-                        "/swagger-ui/**",
-                        "/swagger-resources/**",
-                        "/v3/api-docs/**"
-                    ).permitAll()
+                    .requestMatchers(*PUBLIC_ENDPOINTS).permitAll()
                     .anyRequest().authenticated()
             }
             .sessionManagement { session ->
@@ -54,7 +56,7 @@ class SecurityConfig(
     /**
      * A custom [JwtAuthenticationConverter] capable of extracting authorities from a nested claim, specified by dot
      * notation. For example the Keycloak claim 'realm_access.roles'. All values inside the claim are translated to
-     * [UserAuthority] according to the configured role mappings.
+     * according to the configured role mappings.
      */
     @Bean
     fun jwtAuthConverter(jwtProperties: JwtProperties): JwtAuthenticationConverter {
