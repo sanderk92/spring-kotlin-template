@@ -3,7 +3,7 @@ package com.template.config
 import com.template.security.apikey.ApiKeyAuthenticationFilter
 import com.template.security.user.JwtProperties
 import com.template.security.user.UserStorageFilter
-import javax.naming.ConfigurationException
+import org.springframework.context.ApplicationContextException
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
@@ -63,7 +63,7 @@ class SecurityConfig(
         val claimStructure = jwtProperties.claims.authorities.split(".")
 
         if (claimStructure.isEmpty()) {
-            throw ConfigurationException("Invalid claim for extracting authorities: '${jwtProperties.claims.authorities}'")
+            throw ApplicationContextException("Invalid claim for authorities: '${jwtProperties.claims.authorities}'")
         }
 
         return JwtAuthenticationConverter().also { converter ->
