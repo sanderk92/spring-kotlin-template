@@ -1,12 +1,12 @@
 package com.template.config
 
-import com.google.common.net.HttpHeaders
 import com.template.objects.jwtString
 import org.openapitools.client.apis.KeysApi
 import org.openapitools.client.apis.UserApi
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpHeaders
 import org.springframework.web.reactive.function.client.WebClient
 
 @Configuration

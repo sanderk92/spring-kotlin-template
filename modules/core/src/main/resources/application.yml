@@ -1,3 +1,4 @@
+
 server:
   servlet:
     context-path: "/api"
@@ -20,9 +21,9 @@ spring:
           client-id: ${OIDC_SERVER_CLIENT_ID}
           client-secret: ${OIDC_SERVER_CLIENT_SECRET}
     token:
+      role-defaults: [ 'READ', 'WRITE', 'DELETE' ]
       role-mappings: {
-        user: [ 'READ', 'WRITE', 'DELETE' ],
-        admin: [ 'READ', 'WRITE', 'DELETE', 'ADMIN' ]
+        admin: [ 'ADMIN' ]
       }
       claims:
         email: "email"

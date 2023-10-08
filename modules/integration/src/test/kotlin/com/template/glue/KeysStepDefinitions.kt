@@ -7,9 +7,8 @@ import org.junit.jupiter.api.fail
 import org.openapitools.client.apis.KeysApi
 import org.openapitools.client.models.ApiKeyCreateCommand
 
-class KeysStepDefinitions(
-    private val keysApi : KeysApi,
-) {
+class KeysStepDefinitions(private val keysApi : KeysApi) {
+
     @When("creating api key with name {string}")
     fun whenCreatingApiKey(name: String) {
         val command = ApiKeyCreateCommand(name = name, read = true, write = true, delete = true)

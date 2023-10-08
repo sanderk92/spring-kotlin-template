@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties("spring.security.token")
 data class JwtProperties(
     val claims: JwtClaims,
+    val roleDefaults: List<UserAuthority>,
     val roleMappings: Map<String, List<UserAuthority>>
 )
 

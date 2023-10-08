@@ -11,11 +11,10 @@ const val lastName = "lastName"
 const val email = "test@email.com"
 
 val adminJwt: Jwt = jwtBuilder()
-    .claims { it.putAll(roleClaims("user")) }
+    .claims { it.putAll(roleClaims("admin")) }
     .build()
 
 val userJwt: Jwt = jwtBuilder()
-    .claims { it.putAll(roleClaims("admin")) }
     .build()
 
 private fun jwtBuilder() = Jwt

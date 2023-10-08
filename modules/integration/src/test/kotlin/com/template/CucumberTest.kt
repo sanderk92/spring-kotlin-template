@@ -1,23 +1,12 @@
 package com.template
 
-import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import com.template.CucumberTest.Companion.mongoContainer
-import com.template.CucumberTest.Companion.wiremock
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import io.cucumber.spring.CucumberContextConfiguration
-import io.github.oshai.kotlinlogging.KotlinLogging
-import org.junit.jupiter.api.AfterAll
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.containers.MongoDBContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.utility.DockerImageName
-
-private val log = KotlinLogging.logger {}
 
 @RunWith(Cucumber::class)
 @CucumberOptions(
@@ -35,19 +24,6 @@ class CucumberTest {
 
     companion object {
 
-        val wiremock = WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort())
-
-        @Container
-        val mongoContainer = MongoDBContainer(DockerImageName.parse("mongo:6.0.3"))
-
-        init {
-            wiremock.start()
-            mongoContainer.start()
-
-            log.info { "Wiremock accessible on ${wiremock.baseUrl()}" }
-            log.info { "MongoDB accessible on ${mongoContainer.connectionString}" }
-        }
-
         @JvmStatic
         @DynamicPropertySource
         fun setProperties(registry: DynamicPropertyRegistry) {
@@ -59,10 +35,4 @@ class CucumberTest {
             registry.add("feature.users.in-memory") { true }
         }
     }
-}
-
-@AfterAll
-fun clean() {
-    wiremock.stop()
-    mongoContainer.stop()
 }

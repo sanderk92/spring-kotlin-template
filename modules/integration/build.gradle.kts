@@ -22,7 +22,6 @@ sourceSets {
 }
 
 val cucumberVersion = "7.14.0"
-val testContainersVersion = "1.19.1"
 
 dependencies {
     implementation(project(mapOf("path" to ":modules:core")))
@@ -40,16 +39,11 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.vintage:junit-vintage-engine")
     testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("org.wiremock:wiremock:3.2.0")
     testImplementation("io.mockk:mockk:1.13.8")
 
     testImplementation("io.cucumber:cucumber-spring:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
-
-    testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
-    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
-    testImplementation("org.testcontainers:mongodb:$testContainersVersion")
 }
 
 tasks.named("compileKotlin") {

@@ -8,9 +8,8 @@ import io.cucumber.java.en.Given
 import io.mockk.every
 import org.springframework.security.oauth2.jwt.JwtDecoder
 
-class AuthStepDefinitions(
-    @MockJwtDecoder private val jwtDecoder: JwtDecoder,
-) {
+class AuthStepDefinitions(@MockJwtDecoder private val jwtDecoder: JwtDecoder) {
+
     @Given("an authenticated user")
     fun givenAuthenticatedUser() {
         every { jwtDecoder.decode(jwtString) } returns userJwt
