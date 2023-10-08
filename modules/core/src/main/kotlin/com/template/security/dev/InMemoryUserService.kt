@@ -1,6 +1,6 @@
 package com.template.security.dev
 
-import com.template.security.apikey.ApiKeyEntry
+import com.template.security.apikey.HashedApiKeyEntry
 import com.template.security.user.User
 import com.template.security.user.UserAuthority
 import com.template.security.user.UserService
@@ -45,7 +45,7 @@ class InMemoryUserService : UserService {
             updatedUser
         }
 
-    override fun addApiKey(userId: UUID, entry: ApiKeyEntry): InMemoryApiKey? =
+    override fun addApiKey(userId: UUID, entry: HashedApiKeyEntry): InMemoryApiKey? =
         findById(userId)?.let { currentUser ->
             val newInMemoryApiKey = InMemoryApiKey(
                 id = UUID.randomUUID(),

@@ -2,6 +2,7 @@ package com.template.config
 
 import com.google.common.net.HttpHeaders
 import com.template.objects.jwtString
+import org.openapitools.client.apis.KeysApi
 import org.openapitools.client.apis.UserApi
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext
 import org.springframework.context.annotation.Bean
@@ -20,4 +21,7 @@ class OpenApiConfig(
 
     @Bean
     fun userApi(client: WebClient): UserApi = UserApi(client)
+
+    @Bean
+    fun keysApi(client: WebClient): KeysApi = KeysApi(client)
 }
