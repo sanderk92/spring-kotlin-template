@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
@@ -32,6 +33,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux:3.1.4")
+    testImplementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test")
 
@@ -39,6 +41,7 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("org.wiremock:wiremock:3.2.0")
+    testImplementation("io.mockk:mockk:1.13.8")
 
     testImplementation("io.cucumber:cucumber-spring:$cucumberVersion")
     testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
@@ -55,6 +58,13 @@ tasks.named("compileKotlin") {
 
 tasks.named("openApiGenerate") {
     dependsOn(":modules:core:generateOpenApiDocs")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
+    }
 }
 
 openApiGenerate {

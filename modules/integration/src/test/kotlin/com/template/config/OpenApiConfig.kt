@@ -1,5 +1,7 @@
 package com.template.config
 
+import com.google.common.net.HttpHeaders
+import com.template.objects.jwtString
 import org.openapitools.client.apis.UserApi
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext
 import org.springframework.context.annotation.Bean
@@ -13,7 +15,8 @@ class OpenApiConfig(
     @Bean
     fun webClient(): WebClient = WebClient.builder()
         .baseUrl("http://localhost:${context.webServer.port}/api/")
-        .defaultHeader("API-Key", "dev")
+        // Any token is required to trigger the BearerTokenJwtDecoder
+        .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer $jwtString")
         .build()
 
     @Bean

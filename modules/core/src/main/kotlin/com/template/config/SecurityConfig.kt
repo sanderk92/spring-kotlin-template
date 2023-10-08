@@ -16,13 +16,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
 
-private val PUBLIC_ENDPOINTS = arrayOf(
-    "/sso/login",
-    "/swagger-ui/**",
-    "/swagger-resources/**",
-    "/v3/api-docs/**",
-)
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -37,7 +30,12 @@ class SecurityConfig(
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers(*PUBLIC_ENDPOINTS).permitAll()
+                    .requestMatchers(
+                        "/sso/login",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**"
+                    ).permitAll()
                     .anyRequest().authenticated()
             }
             .sessionManagement { session ->

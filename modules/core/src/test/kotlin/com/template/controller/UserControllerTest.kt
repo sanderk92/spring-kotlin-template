@@ -92,7 +92,7 @@ class UserControllerTest {
             jsonPath("$.email", equalTo(user.email))
             jsonPath("$.firstName", equalTo(user.firstName))
             jsonPath("$.lastName", equalTo(user.lastName))
-            jsonPath("$.authorities", hasItems("READ"))
+            jsonPath("$.authorities", hasItems(UserAuthority.READ.toString()))
         }
     }
 

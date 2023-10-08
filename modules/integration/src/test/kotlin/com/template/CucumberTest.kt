@@ -51,12 +51,11 @@ class CucumberTest {
         @JvmStatic
         @DynamicPropertySource
         fun setProperties(registry: DynamicPropertyRegistry) {
-            registry.add("OIDC_PROVIDER_CONFIG_URL") { wiremock.baseUrl() + "/config" }
-            registry.add("OIDC_PROVIDER_JWK_URL") { wiremock.baseUrl() + "/jwk" }
+            registry.add("OIDC_PROVIDER_CONFIG_URL") { "http://localhost:8080" }
+            registry.add("OIDC_PROVIDER_JWK_URL") { "http://localhost:8080" }
             registry.add("OIDC_SERVER_CLIENT_ID") { "test" }
             registry.add("OIDC_SERVER_CLIENT_SECRET") { "test" }
             registry.add("OIDC_SWAGGER_CLIENT_ID") { "test" }
-            registry.add("feature.users.generate") { true }
             registry.add("feature.users.in-memory") { true }
         }
     }
