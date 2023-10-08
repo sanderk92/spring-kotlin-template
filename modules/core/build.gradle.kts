@@ -10,6 +10,7 @@ plugins {
     kotlin("plugin.spring") version "1.6.21"
     id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+    id("com.google.cloud.tools.jib") version "3.3.0"
 }
 
 repositories {
@@ -57,4 +58,10 @@ springBoot {
 ktlint {
     enableExperimentalRules.set(true)
     disabledRules.set(setOf("no-wildcard-imports"))
+}
+
+jib {
+    to {
+        // TODO publish image
+    }
 }
