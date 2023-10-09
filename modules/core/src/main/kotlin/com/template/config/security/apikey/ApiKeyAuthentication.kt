@@ -1,6 +1,6 @@
-package com.template.security.apikey
+package com.template.config.security.apikey
 
-import com.template.security.user.UserAuthority
+import com.template.config.security.user.UserAuthority
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.Transient

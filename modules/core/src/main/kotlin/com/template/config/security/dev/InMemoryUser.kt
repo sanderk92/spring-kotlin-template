@@ -1,7 +1,7 @@
-package com.template.security.dev
+package com.template.config.security.dev
 
-import com.template.security.user.User
-import com.template.security.user.UserAuthority
+import com.template.config.security.user.User
+import com.template.config.security.user.UserAuthority
 import java.util.*
 
 data class InMemoryUser(

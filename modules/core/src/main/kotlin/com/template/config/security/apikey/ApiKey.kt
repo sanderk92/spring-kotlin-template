@@ -1,4 +1,4 @@
-package com.template.security.apikey
+package com.template.config.security.apikey
 
 import java.util.*
 

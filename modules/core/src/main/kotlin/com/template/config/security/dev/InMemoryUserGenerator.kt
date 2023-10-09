@@ -1,9 +1,9 @@
-package com.template.security.dev
+package com.template.config.security.dev
 
 import com.template.controller.interfaces.ApiKeyCreateCommand
-import com.template.security.apikey.ApiKeyService
-import com.template.security.user.UserAuthority.*
-import com.template.security.user.UserEntry
+import com.template.config.security.apikey.ApiKeyService
+import com.template.config.security.user.UserAuthority.*
+import com.template.config.security.user.UserEntry
 import jakarta.annotation.PostConstruct
 import java.util.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

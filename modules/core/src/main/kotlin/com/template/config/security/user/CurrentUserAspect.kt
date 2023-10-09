@@ -1,4 +1,4 @@
-package com.template.security.user
+package com.template.config.security.user
 
 import java.util.*
 import org.aspectj.lang.annotation.Aspect
@@ -37,7 +37,7 @@ class CurrentUserAspect {
     }
 
     private fun setAuthoritiesField(authentication: Authentication, currentUser: CurrentUser) {
-        val authorities = authentication.authorities.map(GrantedAuthority::toString).map(UserAuthority::valueOfRole)
+        val authorities = authentication.authorities.map(GrantedAuthority::toString).map(UserAuthority.Companion::valueOfRole)
         val authorityField = currentUser.javaClass.getDeclaredField(CurrentUser::authorities.name)
         authorityField.isAccessible = true
         authorityField.set(currentUser, authorities)

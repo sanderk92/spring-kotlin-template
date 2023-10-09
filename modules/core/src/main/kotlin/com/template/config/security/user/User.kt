@@ -1,6 +1,6 @@
-package com.template.security.user
+package com.template.config.security.user
 
-import com.template.security.apikey.ApiKey
+import com.template.config.security.apikey.ApiKey
 import java.util.*
 
 interface User {

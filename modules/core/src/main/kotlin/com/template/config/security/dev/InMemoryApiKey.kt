@@ -1,6 +1,6 @@
-package com.template.security.dev
+package com.template.config.security.dev
 
-import com.template.security.apikey.ApiKey
+import com.template.config.security.apikey.ApiKey
 import java.time.Instant
 import java.util.*
 

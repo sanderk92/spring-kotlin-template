@@ -1,13 +1,13 @@
 package com.template.controller
 
+import com.template.config.security.apikey.ApiKey
+import com.template.config.security.apikey.ApiKeyEntry
+import com.template.config.security.apikey.ApiKeyService
+import com.template.config.security.user.CurrentUser
+import com.template.config.security.user.UserService
 import com.template.controller.interfaces.ApiKeyCreateCommand
 import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyView
-import com.template.security.apikey.ApiKey
-import com.template.security.apikey.ApiKeyEntry
-import com.template.security.apikey.ApiKeyService
-import com.template.security.user.CurrentUser
-import com.template.security.user.UserService
 import java.util.*
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity

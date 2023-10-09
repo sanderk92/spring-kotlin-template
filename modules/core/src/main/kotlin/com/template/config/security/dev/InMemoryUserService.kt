@@ -1,10 +1,10 @@
-package com.template.security.dev
+package com.template.config.security.dev
 
-import com.template.security.apikey.HashedApiKeyEntry
-import com.template.security.user.User
-import com.template.security.user.UserAuthority
-import com.template.security.user.UserEntry
-import com.template.security.user.UserService
+import com.template.config.security.apikey.HashedApiKeyEntry
+import com.template.config.security.user.User
+import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.UserEntry
+import com.template.config.security.user.UserService
 import java.util.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service

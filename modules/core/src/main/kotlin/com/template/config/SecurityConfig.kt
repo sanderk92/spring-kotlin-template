@@ -1,7 +1,7 @@
 package com.template.config
 
-import com.template.security.apikey.ApiKeyAuthenticationFilter
-import com.template.security.jwt.JwtUserStorageFilter
+import com.template.config.security.apikey.ApiKeyAuthenticationFilter
+import com.template.config.security.jwt.JwtUserStorageFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer

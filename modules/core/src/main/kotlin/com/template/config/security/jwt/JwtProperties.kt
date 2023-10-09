@@ -1,6 +1,6 @@
-package com.template.security.jwt
+package com.template.config.security.jwt
 
-import com.template.security.user.UserAuthority
+import com.template.config.security.user.UserAuthority
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("spring.security.token")

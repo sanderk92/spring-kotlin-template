@@ -1,4 +1,4 @@
-package com.template.security.apikey
+package com.template.config.security.apikey
 
 import com.nimbusds.jose.util.Base64
 import java.nio.charset.StandardCharsets

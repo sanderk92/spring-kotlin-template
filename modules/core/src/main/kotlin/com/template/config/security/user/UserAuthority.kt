@@ -1,4 +1,4 @@
-package com.template.security.user
+package com.template.config.security.user
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding
 import org.springframework.context.ApplicationContextException

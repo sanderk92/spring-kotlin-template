@@ -3,9 +3,9 @@ package com.template.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
-import com.template.security.apikey.ApiKeyService
-import com.template.security.user.UserAuthority
-import com.template.security.user.UserService
+import com.template.config.security.apikey.ApiKeyService
+import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.UserService
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import io.mockk.every

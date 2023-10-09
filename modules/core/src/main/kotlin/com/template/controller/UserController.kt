@@ -1,11 +1,11 @@
 package com.template.controller
 
+import com.template.config.security.user.CurrentUser
+import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.UserService
 import com.template.controller.interfaces.CurrentUserView
 import com.template.controller.interfaces.UserInterface
 import com.template.controller.interfaces.UserView
-import com.template.security.user.CurrentUser
-import com.template.security.user.UserAuthority
-import com.template.security.user.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 

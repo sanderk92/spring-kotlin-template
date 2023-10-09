@@ -1,7 +1,7 @@
-package com.template.security.user
+package com.template.config.security.user
 
-import com.template.security.apikey.ApiKey
-import com.template.security.apikey.HashedApiKeyEntry
+import com.template.config.security.apikey.ApiKey
+import com.template.config.security.apikey.HashedApiKeyEntry
 import java.util.*
 
 interface UserService {

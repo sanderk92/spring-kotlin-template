@@ -1,11 +1,11 @@
 package com.template.controller.objects
 
 import com.template.controller.interfaces.ApiKeyCreateCommand
-import com.template.security.apikey.ApiKey
-import com.template.security.apikey.HashedApiKeyEntry
-import com.template.security.apikey.UnHashedApiKeyEntry
-import com.template.security.user.User
-import com.template.security.user.UserAuthority.*
+import com.template.config.security.apikey.ApiKey
+import com.template.config.security.apikey.HashedApiKeyEntry
+import com.template.config.security.apikey.UnHashedApiKeyEntry
+import com.template.config.security.user.User
+import com.template.config.security.user.UserAuthority.*
 import java.util.*
 
 const val PRINCIPAL_NAME = "ef2db5bb-b7a0-4ff3-99dc-a7d95dc1e84c"

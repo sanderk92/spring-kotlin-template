@@ -1,4 +1,4 @@
-package com.template.security.jwt
+package com.template.config.security.jwt
 
 import org.springframework.context.ApplicationContextException
 import org.springframework.context.annotation.Bean

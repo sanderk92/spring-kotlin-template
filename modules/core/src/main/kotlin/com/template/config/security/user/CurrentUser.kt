@@ -1,4 +1,4 @@
-package com.template.security.user
+package com.template.config.security.user
 
 import java.util.*
 

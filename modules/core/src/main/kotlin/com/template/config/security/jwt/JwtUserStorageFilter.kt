@@ -1,9 +1,9 @@
-package com.template.security.jwt
+package com.template.config.security.jwt
 
-import com.template.security.user.User
-import com.template.security.user.UserAuthority
-import com.template.security.user.UserEntry
-import com.template.security.user.UserService
+import com.template.config.security.user.User
+import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.UserEntry
+import com.template.config.security.user.UserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
