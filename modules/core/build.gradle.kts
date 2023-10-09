@@ -61,7 +61,4 @@ ktlint {
 }
 
 jib {
-    to {
-        // TODO publish image
-    }
 }

@@ -1,5 +1,8 @@
-package com.template.security.user
+package com.template.security.jwt
 
+import com.template.security.user.User
+import com.template.security.user.UserAuthority
+import com.template.security.user.UserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -12,7 +15,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
-class UserStorageFilter(
+class JwtUserStorageFilter(
     private val userService: UserService,
     private val claims: JwtClaims,
 ) : OncePerRequestFilter() {
@@ -46,7 +49,7 @@ class UserStorageFilter(
     private fun extractUserAuthorities(authentication: JwtAuthenticationToken): List<UserAuthority> =
         authentication.authorities
             .map(GrantedAuthority::getAuthority)
-            .mapNotNull(UserAuthority::valueOfRole)
+            .mapNotNull(UserAuthority.Companion::valueOfRole)
 
     private fun extractEmail(authentication: JwtAuthenticationToken) =
         authentication.tokenAttributes[claims.email]?.toString()
