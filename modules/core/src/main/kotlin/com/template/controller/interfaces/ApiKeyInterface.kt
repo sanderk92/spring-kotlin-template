@@ -41,7 +41,7 @@ interface ApiKeyInterface {
     fun createApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
         @Parameter(description = "The api key to create") @Valid @RequestBody
-        request: ApiKeyCreateCommand,
+        request: ApiKeyRequest,
     ): ResponseEntity<ApiKeyEntry>
 
     @DeleteMapping("/{id}")
@@ -57,7 +57,7 @@ interface ApiKeyInterface {
     ): ResponseEntity<Void>
 }
 
-data class ApiKeyCreateCommand(
+data class ApiKeyRequest(
     @field:NotBlank
     val name: String,
     val read: Boolean,

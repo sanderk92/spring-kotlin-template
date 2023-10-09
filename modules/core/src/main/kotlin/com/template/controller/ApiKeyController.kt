@@ -5,7 +5,7 @@ import com.template.config.security.apikey.ApiKeyEntry
 import com.template.config.security.apikey.ApiKeyService
 import com.template.config.security.user.CurrentUser
 import com.template.config.security.user.UserService
-import com.template.controller.interfaces.ApiKeyCreateCommand
+import com.template.controller.interfaces.ApiKeyRequest
 import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyView
 import java.util.*
@@ -26,7 +26,7 @@ class ApiKeyController(
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.status(NOT_FOUND).build()
 
-    override fun createApiKey(currentUser: CurrentUser, request: ApiKeyCreateCommand): ResponseEntity<ApiKeyEntry> {
+    override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
         val unHashedApiKey = apiKeyService.create(request)
         val hashedApiKey = apiKeyService.hash(unHashedApiKey)
 

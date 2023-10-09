@@ -1,6 +1,6 @@
 package com.template.controller.objects
 
-import com.template.controller.interfaces.ApiKeyCreateCommand
+import com.template.controller.interfaces.ApiKeyRequest
 import com.template.config.security.apikey.ApiKey
 import com.template.config.security.apikey.HashedApiKeyEntry
 import com.template.config.security.apikey.UnHashedApiKeyEntry
@@ -10,24 +10,24 @@ import java.util.*
 
 const val PRINCIPAL_NAME = "ef2db5bb-b7a0-4ff3-99dc-a7d95dc1e84c"
 
-val apiKeyCreateCommand = ApiKeyCreateCommand(
-    name = "apikey name",
+val apiKeyRequest = ApiKeyRequest(
+    name = "keyName",
     read = true,
     write = true,
     delete = true,
 )
 
 val unHashedApiKeyEntry = UnHashedApiKeyEntry(
-    key = "apikey",
-    name = "apikeyName",
+    key = "unHashedKey",
+    name = "keyName",
     read = true,
     write = true,
     delete = true,
 )
 
 val hashedApiKeyEntry = HashedApiKeyEntry(
-    key = "apikey",
-    name = "apikeyName",
+    key = "hashedKey",
+    name = "keyName",
     read = true,
     write = true,
     delete = true,

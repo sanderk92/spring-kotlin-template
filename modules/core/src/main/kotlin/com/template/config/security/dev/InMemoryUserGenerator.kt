@@ -1,6 +1,6 @@
 package com.template.config.security.dev
 
-import com.template.controller.interfaces.ApiKeyCreateCommand
+import com.template.controller.interfaces.ApiKeyRequest
 import com.template.config.security.apikey.ApiKeyService
 import com.template.config.security.user.UserAuthority.*
 import com.template.config.security.user.UserEntry
@@ -30,7 +30,7 @@ class InMemoryUserGenerator(
             )
         )
 
-        val request = ApiKeyCreateCommand(
+        val request = ApiKeyRequest(
             name = "development key",
             read = true,
             write = true,

@@ -1,6 +1,5 @@
 package com.template.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
 import com.template.config.security.apikey.ApiKeyService
@@ -8,6 +7,7 @@ import com.template.config.security.user.UserAuthority
 import com.template.config.security.user.UserService
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
+import com.template.util.asJson
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -51,9 +51,6 @@ class ApiKeyControllerTest {
     private lateinit var mvc: MockMvc
 
     @Autowired
-    private lateinit var objectMapper: ObjectMapper
-
-    @Autowired
     private lateinit var apiKeyService: ApiKeyService
 
     @Autowired
@@ -67,7 +64,12 @@ class ApiKeyControllerTest {
         mvc.get(ENDPOINT) {
         }.andExpect {
             status { isOk() }
-            content { equalTo(objectMapper.writeValueAsString(user)) }
+            jsonPath("$.size()", equalTo(1))
+            jsonPath("$[0].id", equalTo(apiKey.id.toString()))
+            jsonPath("$[0].name", equalTo(apiKey.name))
+            jsonPath("$[0].read", equalTo(apiKey.read))
+            jsonPath("$[0].write", equalTo(apiKey.write))
+            jsonPath("$[0].delete", equalTo(apiKey.delete))
         }
     }
 
@@ -87,15 +89,26 @@ class ApiKeyControllerTest {
         every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
         every { userService.addApiKey(any(), any()) } returns apiKey
 
+        val payload = mapOf(
+            "name" to apiKeyRequest.name,
+            "read" to apiKeyRequest.read,
+            "write" to apiKeyRequest.write,
+            "delete" to apiKeyRequest.delete,
+        ).asJson()
+
         mvc.post(ENDPOINT) {
             with(csrf())
-            content = objectMapper.writeValueAsString(apiKeyCreateCommand)
             contentType = MediaType.APPLICATION_JSON
+            content = payload
         }.andExpect {
             status { isOk() }
-            content { equalTo(objectMapper.writeValueAsString(unHashedApiKeyEntry)) }
+            jsonPath("$.key", equalTo(unHashedApiKeyEntry.key))
+            jsonPath("$.name", equalTo(unHashedApiKeyEntry.name))
+            jsonPath("$.read", equalTo(unHashedApiKeyEntry.read))
+            jsonPath("$.write", equalTo(unHashedApiKeyEntry.write))
+            jsonPath("$.delete", equalTo(unHashedApiKeyEntry.delete))
         }
-        verify { apiKeyService.create(apiKeyCreateCommand) }
+        verify { apiKeyService.create(apiKeyRequest) }
         verify { apiKeyService.hash(unHashedApiKeyEntry) }
         verify { userService.addApiKey(user.id, hashedApiKeyEntry) }
     }
