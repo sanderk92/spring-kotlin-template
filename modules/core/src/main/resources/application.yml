@@ -27,6 +27,7 @@ spring:
       }
       claims:
         email: "email"
+        username: "preferred_username"
         first-name: "given_name"
         last-name: "family_name"
         authorities: "realm_access.roles"

@@ -45,6 +45,7 @@ val apiKey = object : ApiKey {
 val user = object : User {
     override val id = UUID.fromString(PRINCIPAL_NAME)
     override val email = "email"
+    override val username = "username"
     override val firstName = "firstName"
     override val lastName = "lastName"
     override val apiKeys = listOf(apiKey)

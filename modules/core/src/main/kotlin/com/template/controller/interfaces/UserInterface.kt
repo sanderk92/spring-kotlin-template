@@ -49,6 +49,7 @@ interface UserInterface {
 data class UserView(
     val id: UUID,
     val email: String,
+    val username: String,
     val firstName: String,
     val lastName: String,
 )
@@ -56,6 +57,7 @@ data class UserView(
 data class CurrentUserView(
     val id: UUID,
     val email: String,
+    val username: String,
     val firstName: String,
     val lastName: String,
     val authorities: List<String>,

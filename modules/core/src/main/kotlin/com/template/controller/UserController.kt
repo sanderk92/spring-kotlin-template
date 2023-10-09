@@ -16,12 +16,12 @@ class UserController(
 
     override fun searchUsers(query: String): ResponseEntity<List<UserView>> =
         userService.search(query)
-            .map { UserView(it.id, it.email, it.firstName, it.lastName) }
+            .map { UserView(it.id, it.email, it.username, it.firstName, it.lastName) }
             .let { ResponseEntity.ok(it) }
 
     override fun getCurrentUser(currentUser: CurrentUser): ResponseEntity<CurrentUserView> =
         userService.findById(currentUser.id)
-            ?.let { CurrentUserView(it.id, it.email, it.firstName, it.lastName, currentUser.stringAuthorities()) }
+            ?.let { CurrentUserView(it.id, it.email, it.username, it.firstName, it.lastName, currentUser.stringAuthorities()) }
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 }

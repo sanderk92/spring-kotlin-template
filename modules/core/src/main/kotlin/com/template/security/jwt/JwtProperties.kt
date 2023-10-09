@@ -13,6 +13,7 @@ data class JwtProperties(
 @ConfigurationProperties("spring.security.token.claims")
 data class JwtClaims(
     val email: String,
+    val username: String,
     val firstName: String,
     val lastName: String,
     val authorities: String,

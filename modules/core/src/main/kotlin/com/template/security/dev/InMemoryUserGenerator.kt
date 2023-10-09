@@ -3,6 +3,7 @@ package com.template.security.dev
 import com.template.controller.interfaces.ApiKeyCreateCommand
 import com.template.security.apikey.ApiKeyService
 import com.template.security.user.UserAuthority.*
+import com.template.security.user.UserEntry
 import jakarta.annotation.PostConstruct
 import java.util.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -20,10 +21,13 @@ class InMemoryUserGenerator(
     fun generate() {
         val user = inMemoryUserRepository.create(
             userId = UUID.randomUUID(),
-            email = "dev@user.com",
-            firstName = "dev",
-            lastName = "user",
-            authorities = listOf(READ, WRITE, DELETE, ADMIN)
+            entry = UserEntry(
+                email = "dev@user.com",
+                username= "dev",
+                firstName = "dev",
+                lastName = "user",
+                authorities = listOf(READ, WRITE, DELETE, ADMIN)
+            )
         )
 
         val request = ApiKeyCreateCommand(

@@ -3,6 +3,7 @@ package com.template.security.dev
 import com.template.security.apikey.HashedApiKeyEntry
 import com.template.security.user.User
 import com.template.security.user.UserAuthority
+import com.template.security.user.UserEntry
 import com.template.security.user.UserService
 import java.util.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -20,8 +21,9 @@ class InMemoryUserService : UserService {
     override fun findByApiKey(apiKey: String): InMemoryUser? =
         users.firstOrNull { user -> user.apiKeys.any { it.key == apiKey } }
 
-    override fun create(userId: UUID, email: String, firstName: String, lastName: String, authorities: List<UserAuthority>): InMemoryUser =
-        InMemoryUser(userId, email, firstName, lastName, emptyList(), authorities).also(users::add)
+    override fun create(userId: UUID, entry: UserEntry): InMemoryUser =
+        InMemoryUser(userId, entry.email, entry.username, entry.firstName, entry.lastName, emptyList(), entry.authorities)
+            .also(users::add)
 
     override fun search(query: String): List<User> {
         val emailContaining = users.filter { it.email.contains(query) }
@@ -35,6 +37,7 @@ class InMemoryUserService : UserService {
             val updatedUser = InMemoryUser(
                 id = currentUser.id,
                 email = currentUser.email,
+                username = currentUser.username,
                 firstName = currentUser.firstName,
                 lastName = currentUser.lastName,
                 apiKeys = currentUser.apiKeys,
@@ -59,6 +62,7 @@ class InMemoryUserService : UserService {
             val updatedUser = InMemoryUser(
                 id = currentUser.id,
                 email = currentUser.email,
+                username = currentUser.username,
                 firstName = currentUser.firstName,
                 lastName = currentUser.lastName,
                 apiKeys = currentUser.apiKeys.plus(newInMemoryApiKey),
@@ -75,6 +79,7 @@ class InMemoryUserService : UserService {
             val updatedUser = InMemoryUser(
                 id = currentUser.id,
                 email = currentUser.email,
+                username = currentUser.username,
                 firstName = currentUser.firstName,
                 lastName = currentUser.lastName,
                 apiKeys = currentUser.apiKeys.filterNot { it.id == apiKeyId },

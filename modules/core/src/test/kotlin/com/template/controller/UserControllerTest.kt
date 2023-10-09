@@ -56,6 +56,7 @@ class UserControllerTest {
             jsonPath("$.size()", equalTo(1))
             jsonPath("$[0].id", equalTo(user.id.toString()))
             jsonPath("$[0].email", equalTo(user.email))
+            jsonPath("$[0].username", equalTo(user.username))
             jsonPath("$[0].firstName", equalTo(user.firstName))
             jsonPath("$[0].lastName", equalTo(user.lastName))
         }
@@ -90,6 +91,7 @@ class UserControllerTest {
             status { isOk() }
             jsonPath("$.id", equalTo(user.id.toString()))
             jsonPath("$.email", equalTo(user.email))
+            jsonPath("$.username", equalTo(user.username))
             jsonPath("$.firstName", equalTo(user.firstName))
             jsonPath("$.lastName", equalTo(user.lastName))
             jsonPath("$.authorities", hasItems(UserAuthority.READ.toString()))
