@@ -14,7 +14,7 @@ class JwtRoleExtractor {
      * A custom [JwtAuthenticationConverter] capable of extracting authorities from a nested claim, specified by dot
      * notation. For example the Keycloak claim 'realm_access.roles'. All values inside the claim are translated
      * according to the configured role mappings, and default roles are assigned. Any issues while extracting roles
-     * will result in an empty list of authorizations, and unknown roles are ignored.
+     * will result in only the default authorizations to be assigned. Any unknown roles are ignored.
      */
     @Bean
     fun jwtAuthConverter(jwtProperties: JwtProperties): JwtAuthenticationConverter {
