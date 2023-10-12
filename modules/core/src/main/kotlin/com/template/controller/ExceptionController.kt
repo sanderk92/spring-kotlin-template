@@ -17,7 +17,7 @@ class ExceptionController : ExceptionInterface {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    override fun handle(exception: Throwable): ProblemDetail {
+    fun handle(exception: Throwable): ProblemDetail {
         exception.printStackTrace()
         return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR).also {
             it.title = "internal server error"
@@ -27,7 +27,7 @@ class ExceptionController : ExceptionInterface {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    override fun handle(exception: ConstraintViolationException): ProblemDetail =
+    fun handle(exception: ConstraintViolationException): ProblemDetail =
         ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY).also {
             it.title = "validation failed"
             it.detail = "constraint on input was violated"
@@ -36,7 +36,7 @@ class ExceptionController : ExceptionInterface {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    override fun handle(exception: MethodArgumentNotValidException): ProblemDetail =
+    fun handle(exception: MethodArgumentNotValidException): ProblemDetail =
         ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY).also {
             it.title = "validation failed"
             it.detail = "constraint on input was violated"
@@ -45,7 +45,7 @@ class ExceptionController : ExceptionInterface {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    override fun handle(exception: AccessDeniedException): ProblemDetail =
+    fun handle(exception: AccessDeniedException): ProblemDetail =
         ProblemDetail.forStatus(HttpStatus.FORBIDDEN).also {
             it.title = "access denied"
             it.detail = "the current user has no access to this resource"
@@ -53,11 +53,31 @@ class ExceptionController : ExceptionInterface {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    override fun handle(exception: HttpMessageNotReadableException): ProblemDetail =
+    fun handle(exception: HttpMessageNotReadableException): ProblemDetail =
         ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).also {
             it.title = "invalid request"
             it.detail = "the body of the request was malformed or missing data"
         }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handle(exception: IllegalStateException): ProblemDetail {
+        exception.printStackTrace()
+        return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR).also {
+            it.title = "illegal state exception"
+            it.detail = exception.message
+        }
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handle(exception: IllegalArgumentException): ProblemDetail {
+        exception.printStackTrace()
+        return ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).also {
+            it.title = "illegal argument exception"
+            it.detail = exception.message
+        }
+    }
 
     private fun constraintError(error: ConstraintViolation<*>) = ValidationError(
         message = error.message ?: "no message",

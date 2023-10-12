@@ -12,90 +12,63 @@ import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 
-interface ExceptionInterface {
-
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "500",
-                description = "Internal server error",
-                content = [
-                    Content(
-                        mediaType = mediaType,
-                        schema = Schema(implementation = ExceptionModel::class)
-                    )
-                ]
-            )
-        ]
-    )
-    fun handle(exception: Throwable): ProblemDetail
-
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "422",
-                description = "Input validation failed",
-                content = [
-                    Content(
-                        mediaType = mediaType,
-                        schema = Schema(implementation = ValidationExceptionModel::class)
-                    )
-                ]
-            )
-        ]
-    )
-    fun handle(exception: ConstraintViolationException): ProblemDetail
-
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "422",
-                description = "Input validation failed",
-                content = [
-                    Content(
-                        mediaType = mediaType,
-                        schema = Schema(implementation = ValidationExceptionModel::class)
-                    )
-                ]
-            )
-        ]
-    )
-    fun handle(exception: MethodArgumentNotValidException): ProblemDetail
-
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "403",
-                description = "Access denied",
-                content = [
-                    Content(
-                        mediaType = mediaType,
-                        schema = Schema(implementation = ExceptionModel::class)
-                    )
-                ]
-            )
-        ]
-    )
-    fun handle(exception: AccessDeniedException): ProblemDetail
-
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "400",
-                description = "Input parsing failed",
-                content = [
-                    Content(
-                        mediaType = mediaType,
-                        schema = Schema(implementation = ExceptionModel::class)
-                    )
-                ]
-            )
-        ]
-    )
-    fun handle(exception: HttpMessageNotReadableException): ProblemDetail
-}
-
 private const val mediaType: String = MediaType.APPLICATION_JSON_VALUE
+
+@ApiResponses(
+    value = [
+        ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = [
+                Content(
+                    mediaType = mediaType,
+                    schema = Schema(implementation = ExceptionModel::class)
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "422",
+            description = "Input validation error",
+            content = [
+                Content(
+                    mediaType = mediaType,
+                    schema = Schema(implementation = ValidationExceptionModel::class)
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "404",
+            description = "Not found error",
+            content = [
+                Content(
+                    mediaType = mediaType,
+                    schema = Schema(implementation = ExceptionModel::class)
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "403",
+            description = "Access denied error",
+            content = [
+                Content(
+                    mediaType = mediaType,
+                    schema = Schema(implementation = ExceptionModel::class)
+                )
+            ]
+        ),
+        ApiResponse(
+            responseCode = "400",
+            description = "Input formatting error",
+            content = [
+                Content(
+                    mediaType = mediaType,
+                    schema = Schema(implementation = ExceptionModel::class)
+                )
+            ]
+        ),
+    ]
+)
+interface ExceptionInterface
 
 private interface ExceptionModel {
     val type: String
