@@ -8,6 +8,7 @@ import com.template.config.security.user.SecureUserService
 import com.template.controller.interfaces.ApiKeyRequest
 import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyView
+import com.template.domain.UserService
 import java.util.*
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ApiKeyController(
     private val apiKeyService: ApiKeyService,
-    private val secureUserService: SecureUserService
+    private val userService: UserService,
 ) : ApiKeyInterface {
 
     override fun getApiKeys(currentUser: CurrentUser): ResponseEntity<List<ApiKeyView>> =
-        secureUserService.findById(currentUser.id)
+        userService.findById(currentUser.id)
             ?.apiKeys
             ?.map(ApiKey::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
@@ -30,13 +31,13 @@ class ApiKeyController(
         val unHashedApiKey = apiKeyService.create(request)
         val hashedApiKey = apiKeyService.hash(unHashedApiKey)
 
-        return secureUserService.addApiKey(currentUser.id, hashedApiKey)
+        return userService.addApiKey(currentUser.id, hashedApiKey)
             ?.let { ResponseEntity.ok(unHashedApiKey) }
             ?: ResponseEntity.status(NOT_FOUND).build()
     }
 
     override fun deleteApiKey(currentUser: CurrentUser, id: UUID): ResponseEntity<Void> =
-        secureUserService.deleteApiKey(currentUser.id, id)
+        userService.deleteApiKey(currentUser.id, id)
             .let { ResponseEntity.ok().build() }
 }
 
