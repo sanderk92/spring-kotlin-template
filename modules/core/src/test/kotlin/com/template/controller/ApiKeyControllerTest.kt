@@ -4,7 +4,7 @@ import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
 import com.template.config.security.apikey.ApiKeyService
 import com.template.config.security.user.UserAuthority
-import com.template.config.security.user.UserService
+import com.template.config.security.user.SecureUserService
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import com.template.util.asJson
@@ -44,7 +44,7 @@ class ApiKeyControllerTest {
         fun apiKeyService() = mockk<ApiKeyService>()
 
         @Bean
-        fun userService() = mockk<UserService>()
+        fun userService() = mockk<SecureUserService>()
     }
 
     @Autowired
@@ -54,12 +54,12 @@ class ApiKeyControllerTest {
     private lateinit var apiKeyService: ApiKeyService
 
     @Autowired
-    private lateinit var userService: UserService
+    private lateinit var secureUserService: SecureUserService
 
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can retrieve api keys`() {
-        every { userService.findById(user.id) } returns user
+        every { secureUserService.findById(secureUser.id) } returns secureUser
 
         mvc.get(ENDPOINT) {
         }.andExpect {
@@ -87,7 +87,7 @@ class ApiKeyControllerTest {
     fun `Authenticated user can create api keys`() {
         every { apiKeyService.create(any()) } returns unHashedApiKeyEntry
         every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
-        every { userService.addApiKey(any(), any()) } returns apiKey
+        every { secureUserService.addApiKey(any(), any()) } returns apiKey
 
         val payload = mapOf(
             "name" to apiKeyRequest.name,
@@ -110,7 +110,7 @@ class ApiKeyControllerTest {
         }
         verify { apiKeyService.create(apiKeyRequest) }
         verify { apiKeyService.hash(unHashedApiKeyEntry) }
-        verify { userService.addApiKey(user.id, hashedApiKeyEntry) }
+        verify { secureUserService.addApiKey(secureUser.id, hashedApiKeyEntry) }
     }
 
     @Test
@@ -126,7 +126,7 @@ class ApiKeyControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can delete api keys`() {
-        every { userService.deleteApiKey(any(), any()) } returns Unit
+        every { secureUserService.deleteApiKey(any(), any()) } returns Unit
 
         mvc.delete("$ENDPOINT/${apiKey.id}") {
             with(csrf())
@@ -134,7 +134,7 @@ class ApiKeyControllerTest {
             status { isOk() }
         }
 
-        verify { userService.deleteApiKey(user.id, apiKey.id) }
+        verify { secureUserService.deleteApiKey(secureUser.id, apiKey.id) }
     }
 
     @Test

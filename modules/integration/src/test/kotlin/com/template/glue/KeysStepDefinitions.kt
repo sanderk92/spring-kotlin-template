@@ -5,6 +5,7 @@ import io.cucumber.java.en.When
 import org.junit.jupiter.api.fail
 import org.openapitools.client.apis.KeysApi
 import org.openapitools.client.models.ApiKeyCreateCommand
+import org.openapitools.client.models.ApiKeyRequest
 import org.openapitools.client.models.ApiKeyView
 
 class KeysStepDefinitions(private val keysApi : KeysApi) {
@@ -12,7 +13,7 @@ class KeysStepDefinitions(private val keysApi : KeysApi) {
     @When("creating api key with name {string}")
     fun whenCreatingApiKey(name: String) {
         findApiKey(name)?.also { fail("api key with name '$name' must not already exist") }
-        keysApi.createApiKey(ApiKeyCreateCommand(name = name, read = true, write = true, delete = true)).block()!!
+        keysApi.createApiKey(ApiKeyRequest(name = name, read = true, write = true, delete = true)).block()!!
     }
 
     @When("deleting api key with name {string}")

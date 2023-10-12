@@ -4,7 +4,7 @@ import com.template.controller.interfaces.ApiKeyRequest
 import com.template.config.security.apikey.ApiKey
 import com.template.config.security.apikey.HashedApiKeyEntry
 import com.template.config.security.apikey.UnHashedApiKeyEntry
-import com.template.config.security.user.User
+import com.template.config.security.user.SecureUser
 import com.template.config.security.user.UserAuthority.*
 import java.util.*
 
@@ -42,7 +42,7 @@ val apiKey = object : ApiKey {
     override val delete = true
 }
 
-val user = object : User {
+val secureUser = object : SecureUser {
     override val id = UUID.fromString(PRINCIPAL_NAME)
     override val email = "email"
     override val username = "username"

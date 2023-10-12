@@ -1,40 +1,39 @@
-package com.template.config.security.dev
+package com.template.persistence
 
-import com.template.config.security.apikey.HashedApiKeyEntry
-import com.template.config.security.user.User
+import com.template.config.security.apikey.ApiKey
 import com.template.config.security.user.UserAuthority
-import com.template.config.security.user.UserEntry
-import com.template.config.security.user.UserService
+import com.template.domain.model.User
+import com.template.persistence.model.ApiKeyEntity
+import com.template.persistence.model.UserEntity
 import java.util.*
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 
-@Service
-@ConditionalOnProperty("feature.users.in-memory")
-class InMemoryUserService : UserService {
+@Repository // TODO database impl
+class UserRepository {
 
-    private val users = mutableListOf<InMemoryUser>()
+    private val users = mutableListOf<UserEntity>()
 
-    override fun findById(userId: UUID): InMemoryUser? =
+    fun findById(userId: UUID): UserEntity? =
         users.firstOrNull { user -> user.id == userId }
 
-    override fun findByApiKey(apiKey: String): InMemoryUser? =
+    fun findByApiKey(apiKey: String): UserEntity? =
         users.firstOrNull { user -> user.apiKeys.any { it.key == apiKey } }
 
-    override fun create(userId: UUID, entry: UserEntry): InMemoryUser =
-        InMemoryUser(userId, entry.email, entry.username, entry.firstName, entry.lastName, emptyList(), entry.authorities)
-            .also(users::add)
+    fun create(user: UserEntity) =
+        users.add(user).let { user }
 
-    override fun search(query: String): List<User> {
+    fun search(query: String): List<UserEntity> {
+        val usernameContaining = users.filter { it.username.contains(query) }
         val emailContaining = users.filter { it.email.contains(query) }
         val firstNameContaining = users.filter { it.firstName.contains(query) }
         val lastNameContaining = users.filter { it.lastName.contains(query) }
-        return emailContaining.plus(firstNameContaining).plus(lastNameContaining).distinct()
+        return (usernameContaining + emailContaining + firstNameContaining + lastNameContaining).distinct()
     }
 
-    override fun update(userId: UUID, authorities: List<UserAuthority>): InMemoryUser? =
-        findById(userId)?.let { currentUser ->
-            val updatedUser = InMemoryUser(
+    fun update(userId: UUID, authorities: List<UserAuthority>): UserEntity? {
+        return findById(userId)?.let { currentUser ->
+            val updatedUser = UserEntity(
                 id = currentUser.id,
                 email = currentUser.email,
                 username = currentUser.username,
@@ -47,10 +46,11 @@ class InMemoryUserService : UserService {
             replace(currentUser, updatedUser)
             updatedUser
         }
+    }
 
-    override fun addApiKey(userId: UUID, entry: HashedApiKeyEntry): InMemoryApiKey? =
-        findById(userId)?.let { currentUser ->
-            val newInMemoryApiKey = InMemoryApiKey(
+    fun addApiKey(userId: UUID, entry: ApiKeyEntity): ApiKey? {
+        return findById(userId)?.let { currentUser ->
+            val newInMemoryApiKey = com.template.domain.model.ApiKey(
                 id = UUID.randomUUID(),
                 key = entry.key,
                 name = entry.name,
@@ -59,7 +59,7 @@ class InMemoryUserService : UserService {
                 delete = entry.delete,
             )
 
-            val updatedUser = InMemoryUser(
+            val updatedUser = UserEntity(
                 id = currentUser.id,
                 email = currentUser.email,
                 username = currentUser.username,
@@ -67,16 +67,17 @@ class InMemoryUserService : UserService {
                 lastName = currentUser.lastName,
                 apiKeys = currentUser.apiKeys.plus(newInMemoryApiKey),
                 authorities = currentUser.authorities,
-
             )
 
             replace(currentUser, updatedUser)
             newInMemoryApiKey
         }
 
-    override fun deleteApiKey(userId: UUID, apiKeyId: UUID) {
+    }
+
+    fun deleteApiKey(userId: UUID, apiKeyId: UUID) {
         findById(userId)?.also { currentUser ->
-            val updatedUser = InMemoryUser(
+            val updatedUser = UserEntity(
                 id = currentUser.id,
                 email = currentUser.email,
                 username = currentUser.username,
@@ -90,7 +91,7 @@ class InMemoryUserService : UserService {
         }
     }
 
-    private fun replace(currentUser: InMemoryUser, updatedUser: InMemoryUser) {
+    private fun replace(currentUser: UserEntity, updatedUser: UserEntity) {
         users.remove(currentUser)
         users.add(updatedUser)
     }

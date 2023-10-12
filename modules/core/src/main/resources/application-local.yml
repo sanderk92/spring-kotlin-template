@@ -3,8 +3,3 @@ OIDC_PROVIDER_JWK_URL: http://localhost:8081/auth/realms/master/protocol/openid-
 OIDC_SERVER_CLIENT_ID: backend
 OIDC_SERVER_CLIENT_SECRET: APCtpS72ZgKV0HcDH06Pjp8MOhf9MTis
 OIDC_SWAGGER_CLIENT_ID: swagger
-
-feature:
-  users:
-    generate: true
-    in-memory: true

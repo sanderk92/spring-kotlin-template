@@ -5,6 +5,10 @@ Feature: User
     Given an authenticated user
     Then user details can be retrieved
 
+  Scenario: users can be searched by user name
+    Given an authenticated user
+    Then user can be found by user name
+
   Scenario: users can be searched by first name
     Given an authenticated user
     Then user can be found by first name

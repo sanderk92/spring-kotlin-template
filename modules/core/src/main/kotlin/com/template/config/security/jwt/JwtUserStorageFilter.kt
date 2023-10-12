@@ -1,9 +1,9 @@
 package com.template.config.security.jwt
 
-import com.template.config.security.user.User
+import com.template.config.security.user.SecureUser
 import com.template.config.security.user.UserAuthority
-import com.template.config.security.user.UserEntry
-import com.template.config.security.user.UserService
+import com.template.config.security.user.SecureUserEntry
+import com.template.config.security.user.SecureUserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -17,31 +17,31 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtUserStorageFilter(
-    private val userService: UserService,
+    private val secureUserService: SecureUserService,
     private val claims: JwtClaims,
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         val authentication: Authentication? = SecurityContextHolder.getContext().authentication
         if (authentication?.isAuthenticated == true && authentication is JwtAuthenticationToken) {
-            userService.findById(extractId(authentication))
+            secureUserService.findById(extractId(authentication))
                 ?.also { user -> updateUser(user, authentication) }
                 ?: createUser(authentication)
         }
         chain.doFilter(request, response)
     }
 
-    private fun updateUser(user: User, authentication: JwtAuthenticationToken) {
+    private fun updateUser(secureUser: SecureUser, authentication: JwtAuthenticationToken) {
         val authorities = extractAuthorities(authentication)
-        if (user.authorities.toSet() != authorities.toSet()) {
-            userService.update(user.id, authorities)
+        if (secureUser.authorities.toSet() != authorities.toSet()) {
+            secureUserService.update(secureUser.id, authorities)
         }
     }
 
     private fun createUser(authentication: JwtAuthenticationToken) =
-        userService.create(
-            userId = extractId(authentication),
-            entry = UserEntry(
+        secureUserService.create(
+            SecureUserEntry(
+                id = extractId(authentication),
                 email = extractEmail(authentication),
                 username = extractUsername(authentication),
                 firstName = extractFirstName(authentication),

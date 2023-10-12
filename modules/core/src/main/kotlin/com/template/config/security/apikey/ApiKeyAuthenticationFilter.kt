@@ -2,7 +2,7 @@ package com.template.config.security.apikey
 
 import com.template.controller.interfaces.ApiKeyInterface
 import com.template.config.security.user.UserAuthority
-import com.template.config.security.user.UserService
+import com.template.config.security.user.SecureUserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class ApiKeyAuthenticationFilter(
-    private val userService: UserService,
+    private val secureUserService: SecureUserService,
     private val hashGenerator: HashGenerator,
 ) : OncePerRequestFilter() {
 
@@ -24,7 +24,7 @@ class ApiKeyAuthenticationFilter(
         request.getHeader("API-Key")?.also { apiKey ->
 
             val hashedApiKey = hashGenerator.hash(apiKey)
-            userService.findByApiKey(hashedApiKey)?.also { user ->
+            secureUserService.findByApiKey(hashedApiKey)?.also { user ->
 
                 val key = user.apiKeys.first { it.key == hashedApiKey }
                 val authorities = user.authorities.filter { key.hasAuthority(it) }

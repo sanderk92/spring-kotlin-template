@@ -4,11 +4,6 @@ OIDC_SERVER_CLIENT_ID: unused
 OIDC_SERVER_CLIENT_SECRET: unused
 OIDC_SWAGGER_CLIENT_ID: unused
 
-feature:
-  users:
-    generate: false
-    in-memory: true
-
 springdoc:
   openapi:
     host: https://todo.com/

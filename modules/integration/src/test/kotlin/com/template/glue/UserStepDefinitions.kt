@@ -15,6 +15,24 @@ class UserStepDefinitions(private val userApi : UserApi) {
         assertThat(user.email).isEqualTo(email)
     }
 
+    @Then("user can be found by email")
+    fun thenSearchUserByEmail() {
+        val users = userApi.searchUsers(email).block()!!
+        assertThat(users.size).isEqualTo(1)
+        assertThat(users[0].firstName).isEqualTo(firstName)
+        assertThat(users[0].lastName).isEqualTo(lastName)
+        assertThat(users[0].email).isEqualTo(email)
+    }
+
+    @Then("user can be found by user name")
+    fun thenSearchUserByUserName() {
+        val users = userApi.searchUsers(username).block()!!
+        assertThat(users.size).isEqualTo(1)
+        assertThat(users[0].firstName).isEqualTo(firstName)
+        assertThat(users[0].lastName).isEqualTo(lastName)
+        assertThat(users[0].email).isEqualTo(email)
+    }
+
     @Then("user can be found by first name")
     fun thenSearchUserByFirstName() {
         val users = userApi.searchUsers(firstName).block()!!
@@ -26,16 +44,7 @@ class UserStepDefinitions(private val userApi : UserApi) {
 
     @Then("user can be found by last name")
     fun thenSearchUserByLastName() {
-        val users = userApi.searchUsers(firstName).block()!!
-        assertThat(users.size).isEqualTo(1)
-        assertThat(users[0].firstName).isEqualTo(firstName)
-        assertThat(users[0].lastName).isEqualTo(lastName)
-        assertThat(users[0].email).isEqualTo(email)
-    }
-
-    @Then("user can be found by email")
-    fun thenSearchUserByEmail() {
-        val users = userApi.searchUsers(firstName).block()!!
+        val users = userApi.searchUsers(lastName).block()!!
         assertThat(users.size).isEqualTo(1)
         assertThat(users[0].firstName).isEqualTo(firstName)
         assertThat(users[0].lastName).isEqualTo(lastName)
