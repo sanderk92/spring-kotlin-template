@@ -1,8 +1,8 @@
 package com.template.config.security.apikey
 
-import com.template.controller.interfaces.ApiKeyInterface
-import com.template.config.security.user.UserAuthority
 import com.template.config.security.user.SecureUserService
+import com.template.config.security.user.UserAuthority
+import com.template.controller.interfaces.ApiKeyInterface
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

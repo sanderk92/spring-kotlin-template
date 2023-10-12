@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserRepository : JpaRepository<UserEntity, UUID> {
 
-    @Query("""
+    @Query(
+        """
         SELECT u FROM UserEntity u
         WHERE u.email LIKE %?1% OR u.username LIKE %?1% OR u.firstName LIKE %?1% OR u.lastName LIKE %?1%
-    """)
+    """
+    )
     fun search(query: String): List<UserEntity>
 
     @Query(
@@ -23,9 +25,11 @@ interface UserRepository : JpaRepository<UserEntity, UUID> {
     )
     fun findByApiKey(apiKey: String): UserEntity?
 
-    @Query("""
+    @Query(
+        """
         UPDATE UserEntity u SET u.authorities = ?2
         WHERE u.id = ?1
-    """)
+    """
+    )
     fun updateById(userId: UUID, authorities: List<String>): UserEntity?
 }

@@ -1,9 +1,9 @@
 package com.template.controller.interfaces
 
 import com.template.config.SecuritySchemes
-import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.config.security.apikey.ApiKeyEntry
 import com.template.config.security.user.CurrentUser
+import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement

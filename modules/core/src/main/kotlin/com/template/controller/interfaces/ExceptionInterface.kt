@@ -5,12 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import jakarta.validation.ConstraintViolationException
 import org.springframework.http.MediaType
-import org.springframework.http.ProblemDetail
-import org.springframework.http.converter.HttpMessageNotReadableException
-import org.springframework.security.access.AccessDeniedException
-import org.springframework.web.bind.MethodArgumentNotValidException
 
 private const val mediaType: String = MediaType.APPLICATION_JSON_VALUE
 

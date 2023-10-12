@@ -1,10 +1,10 @@
 package com.template.controller
 
+import com.template.config.security.apikey.ApiKeyService
+import com.template.config.security.user.SecureUserService
+import com.template.config.security.user.UserAuthority
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
-import com.template.config.security.apikey.ApiKeyService
-import com.template.config.security.user.UserAuthority
-import com.template.config.security.user.SecureUserService
 import com.template.domain.UserService
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity

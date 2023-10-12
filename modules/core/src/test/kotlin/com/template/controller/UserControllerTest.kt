@@ -1,10 +1,10 @@
 package com.template.controller
 
+import com.template.config.security.user.SecureUserService
+import com.template.config.security.user.UserAuthority
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import com.template.controller.objects.PRINCIPAL_NAME
 import com.template.controller.objects.user
-import com.template.config.security.user.UserAuthority
-import com.template.config.security.user.SecureUserService
 import com.template.domain.UserService
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
