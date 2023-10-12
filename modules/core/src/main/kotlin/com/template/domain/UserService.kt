@@ -10,26 +10,24 @@ import com.template.persistence.ApiKeyRepository
 import com.template.persistence.UserRepository
 import com.template.persistence.model.ApiKeyEntity
 import com.template.persistence.model.UserEntity
-import jakarta.transaction.Transactional
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class UserService(
     private val userRepository: UserRepository,
     private val apiKeyRepository: ApiKeyRepository,
 ) : SecureUserService {
 
-    @Transactional
     override fun search(query: String): List<User> =
         userRepository.search(query).map(UserEntity::toModel)
 
-    @Transactional
     override fun findById(userId: UUID): User? =
         userRepository.findById(userId).getOrNull()?.toModel()
 
-    @Transactional
     override fun findByApiKey(apiKey: String): User? =
         userRepository.findByApiKey(apiKey)?.toModel()
 
