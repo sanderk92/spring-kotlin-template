@@ -26,7 +26,8 @@ class JwtRoleExtractor {
 
         return JwtAuthenticationConverter().also { converter ->
             converter.setJwtGrantedAuthoritiesConverter { jwt ->
-                tryExtractRoles(jwt, claimStructure)
+                runCatching { extractRoles(jwt, claimStructure) }
+                    .getOrDefault(emptyList())
                     .flatMap { jwtProperties.roleMappings[it] ?: emptyList() }
                     .plus(jwtProperties.roleDefaults)
                     .distinct()
@@ -34,13 +35,6 @@ class JwtRoleExtractor {
             }
         }
     }
-
-    private fun tryExtractRoles(jwt: Jwt, claimStructure: List<String>): List<String> =
-        try {
-            extractRoles(jwt, claimStructure)
-        } catch (e: Exception) {
-            emptyList()
-        }
 
     private fun extractRoles(jwt: Jwt, claimStructure: List<String>): List<String> {
         var map: Map<*, *> = jwt.claims
