@@ -5,6 +5,7 @@ import com.template.controller.objects.*
 import com.template.config.security.apikey.ApiKeyService
 import com.template.config.security.user.UserAuthority
 import com.template.config.security.user.SecureUserService
+import com.template.domain.UserService
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import com.template.util.asJson
@@ -44,7 +45,7 @@ class ApiKeyControllerTest {
         fun apiKeyService() = mockk<ApiKeyService>()
 
         @Bean
-        fun userService() = mockk<SecureUserService>()
+        fun userService() = mockk<UserService>()
     }
 
     @Autowired
@@ -59,7 +60,7 @@ class ApiKeyControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can retrieve api keys`() {
-        every { secureUserService.findById(secureUser.id) } returns secureUser
+        every { secureUserService.findById(user.id) } returns user
 
         mvc.get(ENDPOINT) {
         }.andExpect {
@@ -110,7 +111,7 @@ class ApiKeyControllerTest {
         }
         verify { apiKeyService.create(apiKeyRequest) }
         verify { apiKeyService.hash(unHashedApiKeyEntry) }
-        verify { secureUserService.addApiKey(secureUser.id, hashedApiKeyEntry) }
+        verify { secureUserService.addApiKey(user.id, hashedApiKeyEntry) }
     }
 
     @Test
@@ -134,7 +135,7 @@ class ApiKeyControllerTest {
             status { isOk() }
         }
 
-        verify { secureUserService.deleteApiKey(secureUser.id, apiKey.id) }
+        verify { secureUserService.deleteApiKey(user.id, apiKey.id) }
     }
 
     @Test

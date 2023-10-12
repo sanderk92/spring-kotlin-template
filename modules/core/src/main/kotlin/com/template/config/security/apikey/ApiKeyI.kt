@@ -2,7 +2,7 @@ package com.template.config.security.apikey
 
 import java.util.*
 
-interface ApiKey {
+interface ApiKeyI {
     val id: UUID
     val key: String
     val name: String

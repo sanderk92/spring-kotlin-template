@@ -1,10 +1,9 @@
 package com.template.controller
 
-import com.template.config.security.apikey.ApiKey
+import com.template.config.security.apikey.ApiKeyI
 import com.template.config.security.apikey.ApiKeyEntry
 import com.template.config.security.apikey.ApiKeyService
 import com.template.config.security.user.CurrentUser
-import com.template.config.security.user.SecureUserService
 import com.template.controller.interfaces.ApiKeyRequest
 import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyView
@@ -23,7 +22,7 @@ class ApiKeyController(
     override fun getApiKeys(currentUser: CurrentUser): ResponseEntity<List<ApiKeyView>> =
         userService.findById(currentUser.id)
             ?.apiKeys
-            ?.map(ApiKey::asView)
+            ?.map(ApiKeyI::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.status(NOT_FOUND).build()
 
@@ -41,7 +40,7 @@ class ApiKeyController(
             .let { ResponseEntity.ok().build() }
 }
 
-private fun ApiKey.asView() = ApiKeyView(
+private fun ApiKeyI.asView() = ApiKeyView(
     id = id,
     name = name,
     read = read,

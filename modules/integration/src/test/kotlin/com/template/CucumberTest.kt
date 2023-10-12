@@ -32,6 +32,12 @@ class CucumberTest {
             registry.add("OIDC_SERVER_CLIENT_ID") { "test" }
             registry.add("OIDC_SERVER_CLIENT_SECRET") { "test" }
             registry.add("OIDC_SWAGGER_CLIENT_ID") { "test" }
+
+            registry.add("DATABASE_URL") { "jdbc:h2:mem:testdb" }
+            registry.add("DATABASE_DRIVER") { "org.h2.Driver" }
+            registry.add("DATABASE_DIALECT") { "org.hibernate.dialect.H2Dialect" }
+            registry.add("DATABASE_USERNAME") { "username" }
+            registry.add("DATABASE_PASSWORD") { "username" }
         }
     }
 }

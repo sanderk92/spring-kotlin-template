@@ -4,7 +4,6 @@ import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.junit.jupiter.api.fail
 import org.openapitools.client.apis.KeysApi
-import org.openapitools.client.models.ApiKeyCreateCommand
 import org.openapitools.client.models.ApiKeyRequest
 import org.openapitools.client.models.ApiKeyView
 

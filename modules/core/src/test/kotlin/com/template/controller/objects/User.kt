@@ -1,11 +1,11 @@
 package com.template.controller.objects
 
-import com.template.controller.interfaces.ApiKeyRequest
-import com.template.config.security.apikey.ApiKey
 import com.template.config.security.apikey.HashedApiKeyEntry
 import com.template.config.security.apikey.UnHashedApiKeyEntry
-import com.template.config.security.user.SecureUser
 import com.template.config.security.user.UserAuthority.*
+import com.template.controller.interfaces.ApiKeyRequest
+import com.template.domain.model.ApiKey
+import com.template.domain.model.User
 import java.util.*
 
 const val PRINCIPAL_NAME = "ef2db5bb-b7a0-4ff3-99dc-a7d95dc1e84c"
@@ -33,21 +33,21 @@ val hashedApiKeyEntry = HashedApiKeyEntry(
     delete = true,
 )
 
-val apiKey = object : ApiKey {
-    override val id = UUID.randomUUID()
-    override val key = "key"
-    override val name = "name"
-    override val read = true
-    override val write = true
-    override val delete = true
-}
+val apiKey = ApiKey(
+    id = UUID.randomUUID(),
+    key = "key",
+    name = "name",
+    read = true,
+    write = true,
+    delete = true,
+)
 
-val secureUser = object : SecureUser {
-    override val id = UUID.fromString(PRINCIPAL_NAME)
-    override val email = "email"
-    override val username = "username"
-    override val firstName = "firstName"
-    override val lastName = "lastName"
-    override val apiKeys = listOf(apiKey)
-    override val authorities = listOf(READ, WRITE, DELETE, ADMIN)
-}
+val user = User(
+    id = UUID.fromString(PRINCIPAL_NAME),
+    email = "email",
+    username = "username",
+    firstName = "firstName",
+    lastName = "lastName",
+    apiKeys = listOf(apiKey),
+    authorities = listOf(READ, WRITE, DELETE, ADMIN),
+)

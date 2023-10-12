@@ -37,7 +37,7 @@ class ApiKeyAuthenticationFilter(
         chain.doFilter(request, response)
     }
 
-    private fun ApiKey.hasAuthority(authority: UserAuthority) = when (authority) {
+    private fun ApiKeyI.hasAuthority(authority: UserAuthority) = when (authority) {
         UserAuthority.READ -> this.read
         UserAuthority.WRITE -> this.write
         UserAuthority.DELETE -> this.delete

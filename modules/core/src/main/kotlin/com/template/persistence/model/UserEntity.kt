@@ -1,24 +1,31 @@
 package com.template.persistence.model
 
-import com.template.config.security.apikey.ApiKey
-import com.template.config.security.user.UserAuthority
+import jakarta.persistence.*
 import java.util.*
 
-data class UserEntity(
+@Entity
+@Table(name = "users")
+class UserEntity(
+    @Id
     val id: UUID,
-    val email: String,
-    val username: String,
-    val firstName: String,
-    val lastName: String,
-    val apiKeys: List<ApiKey>,
-    val authorities: List<UserAuthority>
-)
 
-data class ApiKeyEntity(
-    val id: UUID,
-    val key: String,
-    val name: String,
-    val read: Boolean,
-    val write: Boolean,
-    val delete: Boolean
+    @Column(name = "email", nullable = false, unique = true)
+    val email: String,
+
+    @Column(name = "username", nullable = false, unique = true)
+    val username: String,
+
+    @Column(name = "firstname", nullable = false)
+    val firstName: String,
+
+    @Column(name = "lastname", nullable = false)
+    val lastName: String,
+
+    @Column(name = "api-keys", nullable = false)
+    @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
+    val apiKeys: List<ApiKeyEntity>,
+
+    @ElementCollection
+    @Column(name = "authorities", nullable = false)
+    val authorities: List<String>
 )

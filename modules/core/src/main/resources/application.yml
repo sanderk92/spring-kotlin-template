@@ -11,6 +11,14 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
 
 spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driverClassName: ${DATABASE_DRIVER}
+  jpa:
+    database-platform: ${DATABASE_DIALECT}
+    show-sql: true
   security:
     oauth2:
       resourceserver:
@@ -19,14 +27,15 @@ spring:
         opaquetoken:
           client-id: ${OIDC_SERVER_CLIENT_ID}
           client-secret: ${OIDC_SERVER_CLIENT_SECRET}
-    token:
-      role-defaults: [ 'READ', 'WRITE', 'DELETE' ]
-      role-mappings: {
-        admin: [ 'ADMIN' ]
-      }
-      claims:
-        email: "email"
-        username: "preferred_username"
-        first-name: "given_name"
-        last-name: "family_name"
-        authorities: "realm_access.roles"
+
+token:
+  role-defaults: [ 'READ', 'WRITE', 'DELETE' ]
+  role-mappings: {
+    admin: [ 'ADMIN' ]
+  }
+  claims:
+    email: "email"
+    username: "preferred_username"
+    first-name: "given_name"
+    last-name: "family_name"
+    authorities: "realm_access.roles"

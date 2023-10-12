@@ -2,11 +2,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
+    kotlin("plugin.jpa") version "1.5.21"
+    kotlin("plugin.allopen") version "1.5.21"
+    kotlin("plugin.noarg") version "1.9.10"
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.openapi.generator") version "7.0.1"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
 }
 
 repositories {

@@ -39,7 +39,7 @@ class JwtUserStorageFilter(
     }
 
     private fun createUser(authentication: JwtAuthenticationToken) =
-        secureUserService.create(
+        secureUserService.save(
             SecureUserEntry(
                 id = extractId(authentication),
                 email = extractEmail(authentication),

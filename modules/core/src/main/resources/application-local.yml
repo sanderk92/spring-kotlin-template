@@ -1,5 +1,11 @@
+DATABASE_URL: jdbc:h2:mem:testdb
+DATABASE_DRIVER: org.h2.Driver
+DATABASE_DIALECT: org.hibernate.dialect.H2Dialect
+DATABASE_USERNAME: username
+DATABASE_PASSWORD: password
+
 OIDC_PROVIDER_CONFIG_URL: http://localhost:8081/auth/realms/master/.well-known/openid-configuration
 OIDC_PROVIDER_JWK_URL: http://localhost:8081/auth/realms/master/protocol/openid-connect/certs
 OIDC_SERVER_CLIENT_ID: backend
-OIDC_SERVER_CLIENT_SECRET: APCtpS72ZgKV0HcDH06Pjp8MOhf9MTis
+OIDC_SERVER_CLIENT_SECRET: ldYHA05wnh1TB7zZWU9VyruRmahOMkPW
 OIDC_SWAGGER_CLIENT_ID: swagger
