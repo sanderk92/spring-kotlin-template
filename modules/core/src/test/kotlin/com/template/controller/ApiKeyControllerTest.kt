@@ -1,6 +1,6 @@
 package com.template.controller
 
-import com.template.config.security.apikey.ApiKeyService
+import com.template.config.security.apikey.SecureApiKeyService
 import com.template.config.security.user.SecureUserService
 import com.template.config.security.user.UserAuthority
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
@@ -42,7 +42,7 @@ class ApiKeyControllerTest {
     class TestConfig {
 
         @Bean
-        fun apiKeyService() = mockk<ApiKeyService>()
+        fun apiKeyService() = mockk<SecureApiKeyService>()
 
         @Bean
         fun userService() = mockk<UserService>()
@@ -52,7 +52,7 @@ class ApiKeyControllerTest {
     private lateinit var mvc: MockMvc
 
     @Autowired
-    private lateinit var apiKeyService: ApiKeyService
+    private lateinit var apiKeyService: SecureApiKeyService
 
     @Autowired
     private lateinit var secureUserService: SecureUserService

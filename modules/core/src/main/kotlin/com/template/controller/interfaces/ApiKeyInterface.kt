@@ -1,7 +1,7 @@
 package com.template.controller.interfaces
 
 import com.template.config.SecuritySchemes
-import com.template.config.security.apikey.ApiKeyEntry
+import com.template.config.security.apikey.SecureApiKeyEntry
 import com.template.config.security.user.CurrentUser
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import io.swagger.v3.oas.annotations.Operation
@@ -42,7 +42,7 @@ interface ApiKeyInterface {
         @Parameter(hidden = true) currentUser: CurrentUser,
         @Parameter(description = "The api key to create") @Valid @RequestBody
         request: ApiKeyRequest,
-    ): ResponseEntity<ApiKeyEntry>
+    ): ResponseEntity<SecureApiKeyEntry>
 
     @DeleteMapping("/{id}")
     @Operation(

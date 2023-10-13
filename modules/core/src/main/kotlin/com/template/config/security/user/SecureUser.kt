@@ -1,6 +1,6 @@
 package com.template.config.security.user
 
-import com.template.config.security.apikey.ApiKeyI
+import com.template.config.security.apikey.SecureApiKey
 import java.util.*
 
 interface SecureUser {
@@ -10,7 +10,7 @@ interface SecureUser {
     val firstName: String
     val lastName: String
     val authorities: List<UserAuthority>
-    val apiKeys: List<ApiKeyI>
+    val apiKeys: List<SecureApiKey>
 }
 
 data class SecureUserEntry(

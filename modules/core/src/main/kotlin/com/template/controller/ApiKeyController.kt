@@ -1,8 +1,8 @@
 package com.template.controller
 
-import com.template.config.security.apikey.ApiKeyEntry
-import com.template.config.security.apikey.ApiKeyI
-import com.template.config.security.apikey.ApiKeyService
+import com.template.config.security.apikey.SecureApiKeyEntry
+import com.template.config.security.apikey.SecureApiKey
+import com.template.config.security.apikey.SecureApiKeyService
 import com.template.config.security.user.CurrentUser
 import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyRequest
@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ApiKeyController(
-    private val apiKeyService: ApiKeyService,
+    private val apiKeyService: SecureApiKeyService,
     private val userService: UserService,
 ) : ApiKeyInterface {
 
     override fun getApiKeys(currentUser: CurrentUser): ResponseEntity<List<ApiKeyView>> =
         userService.findById(currentUser.id)
             ?.apiKeys
-            ?.map(ApiKeyI::asView)
+            ?.map(SecureApiKey::asView)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.status(NOT_FOUND).build()
 
-    override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyEntry> {
+    override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<SecureApiKeyEntry> {
         val unHashedApiKey = apiKeyService.create(request)
         val hashedApiKey = apiKeyService.hash(unHashedApiKey)
 
@@ -40,7 +40,7 @@ class ApiKeyController(
             .let { ResponseEntity.ok().build() }
 }
 
-private fun ApiKeyI.asView() = ApiKeyView(
+private fun SecureApiKey.asView() = ApiKeyView(
     id = id,
     name = name,
     read = read,

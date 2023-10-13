@@ -2,7 +2,7 @@ package com.template.config.security.apikey
 
 import java.util.*
 
-interface ApiKeyI {
+interface SecureApiKey {
     val id: UUID
     val key: String
     val name: String
@@ -11,7 +11,7 @@ interface ApiKeyI {
     val delete: Boolean
 }
 
-sealed interface ApiKeyEntry {
+sealed interface SecureApiKeyEntry {
     val key: String
     val name: String
     val read: Boolean
@@ -25,7 +25,7 @@ data class HashedApiKeyEntry(
     override val read: Boolean,
     override val write: Boolean,
     override val delete: Boolean,
-) : ApiKeyEntry
+) : SecureApiKeyEntry
 
 data class UnHashedApiKeyEntry(
     override val key: String,
@@ -33,4 +33,4 @@ data class UnHashedApiKeyEntry(
     override val read: Boolean,
     override val write: Boolean,
     override val delete: Boolean,
-) : ApiKeyEntry
+) : SecureApiKeyEntry

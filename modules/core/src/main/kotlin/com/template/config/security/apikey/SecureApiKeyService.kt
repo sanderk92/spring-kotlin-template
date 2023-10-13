@@ -5,7 +5,7 @@ import java.security.SecureRandom
 import org.springframework.stereotype.Service
 
 @Service
-class ApiKeyService(private val hashGenerator: HashGenerator) {
+class SecureApiKeyService(private val hashGenerator: HashGenerator) {
     private val apiKeyLength = 50
     private val secureRandom = SecureRandom()
     private val characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
