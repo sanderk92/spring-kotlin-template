@@ -1,8 +1,7 @@
 package com.template.domain.model
 
-import com.template.config.security.apikey.SecureApiKey
+import com.template.config.security.user.Authority
 import com.template.config.security.user.SecureUser
-import com.template.config.security.user.UserAuthority
 import java.util.*
 
 data class User(
@@ -11,6 +10,6 @@ data class User(
     override val username: String,
     override val firstName: String,
     override val lastName: String,
-    override val apiKeys: List<SecureApiKey>,
-    override val authorities: List<UserAuthority>
+    override val apiKeys: List<ApiKey>,
+    override val authorities: List<Authority>
 ) : SecureUser

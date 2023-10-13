@@ -1,13 +1,13 @@
 package com.template.config.security.jwt
 
-import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.Authority
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("token")
 data class JwtProperties(
     val claims: JwtClaims,
-    val roleDefaults: List<UserAuthority>,
-    val roleMappings: Map<String, List<UserAuthority>>
+    val roleDefaults: List<Authority>,
+    val roleMappings: Map<String, List<Authority>>
 )
 
 @ConfigurationProperties("token.claims")

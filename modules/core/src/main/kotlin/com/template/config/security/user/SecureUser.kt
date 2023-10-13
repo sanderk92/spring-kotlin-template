@@ -9,7 +9,7 @@ interface SecureUser {
     val username: String
     val firstName: String
     val lastName: String
-    val authorities: List<UserAuthority>
+    val authorities: List<Authority>
     val apiKeys: List<SecureApiKey>
 }
 
@@ -19,5 +19,5 @@ data class SecureUserEntry(
     val username: String,
     val firstName: String,
     val lastName: String,
-    val authorities: List<UserAuthority>,
+    val authorities: List<Authority>,
 )

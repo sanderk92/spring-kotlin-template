@@ -1,10 +1,9 @@
 package com.template.controller.objects
 
-import com.template.config.security.apikey.HashedApiKeyEntry
-import com.template.config.security.apikey.UnHashedApiKeyEntry
-import com.template.config.security.user.UserAuthority.*
+import com.template.config.security.user.Authority.*
 import com.template.controller.interfaces.ApiKeyRequest
 import com.template.domain.model.ApiKey
+import com.template.domain.model.ApiKeyCreated
 import com.template.domain.model.User
 import java.util.*
 
@@ -17,29 +16,19 @@ val apiKeyRequest = ApiKeyRequest(
     delete = true,
 )
 
-val unHashedApiKeyEntry = UnHashedApiKeyEntry(
-    key = "unHashedKey",
-    name = "keyName",
-    read = true,
-    write = true,
-    delete = true,
+val apiKeyCreated = ApiKeyCreated(
+    id = UUID.randomUUID(),
+    name = "name",
+    unHashedKey = "unHashedKey",
+    authorities = listOf(READ, WRITE, DELETE)
 )
 
-val hashedApiKeyEntry = HashedApiKeyEntry(
-    key = "hashedKey",
-    name = "keyName",
-    read = true,
-    write = true,
-    delete = true,
-)
 
 val apiKey = ApiKey(
     id = UUID.randomUUID(),
-    key = "key",
     name = "name",
-    read = true,
-    write = true,
-    delete = true,
+    hashedKey = "hashedKey",
+    authorities = listOf(READ, WRITE, DELETE)
 )
 
 val user = User(

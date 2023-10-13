@@ -1,7 +1,7 @@
 package com.template.controller
 
 import com.template.config.security.user.SecureUserService
-import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.Authority
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import com.template.controller.objects.PRINCIPAL_NAME
 import com.template.controller.objects.user
@@ -46,7 +46,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [Authority.READ.role])
     fun `Authorized user can search users`() {
         every { secureUserService.search("some-query") } returns listOf(user)
 
@@ -83,7 +83,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [Authority.READ.role])
     fun `Authorized user can retrieve user information`() {
         every { secureUserService.findById(user.id) } returns user
 
@@ -95,7 +95,7 @@ class UserControllerTest {
             jsonPath("$.username", equalTo(user.username))
             jsonPath("$.firstName", equalTo(user.firstName))
             jsonPath("$.lastName", equalTo(user.lastName))
-            jsonPath("$.authorities", hasItems(UserAuthority.READ.toString()))
+            jsonPath("$.authorities", hasItems(Authority.READ.toString()))
         }
     }
 

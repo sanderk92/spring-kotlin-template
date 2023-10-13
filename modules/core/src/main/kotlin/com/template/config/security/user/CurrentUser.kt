@@ -4,5 +4,5 @@ import java.util.*
 
 class CurrentUser private constructor(
     val id: UUID,
-    val authorities: List<UserAuthority>,
+    val authorities: List<Authority>,
 )

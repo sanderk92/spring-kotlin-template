@@ -1,7 +1,6 @@
 package com.template.config.security.apikey
 
 import com.template.config.security.user.SecureUserService
-import com.template.config.security.user.UserAuthority
 import com.template.controller.interfaces.ApiKeyInterface
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -26,21 +25,12 @@ class ApiKeyAuthenticationFilter(
             val hashedApiKey = hashGenerator.hash(apiKey)
             secureUserService.findByApiKey(hashedApiKey)?.also { user ->
 
-                val key = user.apiKeys.first { it.key == hashedApiKey }
-                val authorities = user.authorities.filter { key.hasAuthority(it) }
-
+                val key = user.apiKeys.first { it.hashedKey == hashedApiKey }
                 val context = SecurityContextHolder.createEmptyContext()
-                context.authentication = ApiKeyAuthentication(user.id.toString(), hashedApiKey, authorities)
+                context.authentication = ApiKeyAuthentication(user.id.toString(), hashedApiKey, key.authorities)
                 SecurityContextHolder.setContext(context)
             }
         }
         chain.doFilter(request, response)
-    }
-
-    private fun SecureApiKey.hasAuthority(authority: UserAuthority) = when (authority) {
-        UserAuthority.READ -> this.read
-        UserAuthority.WRITE -> this.write
-        UserAuthority.DELETE -> this.delete
-        UserAuthority.ADMIN -> false
     }
 }

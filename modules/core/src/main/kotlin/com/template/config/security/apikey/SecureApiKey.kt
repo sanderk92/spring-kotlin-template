@@ -1,36 +1,8 @@
 package com.template.config.security.apikey
 
-import java.util.*
+import com.template.config.security.user.Authority
 
 interface SecureApiKey {
-    val id: UUID
-    val key: String
-    val name: String
-    val read: Boolean
-    val write: Boolean
-    val delete: Boolean
+    val hashedKey: String
+    val authorities: List<Authority>
 }
-
-sealed interface SecureApiKeyEntry {
-    val key: String
-    val name: String
-    val read: Boolean
-    val write: Boolean
-    val delete: Boolean
-}
-
-data class HashedApiKeyEntry(
-    override val key: String,
-    override val name: String,
-    override val read: Boolean,
-    override val write: Boolean,
-    override val delete: Boolean,
-) : SecureApiKeyEntry
-
-data class UnHashedApiKeyEntry(
-    override val key: String,
-    override val name: String,
-    override val read: Boolean,
-    override val write: Boolean,
-    override val delete: Boolean,
-) : SecureApiKeyEntry

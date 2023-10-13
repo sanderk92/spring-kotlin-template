@@ -1,6 +1,6 @@
 package com.template.config.security.apikey
 
-import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.Authority
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.Transient
@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 class ApiKeyAuthentication(
     private val name: String,
     private val hashedKey: String,
-    private val authorities: List<UserAuthority>,
+    private val authorities: List<Authority>,
     private var isAuthenticated: Boolean = true,
 ) : Authentication {
 
@@ -40,7 +40,7 @@ class ApiKeyAuthentication(
 
     override fun getAuthorities(): List<GrantedAuthority> {
         return authorities
-            .map(UserAuthority::role)
+            .map(Authority::role)
             .map(::SimpleGrantedAuthority).toMutableList()
     }
 }

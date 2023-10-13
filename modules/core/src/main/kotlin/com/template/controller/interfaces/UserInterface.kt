@@ -2,7 +2,7 @@ package com.template.controller.interfaces
 
 import com.template.config.SecuritySchemes
 import com.template.config.security.user.CurrentUser
-import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.Authority
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 @RequestMapping(ENDPOINT)
-@Secured(UserAuthority.READ.role)
+@Secured(Authority.READ.role)
 @Tag(name = "User", description = "Retrieve information about the current user")
 interface UserInterface {
 

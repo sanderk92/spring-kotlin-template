@@ -3,7 +3,7 @@ package com.template.config.security.jwt
 import com.template.config.security.user.SecureUser
 import com.template.config.security.user.SecureUserEntry
 import com.template.config.security.user.SecureUserService
-import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.Authority
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -39,7 +39,7 @@ class JwtUserStorageFilter(
     }
 
     private fun createUser(authentication: JwtAuthenticationToken) =
-        secureUserService.save(
+        secureUserService.create(
             SecureUserEntry(
                 id = extractId(authentication),
                 email = extractEmail(authentication),
@@ -70,8 +70,8 @@ class JwtUserStorageFilter(
         authentication.tokenAttributes[claims.lastName]?.toString()
             ?: throw IllegalArgumentException("Missing required claim in JWT: '${claims.lastName}'")
 
-    private fun extractAuthorities(authentication: JwtAuthenticationToken): List<UserAuthority> =
+    private fun extractAuthorities(authentication: JwtAuthenticationToken): List<Authority> =
         authentication.authorities
             .map(GrantedAuthority::getAuthority)
-            .mapNotNull(UserAuthority.Companion::valueOfRole)
+            .mapNotNull(Authority.Companion::valueOfRole)
 }

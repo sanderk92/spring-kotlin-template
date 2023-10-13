@@ -7,8 +7,7 @@ import java.util.*
 @Entity
 @Table(name = "users")
 class UserEntity(
-    @Id
-    val id: UUID,
+    id: UUID,
 
     @Size(max = 256)
     @Column(name = "email", nullable = false, unique = true)
@@ -33,4 +32,4 @@ class UserEntity(
     @ElementCollection
     @Column(name = "authorities", nullable = false)
     val authorities: List<String>
-)
+) : BaseEntity(id)

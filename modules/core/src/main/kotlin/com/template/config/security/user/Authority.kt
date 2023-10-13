@@ -5,36 +5,36 @@ import org.springframework.context.ApplicationContextException
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 
-sealed interface UserAuthority {
+sealed interface Authority {
     fun role(): String
     override fun toString(): String
 
-    object READ : UserAuthority {
+    object READ : Authority {
         const val role = "ROLE_READ"
         override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 
-    object WRITE : UserAuthority {
+    object WRITE : Authority {
         const val role = "ROLE_WRITE"
         override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 
-    object DELETE : UserAuthority {
+    object DELETE : Authority {
         const val role = "ROLE_DELETE"
         override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 
-    object ADMIN : UserAuthority {
+    object ADMIN : Authority {
         const val role = "ROLE_ADMIN"
         override fun role() = role
         override fun toString(): String = this.javaClass.simpleName
     }
 
     companion object {
-        fun valueOf(string: String?): UserAuthority? = when (string) {
+        fun valueOf(string: String?): Authority? = when (string) {
             READ.toString() -> READ
             WRITE.toString() -> WRITE
             DELETE.toString() -> DELETE
@@ -42,7 +42,7 @@ sealed interface UserAuthority {
             else -> null
         }
 
-        fun valueOfRole(role: String?): UserAuthority? = when (role) {
+        fun valueOfRole(role: String?): Authority? = when (role) {
             READ.role -> READ
             WRITE.role -> WRITE
             DELETE.role -> DELETE
@@ -54,7 +54,7 @@ sealed interface UserAuthority {
 
 @Component
 @ConfigurationPropertiesBinding
-class UserAuthorityPropertyConverter : Converter<String, UserAuthority> {
-    override fun convert(source: String): UserAuthority? =
-        UserAuthority.valueOf(source) ?: throw ApplicationContextException("Invalid UserAuthority '$source'")
+class UserAuthorityPropertyConverter : Converter<String, Authority> {
+    override fun convert(source: String): Authority? =
+        Authority.valueOf(source) ?: throw ApplicationContextException("Invalid UserAuthority '$source'")
 }

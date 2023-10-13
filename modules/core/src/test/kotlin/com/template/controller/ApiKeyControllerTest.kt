@@ -1,17 +1,21 @@
 package com.template.controller
 
-import com.template.config.security.apikey.SecureApiKeyService
+import com.template.config.security.apikey.ApiKeyGenerator
 import com.template.config.security.user.SecureUserService
-import com.template.config.security.user.UserAuthority
+import com.template.config.security.user.Authority
+import com.template.config.security.user.Authority.*
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
+import com.template.domain.ApiKeyService
 import com.template.domain.UserService
+import com.template.domain.model.ApiKeyCreated
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import com.template.util.asJson
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import java.util.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,7 +46,7 @@ class ApiKeyControllerTest {
     class TestConfig {
 
         @Bean
-        fun apiKeyService() = mockk<SecureApiKeyService>()
+        fun apiKeyService() = mockk<ApiKeyService>()
 
         @Bean
         fun userService() = mockk<UserService>()
@@ -52,10 +56,10 @@ class ApiKeyControllerTest {
     private lateinit var mvc: MockMvc
 
     @Autowired
-    private lateinit var apiKeyService: SecureApiKeyService
+    private lateinit var apiKeyService: ApiKeyService
 
     @Autowired
-    private lateinit var secureUserService: SecureUserService
+    private lateinit var secureUserService: UserService
 
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
@@ -68,9 +72,7 @@ class ApiKeyControllerTest {
             jsonPath("$.size()", equalTo(1))
             jsonPath("$[0].id", equalTo(apiKey.id.toString()))
             jsonPath("$[0].name", equalTo(apiKey.name))
-            jsonPath("$[0].read", equalTo(apiKey.read))
-            jsonPath("$[0].write", equalTo(apiKey.write))
-            jsonPath("$[0].delete", equalTo(apiKey.delete))
+            jsonPath("$[0].authorities", equalTo(apiKey.authorities.map(Authority::toString)))
         }
     }
 
@@ -84,11 +86,9 @@ class ApiKeyControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [UserAuthority.READ.role])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ.role])
     fun `Authenticated user can create api keys`() {
-        every { apiKeyService.create(any()) } returns unHashedApiKeyEntry
-        every { apiKeyService.hash(any()) } returns hashedApiKeyEntry
-        every { secureUserService.addApiKey(any(), any()) } returns apiKey
+        every { apiKeyService.createApiKey(any(), any(), any()) } returns apiKeyCreated
 
         val payload = mapOf(
             "name" to apiKeyRequest.name,
@@ -103,15 +103,11 @@ class ApiKeyControllerTest {
             content = payload
         }.andExpect {
             status { isOk() }
-            jsonPath("$.key", equalTo(unHashedApiKeyEntry.key))
-            jsonPath("$.name", equalTo(unHashedApiKeyEntry.name))
-            jsonPath("$.read", equalTo(unHashedApiKeyEntry.read))
-            jsonPath("$.write", equalTo(unHashedApiKeyEntry.write))
-            jsonPath("$.delete", equalTo(unHashedApiKeyEntry.delete))
+            jsonPath("$.key", equalTo(apiKeyCreated.unHashedKey))
+            jsonPath("$.name", equalTo(apiKeyCreated.name))
+            jsonPath("$.authorities", equalTo(apiKeyCreated.authorities.map(Authority::toString)))
         }
-        verify { apiKeyService.create(apiKeyRequest) }
-        verify { apiKeyService.hash(unHashedApiKeyEntry) }
-        verify { secureUserService.addApiKey(user.id, hashedApiKeyEntry) }
+        verify { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
     }
 
     @Test
@@ -127,7 +123,7 @@ class ApiKeyControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can delete api keys`() {
-        every { secureUserService.deleteApiKey(any(), any()) } returns Unit
+        every { apiKeyService.deleteApiKey(any(), any()) } returns Unit
 
         mvc.delete("$ENDPOINT/${apiKey.id}") {
             with(csrf())
@@ -135,7 +131,7 @@ class ApiKeyControllerTest {
             status { isOk() }
         }
 
-        verify { secureUserService.deleteApiKey(user.id, apiKey.id) }
+        verify { apiKeyService.deleteApiKey(user.id, apiKey.id) }
     }
 
     @Test
