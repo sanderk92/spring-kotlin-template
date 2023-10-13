@@ -6,7 +6,7 @@ import java.util.*
 
 /**
  * This superclass allows us to use generated properties, while not having to deal with nullable fields.
- * It provides default values while not yet persisted, and contains actual values when persisted
+ * It provides default values while not yet persisted, and contains actual values once persisted
  */
 @MappedSuperclass
 abstract class BaseEntity(
