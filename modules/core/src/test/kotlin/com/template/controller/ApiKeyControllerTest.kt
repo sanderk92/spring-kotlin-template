@@ -2,10 +2,13 @@ package com.template.controller
 
 import com.template.config.security.user.Authority
 import com.template.config.security.user.Authority.*
+import com.template.config.security.user.READ_ROLE
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
+import com.template.mappers.ApiKeyMapperImpl
+import com.template.mappers.UserMapperImpl
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import com.template.util.asJson
@@ -47,6 +50,12 @@ class ApiKeyControllerTest {
 
         @Bean
         fun userService() = mockk<UserService>()
+
+        @Bean
+        fun apiKeyMapper() = ApiKeyMapperImpl()
+
+        @Bean
+        fun userMapper() = UserMapperImpl()
     }
 
     @Autowired
@@ -83,7 +92,7 @@ class ApiKeyControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ.role])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ_ROLE])
     fun `Authenticated user can create api keys`() {
         every { apiKeyService.createApiKey(any(), any(), any()) } returns apiKeyCreated
 

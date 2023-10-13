@@ -9,6 +9,7 @@ plugins {
     kotlin("plugin.jpa") version "1.5.21"
     kotlin("plugin.allopen") version "1.5.21"
     kotlin("plugin.noarg") version "1.9.10"
+    kotlin("kapt") version "1.9.10"
     id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
@@ -18,6 +19,15 @@ plugins {
 
 repositories {
     mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            // MapStruct generated sources
+            srcDir("$buildDir/generated/source/kapt/main")
+        }
+    }
 }
 
 dependencies {
@@ -36,8 +46,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-noarg")
 
-    // Database
+    // Other
     implementation("com.h2database:h2:2.2.224")
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

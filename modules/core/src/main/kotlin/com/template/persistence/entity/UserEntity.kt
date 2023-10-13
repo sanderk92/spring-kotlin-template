@@ -1,4 +1,4 @@
-package com.template.persistence.model
+package com.template.persistence.entity
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size

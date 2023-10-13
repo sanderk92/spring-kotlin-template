@@ -1,6 +1,6 @@
 package com.template.persistence
 
-import com.template.persistence.model.ApiKeyEntity
+import com.template.persistence.entity.ApiKeyEntity
 import java.util.UUID
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying

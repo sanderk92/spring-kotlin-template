@@ -29,7 +29,7 @@ interface ApiKeyInterface {
     )
     fun getApiKeys(
         @Parameter(hidden = true) currentUser: CurrentUser,
-    ): ResponseEntity<List<ApiKeyView>>
+    ): ResponseEntity<List<ApiKeyDto>>
 
     @PostMapping
     @Operation(
@@ -41,7 +41,7 @@ interface ApiKeyInterface {
         @Parameter(hidden = true) currentUser: CurrentUser,
         @Parameter(description = "The api key to create") @Valid @RequestBody
         request: ApiKeyRequest,
-    ): ResponseEntity<ApiKeyCreatedView>
+    ): ResponseEntity<ApiKeyCreatedDto>
 
     @DeleteMapping("/{id}")
     @Operation(
@@ -64,13 +64,13 @@ data class ApiKeyRequest(
     val delete: Boolean,
 )
 
-data class ApiKeyView(
+data class ApiKeyDto(
     val id: UUID,
     val name: String,
     val authorities: List<String>,
 )
 
-data class ApiKeyCreatedView(
+data class ApiKeyCreatedDto(
     val id: UUID,
     val key: String,
     val name: String,

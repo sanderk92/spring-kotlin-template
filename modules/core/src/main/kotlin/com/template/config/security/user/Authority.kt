@@ -1,37 +1,15 @@
 package com.template.config.security.user
 
-import org.springframework.boot.context.properties.ConfigurationPropertiesBinding
-import org.springframework.context.ApplicationContextException
-import org.springframework.core.convert.converter.Converter
-import org.springframework.stereotype.Component
+const val READ_ROLE = "ROLE_READ"
+const val WRITE_ROLE = "ROLE_WRITE"
+const val DELETE_ROLE = "ROLE_DELETE"
+const val ADMIN_ROLE = "ROLE_ADMIN"
 
-sealed interface Authority {
-    fun role(): String
-    override fun toString(): String
-
-    object READ : Authority {
-        const val role = "ROLE_READ"
-        override fun role() = role
-        override fun toString(): String = this.javaClass.simpleName
-    }
-
-    object WRITE : Authority {
-        const val role = "ROLE_WRITE"
-        override fun role() = role
-        override fun toString(): String = this.javaClass.simpleName
-    }
-
-    object DELETE : Authority {
-        const val role = "ROLE_DELETE"
-        override fun role() = role
-        override fun toString(): String = this.javaClass.simpleName
-    }
-
-    object ADMIN : Authority {
-        const val role = "ROLE_ADMIN"
-        override fun role() = role
-        override fun toString(): String = this.javaClass.simpleName
-    }
+enum class Authority(val role: String) {
+    READ(READ_ROLE),
+    WRITE(WRITE_ROLE),
+    DELETE(DELETE_ROLE),
+    ADMIN(ADMIN_ROLE);
 
     companion object {
         fun valueOf(string: String?): Authority? = when (string) {
@@ -50,11 +28,4 @@ sealed interface Authority {
             else -> null
         }
     }
-}
-
-@Component
-@ConfigurationPropertiesBinding
-class UserAuthorityPropertyConverter : Converter<String, Authority> {
-    override fun convert(source: String): Authority? =
-        Authority.valueOf(source) ?: throw ApplicationContextException("Invalid UserAuthority '$source'")
 }

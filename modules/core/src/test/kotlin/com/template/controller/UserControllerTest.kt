@@ -1,11 +1,14 @@
 package com.template.controller
 
 import com.template.config.security.user.Authority
+import com.template.config.security.user.READ_ROLE
 import com.template.config.security.user.SecureUserService
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import com.template.controller.objects.PRINCIPAL_NAME
 import com.template.controller.objects.user
 import com.template.domain.UserService
+import com.template.mappers.ApiKeyMapperImpl
+import com.template.mappers.UserMapperImpl
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import io.mockk.every
@@ -43,10 +46,16 @@ class UserControllerTest {
     class TestConfig {
         @Bean
         fun userService() = mockk<UserService>()
+
+        @Bean
+        fun apiKeyMapper() = ApiKeyMapperImpl()
+
+        @Bean
+        fun userMapper() = UserMapperImpl()
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [Authority.READ.role])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ_ROLE])
     fun `Authorized user can search users`() {
         every { secureUserService.search("some-query") } returns listOf(user)
 
@@ -83,7 +92,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [Authority.READ.role])
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ_ROLE])
     fun `Authorized user can retrieve user information`() {
         every { secureUserService.findById(user.id) } returns user
 

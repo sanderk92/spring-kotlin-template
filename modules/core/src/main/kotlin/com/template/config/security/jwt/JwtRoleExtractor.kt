@@ -31,7 +31,7 @@ class JwtRoleExtractor {
                     .flatMap { jwtProperties.roleMappings[it] ?: emptyList() }
                     .plus(jwtProperties.roleDefaults)
                     .distinct()
-                    .map { SimpleGrantedAuthority(it.role()) }
+                    .map { SimpleGrantedAuthority(it.role) }
             }
         }
     }

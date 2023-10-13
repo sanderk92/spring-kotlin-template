@@ -1,6 +1,6 @@
 package com.template.persistence
 
-import com.template.persistence.model.UserEntity
+import com.template.persistence.entity.UserEntity
 import java.util.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -21,7 +21,7 @@ interface UserRepository : JpaRepository<UserEntity, UUID> {
     @Query(
         """
         SELECT u FROM UserEntity u JOIN ApiKeyEntity a ON u.id = a.owner.id
-        WHERE a.key = ?1
+        WHERE a.hashedKey = ?1
     """,
     )
     fun findByApiKey(key: String): UserEntity?

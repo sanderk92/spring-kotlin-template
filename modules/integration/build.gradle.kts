@@ -19,6 +19,7 @@ repositories {
 sourceSets {
     main {
         java {
+            // OpenApi generated sources
             srcDir("$buildDir/generated/src/main/kotlin")
         }
     }

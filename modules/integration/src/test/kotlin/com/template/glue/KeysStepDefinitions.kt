@@ -4,8 +4,8 @@ import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.junit.jupiter.api.fail
 import org.openapitools.client.apis.KeysApi
+import org.openapitools.client.models.ApiKeyDto
 import org.openapitools.client.models.ApiKeyRequest
-import org.openapitools.client.models.ApiKeyView
 
 class KeysStepDefinitions(private val keysApi : KeysApi) {
 
@@ -31,6 +31,6 @@ class KeysStepDefinitions(private val keysApi : KeysApi) {
         findApiKey(name) ?: fail("api key with name '$name' did not exist")
     }
 
-    private fun findApiKey(name: String): ApiKeyView? =
+    private fun findApiKey(name: String): ApiKeyDto? =
         keysApi.getApiKeys().block()!!.firstOrNull { it.name == name }
 }
