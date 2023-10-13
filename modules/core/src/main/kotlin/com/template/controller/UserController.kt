@@ -1,7 +1,7 @@
 package com.template.controller
 
-import com.template.config.security.user.CurrentUser
 import com.template.config.security.user.Authority
+import com.template.config.security.user.CurrentUser
 import com.template.controller.interfaces.CurrentUserView
 import com.template.controller.interfaces.UserInterface
 import com.template.controller.interfaces.UserView

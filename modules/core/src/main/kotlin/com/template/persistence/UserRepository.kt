@@ -1,11 +1,11 @@
 package com.template.persistence
 
 import com.template.persistence.model.UserEntity
+import java.util.*
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import java.util.*
-import org.springframework.data.jpa.repository.Modifying
 
 @Repository
 interface UserRepository : JpaRepository<UserEntity, UUID> {

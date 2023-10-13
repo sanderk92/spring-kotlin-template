@@ -11,10 +11,11 @@ import org.springframework.stereotype.Repository
 interface ApiKeyRepository : JpaRepository<ApiKeyEntity, UUID> {
 
     @Modifying
-    @Query("""
+    @Query(
+        """
         DELETE FROM ApiKeyEntity a
         WHERE a.owner.id = ?1 AND a.id = ?2
-     """)
+     """
+    )
     fun delete(userId: UUID, apikeyId: UUID)
-
 }

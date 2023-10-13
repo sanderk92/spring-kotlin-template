@@ -1,7 +1,7 @@
 package com.template.controller
 
-import com.template.config.security.user.SecureUserService
 import com.template.config.security.user.Authority
+import com.template.config.security.user.SecureUserService
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import com.template.controller.objects.PRINCIPAL_NAME
 import com.template.controller.objects.user

@@ -23,7 +23,6 @@ val apiKeyCreated = ApiKeyCreated(
     authorities = listOf(READ, WRITE, DELETE)
 )
 
-
 val apiKey = ApiKey(
     id = UUID.randomUUID(),
     name = "name",

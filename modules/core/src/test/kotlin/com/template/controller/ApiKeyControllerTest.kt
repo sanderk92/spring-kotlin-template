@@ -1,14 +1,11 @@
 package com.template.controller
 
-import com.template.config.security.apikey.ApiKeyGenerator
-import com.template.config.security.user.SecureUserService
 import com.template.config.security.user.Authority
 import com.template.config.security.user.Authority.*
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
-import com.template.domain.model.ApiKeyCreated
 import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import com.template.util.asJson

@@ -1,7 +1,7 @@
 package com.template.config.security.apikey
 
-import org.springframework.stereotype.Service
 import java.security.SecureRandom
+import org.springframework.stereotype.Service
 
 interface ApiKeyGenerator {
     fun generate(): String
