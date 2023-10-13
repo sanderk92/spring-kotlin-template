@@ -2,7 +2,6 @@ package com.template.controller
 
 import com.template.config.security.user.Authority
 import com.template.config.security.user.Authority.*
-import com.template.config.security.user.READ_ROLE
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
 import com.template.domain.ApiKeyService
@@ -92,7 +91,7 @@ class ApiKeyControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ_ROLE])
+    @WithMockUser(username = PRINCIPAL_NAME)
     fun `Authenticated user can create api keys`() {
         every { apiKeyService.createApiKey(any(), any(), any()) } returns apiKeyCreated
 
