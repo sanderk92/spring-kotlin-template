@@ -27,7 +27,7 @@ class ApiKeyService(
         val hashedApiKey = hashGenerator.hash(unHashedApiKey)
 
         return userRepository.findById(userId).getOrNull()
-            ?.let { user -> ApiKeyEntity(hashedApiKey, name, user, authorities.map(Authority::toString)) }
+            ?.let { user -> ApiKeyEntity(hashedApiKey, name, user, authorities) }
             ?.let(apiKeyRepository::save)
             ?.let { entity -> apiKeyMapper.toApiKeyCreated(entity, unHashedApiKey) }
     }

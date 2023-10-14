@@ -1,5 +1,6 @@
 package com.template.persistence.entity
 
+import com.template.config.security.user.Authority
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 
@@ -19,6 +20,7 @@ class ApiKeyEntity(
     val owner: UserEntity?,
 
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     @Column(name = "authorities", nullable = false)
-    val authorities: List<String>
+    val authorities: List<Authority>
 ) : BaseEntity()

@@ -40,7 +40,7 @@ class UserService(
 
     @Transactional
     override fun update(userId: UUID, authorities: List<Authority>): User? =
-        userRepository.updateById(userId, authorities.map(Authority::toString))
+        userRepository.updateById(userId, authorities)
             ?.let(userMapper::toUser)
 }
 
@@ -50,6 +50,6 @@ private fun createEntity(user: SecureUserEntry) = UserEntity(
     username = user.username,
     firstName = user.firstName,
     lastName = user.lastName,
-    authorities = user.authorities.map(Authority::toString),
+    authorities = user.authorities,
     apiKeys = listOf(),
 )

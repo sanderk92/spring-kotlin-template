@@ -12,20 +12,7 @@ enum class Authority(val role: String) {
     ADMIN(ADMIN_ROLE);
 
     companion object {
-        fun valueOf(string: String?): Authority? = when (string) {
-            READ.toString() -> READ
-            WRITE.toString() -> WRITE
-            DELETE.toString() -> DELETE
-            ADMIN.toString() -> ADMIN
-            else -> null
-        }
-
-        fun valueOfRole(role: String?): Authority? = when (role) {
-            READ.role -> READ
-            WRITE.role -> WRITE
-            DELETE.role -> DELETE
-            ADMIN.role -> ADMIN
-            else -> null
-        }
+        private val lookup: Map<String, Authority> = Authority.values().associateBy(Authority::role)
+        fun valueOfRole(role: String?): Authority? = role?.let(lookup::get)
     }
 }

@@ -1,5 +1,6 @@
 package com.template.persistence
 
+import com.template.config.security.user.Authority
 import com.template.persistence.entity.UserEntity
 import java.util.*
 import org.springframework.data.jpa.repository.JpaRepository
@@ -33,5 +34,5 @@ interface UserRepository : JpaRepository<UserEntity, UUID> {
         WHERE u.id = ?1
     """,
     )
-    fun updateById(userId: UUID, authorities: List<String>): UserEntity?
+    fun updateById(userId: UUID, authorities: List<Authority>): UserEntity?
 }
