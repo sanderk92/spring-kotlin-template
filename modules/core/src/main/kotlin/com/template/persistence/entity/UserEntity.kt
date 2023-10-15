@@ -7,8 +7,9 @@ import java.util.*
 
 @Entity
 @Table(name = "users")
-class UserEntity(
-    id: UUID,
+data class UserEntity(
+
+    override val id: UUID,
 
     @Size(max = 256)
     @Column(name = "email", nullable = false, unique = true)
@@ -31,7 +32,9 @@ class UserEntity(
     val apiKeys: List<ApiKeyEntity>,
 
     @ElementCollection
+    @CollectionTable(name="user-authorities")
     @Enumerated(EnumType.STRING)
     @Column(name = "authorities", nullable = false)
     val authorities: List<Authority>
+
 ) : BaseEntity(id)

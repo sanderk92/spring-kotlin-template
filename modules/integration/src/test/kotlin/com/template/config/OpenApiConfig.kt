@@ -1,6 +1,5 @@
 package com.template.config
 
-import com.template.objects.jwtString
 import org.openapitools.client.apis.KeysApi
 import org.openapitools.client.apis.UserApi
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext
@@ -16,7 +15,7 @@ class OpenApiConfig(
     @Bean
     fun webClient(): WebClient = WebClient.builder()
         .baseUrl("http://localhost:${context.webServer.port}/api/")
-        .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer $jwtString")
+        .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer token")
         .build()
 
     @Bean

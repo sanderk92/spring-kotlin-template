@@ -14,8 +14,8 @@ interface ApiKeyRepository : JpaRepository<ApiKeyEntity, UUID> {
     @Query(
         """
         DELETE FROM ApiKeyEntity a
-        WHERE a.owner.id = ?1 AND a.id = ?2
+        WHERE a.owner.id = :userId AND a.id = :apiKeyId
      """
     )
-    fun delete(userId: UUID, apikeyId: UUID)
+    fun delete(userId: UUID, apiKeyId: UUID)
 }

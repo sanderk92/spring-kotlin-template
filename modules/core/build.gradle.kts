@@ -11,7 +11,7 @@ plugins {
     kotlin("plugin.noarg") version "1.9.10"
     kotlin("kapt") version "1.9.10"
     id("org.springframework.boot") version "3.1.1"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("io.spring.dependency-management") version "1.1.3"
     id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     id("com.google.cloud.tools.jib") version "3.3.0"

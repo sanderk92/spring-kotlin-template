@@ -40,7 +40,9 @@ class UserService(
 
     @Transactional
     override fun update(userId: UUID, authorities: List<Authority>): User? =
-        userRepository.updateById(userId, authorities)
+        userRepository.findById(userId).getOrNull()
+            ?.copy(authorities = authorities)
+            ?.also(userRepository::save)
             ?.let(userMapper::toUser)
 }
 

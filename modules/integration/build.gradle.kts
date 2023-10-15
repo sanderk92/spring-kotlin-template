@@ -8,7 +8,7 @@ plugins {
     kotlin("plugin.allopen") version "1.5.21"
     kotlin("plugin.noarg") version "1.9.10"
     id("org.springframework.boot") version "3.1.1"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("io.spring.dependency-management") version "1.1.3"
     id("org.openapi.generator") version "7.0.1"
 }
 

@@ -6,7 +6,8 @@ import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "api-keys")
-class ApiKeyEntity(
+data class ApiKeyEntity(
+
     @Size(max = 256)
     @Column(name = "hashed-key", nullable = false, unique = true)
     val hashedKey: String,
@@ -21,6 +22,8 @@ class ApiKeyEntity(
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
+    @CollectionTable(name="apikey-authorities")
     @Column(name = "authorities", nullable = false)
     val authorities: List<Authority>
+
 ) : BaseEntity()

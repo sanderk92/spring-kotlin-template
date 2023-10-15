@@ -12,7 +12,7 @@ import java.util.*
 @MappedSuperclass
 abstract class BaseEntity(
     @Id
-    val id: UUID,
+    open val id: UUID,
 ) {
     constructor() : this(UUID(0, 0))
 }
