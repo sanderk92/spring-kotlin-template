@@ -13,7 +13,7 @@ data class ApiKey(
 
 data class ApiKeyCreated(
     val id: UUID,
+    val key: String,
     val name: String,
-    val unHashedKey: String,
     val authorities: List<Authority>,
 )

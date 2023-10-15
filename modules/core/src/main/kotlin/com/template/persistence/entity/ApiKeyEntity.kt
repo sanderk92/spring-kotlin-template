@@ -22,7 +22,7 @@ data class ApiKeyEntity(
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name="apikey-authorities")
+    @CollectionTable(name = "apikey-authorities")
     @Column(name = "authorities", nullable = false)
     val authorities: List<Authority>
 

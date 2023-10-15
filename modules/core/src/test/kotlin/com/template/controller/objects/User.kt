@@ -19,7 +19,7 @@ val apiKeyRequest = ApiKeyRequest(
 val apiKeyCreated = ApiKeyCreated(
     id = UUID.randomUUID(),
     name = "name",
-    unHashedKey = "unHashedKey",
+    key = "unHashedKey",
     authorities = listOf(READ, WRITE, DELETE)
 )
 

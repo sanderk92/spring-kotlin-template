@@ -108,7 +108,7 @@ class ApiKeyControllerTest {
             content = payload
         }.andExpect {
             status { isOk() }
-            jsonPath("$.key", equalTo(apiKeyCreated.unHashedKey))
+            jsonPath("$.key", equalTo(apiKeyCreated.key))
             jsonPath("$.name", equalTo(apiKeyCreated.name))
             jsonPath("$.authorities", equalTo(apiKeyCreated.authorities.map(Authority::toString)))
         }

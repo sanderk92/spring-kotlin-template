@@ -32,7 +32,7 @@ data class UserEntity(
     val apiKeys: List<ApiKeyEntity>,
 
     @ElementCollection
-    @CollectionTable(name="user-authorities")
+    @CollectionTable(name = "user-authorities")
     @Enumerated(EnumType.STRING)
     @Column(name = "authorities", nullable = false)
     val authorities: List<Authority>
