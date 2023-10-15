@@ -16,6 +16,12 @@ class KeysStepDefinitions(private val keysApi : KeysApi) {
         keysApi.createApiKey(ApiKeyRequest(name = name, read = true, write = true, delete = true)).block()!!
     }
 
+    @Then("api key with name {string} exists with all authorities")
+    fun thenApiKeyExists(name: String) {
+        val key = findApiKey(name) ?: fail("api key with name '$name' did not exist")
+        assertThat(key.authorities).containsExactly("READ", "WRITE", "DELETE")
+    }
+
     @When("deleting api key with name {string}")
     fun whenDeletingApiKey(name: String) {
         val key = findApiKey(name) ?: fail("api key with name '$name' must exist")
@@ -25,12 +31,6 @@ class KeysStepDefinitions(private val keysApi : KeysApi) {
     @Then("api key with name {string} does not exist")
     fun thenApiKeyNotExists(name: String) {
         findApiKey(name)?.also { fail("api key with name '$name' did exist: $it") }
-    }
-
-    @Then("api key with name {string} exists with all authorities")
-    fun thenApiKeyExists(name: String) {
-        val key = findApiKey(name) ?: fail("api key with name '$name' did not exist")
-        assertThat(key.authorities).containsExactly("READ", "WRITE", "DELETE")
     }
 
     private fun findApiKey(name: String): ApiKeyDto? =

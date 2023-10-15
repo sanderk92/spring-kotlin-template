@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 
 @Entity
-@Table(name = "api-keys")
+@Table(name = "apikeys")
 internal data class ApiKeyEntity(
 
     @Size(max = 256)

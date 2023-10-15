@@ -3,24 +3,32 @@ package com.template
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import io.cucumber.spring.CucumberContextConfiguration
-import org.junit.jupiter.api.AfterEach
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_CLASS
+import org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD
+import org.springframework.test.annotation.DirtiesContext.MethodMode.AFTER_METHOD
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 
 @RunWith(Cucumber::class)
+@CucumberContextConfiguration
+@DirtiesContext(
+    methodMode = AFTER_METHOD
+)
+@SpringBootTest(
+    webEnvironment = RANDOM_PORT,
+    classes = [Application::class]
+)
 @CucumberOptions(
     plugin = ["pretty"],
     features = ["src/test/resources/features"],
     monochrome = true,
     tags = "@Integration"
 )
-@CucumberContextConfiguration
-@SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = [Application::class]
-)
+
 class CucumberTest {
 
     companion object {
