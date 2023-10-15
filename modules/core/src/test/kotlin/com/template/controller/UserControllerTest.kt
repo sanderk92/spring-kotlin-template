@@ -2,7 +2,6 @@ package com.template.controller
 
 import com.template.config.security.user.Authority
 import com.template.config.security.user.READ_ROLE
-import com.template.config.security.user.SecureUserService
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import com.template.controller.objects.PRINCIPAL_NAME
 import com.template.controller.objects.user
@@ -13,6 +12,7 @@ import com.template.util.EnableAspectOrientedProgramming
 import com.template.util.EnableGlobalMethodSecurity
 import io.mockk.every
 import io.mockk.mockk
+import org.apache.catalina.security.SecurityConfig
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.hasItems
 import org.junit.jupiter.api.Test
@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.get
 @Import(
     value = [
         UserController::class,
+        SecurityConfig::class,
         EnableGlobalMethodSecurity::class,
         EnableAspectOrientedProgramming::class,
     ],
@@ -40,10 +41,11 @@ internal class UserControllerTest {
     private lateinit var mvc: MockMvc
 
     @Autowired
-    private lateinit var secureUserService: SecureUserService
+    private lateinit var userService: UserService
 
     @TestConfiguration
     class TestConfig {
+
         @Bean
         fun userService() = mockk<UserService>()
 
@@ -54,10 +56,14 @@ internal class UserControllerTest {
         fun userMapper() = UserMapperImpl()
     }
 
+    /*
+    Contract tests
+     */
+
     @Test
     @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ_ROLE])
-    fun `Authorized user can search users`() {
-        every { secureUserService.search("some-query") } returns listOf(user)
+    fun `Users can be searched for`() {
+        every { userService.search("some-query") } returns listOf(user)
 
         mvc.get(ENDPOINT) {
             param("query", "some-query")
@@ -73,28 +79,9 @@ internal class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = PRINCIPAL_NAME, authorities = [])
-    fun `Unauthorized user gets a 403 when searching users`() {
-        mvc.get(ENDPOINT) {
-            param("query", "some-query")
-        }.andExpect {
-            status { isForbidden() }
-        }
-    }
-
-    @Test
-    @WithAnonymousUser
-    fun `Unauthenticated user gets a 401 when searching users`() {
-        mvc.get(ENDPOINT) {
-        }.andExpect {
-            status { isUnauthorized() }
-        }
-    }
-
-    @Test
     @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ_ROLE])
-    fun `Authorized user can retrieve user information`() {
-        every { secureUserService.findById(user.id) } returns user
+    fun `User information can be retrieved`() {
+        every { userService.findById(user.id) } returns user
 
         mvc.get("$ENDPOINT/me") {
         }.andExpect {
@@ -109,8 +96,42 @@ internal class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [READ_ROLE])
+    fun `User information for non-existing user cannot be retrieved`() {
+        every { userService.findById(user.id) } returns null
+
+        mvc.get("$ENDPOINT/me") {
+        }.andExpect {
+            status { isNotFound() }
+        }
+    }
+
+    /*
+    Security config tests
+     */
+
+    @Test
     @WithMockUser(username = PRINCIPAL_NAME, authorities = [])
-    fun `Unauthorized user gets a 403 when retrieving user information`() {
+    fun `Unauthorized user cannot search users`() {
+        mvc.get(ENDPOINT) {
+            param("query", "some-query")
+        }.andExpect {
+            status { isForbidden() }
+        }
+    }
+
+    @Test
+    @WithAnonymousUser
+    fun `Unauthenticated user cannot search users`() {
+        mvc.get(ENDPOINT) {
+        }.andExpect {
+            status { isUnauthorized() }
+        }
+    }
+
+    @Test
+    @WithMockUser(username = PRINCIPAL_NAME, authorities = [])
+    fun `Unauthorized user cannot retrieve user information`() {
         mvc.get("$ENDPOINT/me") {
         }.andExpect {
             status { isForbidden() }
@@ -119,7 +140,7 @@ internal class UserControllerTest {
 
     @Test
     @WithAnonymousUser
-    fun `Unauthenticated user gets a 401 when retrieving user information`() {
+    fun `Unauthenticated user cannot retrieve user information`() {
         mvc.get("$ENDPOINT/me") {
         }.andExpect {
             status { isUnauthorized() }

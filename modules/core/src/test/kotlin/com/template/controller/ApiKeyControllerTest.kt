@@ -15,6 +15,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import java.util.*
+import org.apache.catalina.security.SecurityConfig
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,6 +36,7 @@ import org.springframework.test.web.servlet.post
 @Import(
     value = [
         ApiKeyController::class,
+        SecurityConfig::class,
         EnableGlobalMethodSecurity::class,
         EnableAspectOrientedProgramming::class,
     ],
@@ -64,12 +66,16 @@ internal class ApiKeyControllerTest {
     private lateinit var apiKeyService: ApiKeyService
 
     @Autowired
-    private lateinit var secureUserService: UserService
+    private lateinit var userService: UserService
+
+    /*
+     Contract tests
+     */
 
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
-    fun `Authenticated user can retrieve api keys`() {
-        every { secureUserService.findById(user.id) } returns user
+    fun `Api keys can be retrieved`() {
+        every { userService.findById(user.id) } returns user
 
         mvc.get(ENDPOINT) {
         }.andExpect {
@@ -82,17 +88,19 @@ internal class ApiKeyControllerTest {
     }
 
     @Test
-    @WithAnonymousUser
-    fun `Unauthenticated user cannot retrieve api keys`() {
+    @WithMockUser(username = PRINCIPAL_NAME)
+    fun `Api keys for non-existing user cannot be retrieved`() {
+        every { userService.findById(user.id) } returns null
+
         mvc.get(ENDPOINT) {
         }.andExpect {
-            status { isUnauthorized() }
+            status { isNotFound() }
         }
     }
 
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
-    fun `Authenticated user can create api keys`() {
+    fun `Api keys can be created`() {
         every { apiKeyService.createApiKey(any(), any(), any()) } returns apiKeyCreated
 
         val payload = mapOf(
@@ -112,7 +120,58 @@ internal class ApiKeyControllerTest {
             jsonPath("$.name", equalTo(apiKeyCreated.name))
             jsonPath("$.authorities", equalTo(apiKeyCreated.authorities.map(Authority::toString)))
         }
+
         verify { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
+    }
+
+    @Test
+    @WithMockUser(username = PRINCIPAL_NAME)
+    fun `Api keys for non-existing users cannot be created`() {
+        every { apiKeyService.createApiKey(any(), any(), any()) } returns null
+
+        val payload = mapOf(
+            "name" to apiKeyRequest.name,
+            "read" to apiKeyRequest.read,
+            "write" to apiKeyRequest.write,
+            "delete" to apiKeyRequest.delete,
+        ).asJson()
+
+        mvc.post(ENDPOINT) {
+            with(csrf())
+            contentType = MediaType.APPLICATION_JSON
+            content = payload
+        }.andExpect {
+            status { isNotFound() }
+        }
+
+        verify { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
+    }
+
+    @Test
+    @WithMockUser(username = PRINCIPAL_NAME)
+    fun `Api keys can be deleted`() {
+        every { apiKeyService.deleteApiKey(any(), any()) } returns Unit
+
+        mvc.delete("$ENDPOINT/${apiKey.id}") {
+            with(csrf())
+        }.andExpect {
+            status { isOk() }
+        }
+
+        verify { apiKeyService.deleteApiKey(user.id, apiKey.id) }
+    }
+
+    /*
+    Security config tests
+     */
+
+    @Test
+    @WithAnonymousUser
+    fun `Unauthenticated user cannot retrieve api keys`() {
+        mvc.get(ENDPOINT) {
+        }.andExpect {
+            status { isUnauthorized() }
+        }
     }
 
     @Test
@@ -123,20 +182,6 @@ internal class ApiKeyControllerTest {
         }.andExpect {
             status { isUnauthorized() }
         }
-    }
-
-    @Test
-    @WithMockUser(username = PRINCIPAL_NAME)
-    fun `Authenticated user can delete api keys`() {
-        every { apiKeyService.deleteApiKey(any(), any()) } returns Unit
-
-        mvc.delete("$ENDPOINT/${apiKey.id}") {
-            with(csrf())
-        }.andExpect {
-            status { isOk() }
-        }
-
-        verify { apiKeyService.deleteApiKey(user.id, apiKey.id) }
     }
 
     @Test

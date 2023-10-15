@@ -10,7 +10,6 @@ import com.template.domain.ApiKeyService
 import com.template.domain.UserService
 import com.template.mappers.ApiKeyMapper
 import java.util.*
-import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -25,13 +24,13 @@ internal class ApiKeyController(
         userService.findById(currentUser.id)?.apiKeys
             ?.map(apiKeyMapper::toApiKeyDto)
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
-            ?: ResponseEntity.status(NOT_FOUND).build()
+            ?: ResponseEntity.notFound().build()
 
     override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyCreatedDto> =
         apiKeyService.createApiKey(currentUser.id, request.name, request.authorities())
             ?.let(apiKeyMapper::toApiKeyCreatedDto)
             ?.let { ResponseEntity.ok(it) }
-            ?: ResponseEntity.status(NOT_FOUND).build()
+            ?: ResponseEntity.notFound().build()
 
     override fun deleteApiKey(currentUser: CurrentUser, id: UUID): ResponseEntity<Void> =
         apiKeyService.deleteApiKey(currentUser.id, id)
