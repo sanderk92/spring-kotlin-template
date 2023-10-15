@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity
 @Table(name = "users")
-data class UserEntity(
+internal data class UserEntity(
 
     override val id: UUID,
 

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class UserController(
+internal class UserController(
     private val userService: UserService,
     private val userMapper: UserMapper,
 ) : UserInterface {

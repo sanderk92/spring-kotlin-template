@@ -22,7 +22,7 @@ private val PUBLIC_ENDPOINTS = arrayOf(
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class SecurityConfig(
+internal class SecurityConfig(
     private val apiKeyFilter: ApiKeyAuthenticationFilter,
     private val jwtUserStorageFilter: JwtUserStorageFilter,
 ) {

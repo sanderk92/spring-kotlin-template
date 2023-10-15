@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
-class ApiKeyAuthenticationFilter(
+internal class ApiKeyAuthenticationFilter(
     private val secureUserService: SecureUserService,
     private val hashGenerator: HashGenerator,
 ) : OncePerRequestFilter() {

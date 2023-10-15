@@ -7,7 +7,7 @@ import org.springframework.security.core.Transient
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @Transient
-class ApiKeyAuthentication(
+internal class ApiKeyAuthentication(
     private val name: String,
     private val hashedKey: String,
     private val authorities: List<Authority>,

@@ -5,12 +5,12 @@ import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import org.springframework.stereotype.Service
 
-interface HashGenerator {
+internal interface HashGenerator {
     fun hash(string: String): String
 }
 
 @Service
-class Sha256HashGenerator : HashGenerator {
+internal class Sha256HashGenerator : HashGenerator {
 
     override fun hash(string: String): String {
         val digest = MessageDigest.getInstance("SHA-256")

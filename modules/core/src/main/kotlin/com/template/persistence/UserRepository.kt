@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository : JpaRepository<UserEntity, UUID> {
+internal interface UserRepository : JpaRepository<UserEntity, UUID> {
 
     @Query(
         """

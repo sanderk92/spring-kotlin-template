@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ApiKeyRepository : JpaRepository<ApiKeyEntity, UUID> {
+internal interface ApiKeyRepository : JpaRepository<ApiKeyEntity, UUID> {
 
     @Modifying
     @Query(

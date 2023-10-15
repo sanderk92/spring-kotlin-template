@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 
 @Configuration
-class JwtRoleExtractor {
+internal class JwtRoleExtractor {
 
     /**
      * A custom [JwtAuthenticationConverter] capable of extracting authorities from a nested claim, specified by dot

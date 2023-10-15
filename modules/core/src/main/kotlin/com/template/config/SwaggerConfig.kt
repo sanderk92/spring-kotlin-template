@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
-object SecuritySchemes {
+internal object SecuritySchemes {
     const val APIKEY = "API-Key"
     const val OIDC = "OIDC"
 }
@@ -30,7 +30,7 @@ object SecuritySchemes {
     openIdConnectUrl = "\${springdoc.oidc.url}",
 )
 @Configuration
-class SwaggerConfiguration(
+internal class SwaggerConfiguration(
     private val buildProperties: BuildProperties,
 ) {
     @Bean

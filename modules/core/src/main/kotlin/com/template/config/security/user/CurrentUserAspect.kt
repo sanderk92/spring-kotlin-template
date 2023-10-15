@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 
 @Aspect
 @Component
-class CurrentUserAspect {
+internal class CurrentUserAspect {
 
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
     fun isRestController() {

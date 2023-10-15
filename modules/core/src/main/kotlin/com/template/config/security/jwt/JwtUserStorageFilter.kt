@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
-class JwtUserStorageFilter(
+internal class JwtUserStorageFilter(
     private val secureUserService: SecureUserService,
     private val claims: JwtClaims,
 ) : OncePerRequestFilter() {

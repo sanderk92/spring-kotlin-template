@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping(ENDPOINT)
 @Secured(READ_ROLE)
 @Tag(name = "User", description = "Retrieve information about the current user")
-interface UserInterface {
+internal interface UserInterface {
 
     companion object {
         const val ENDPOINT = "/users"
@@ -46,7 +46,7 @@ interface UserInterface {
     ): ResponseEntity<CurrentUserDto>
 }
 
-data class UserDto(
+internal data class UserDto(
     val id: UUID,
     val email: String,
     val username: String,
@@ -54,7 +54,7 @@ data class UserDto(
     val lastName: String,
 )
 
-data class CurrentUserDto(
+internal data class CurrentUserDto(
     val id: UUID,
     val email: String,
     val username: String,

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ApiKeyService(
+internal class ApiKeyService(
     private val apiKeyGenerator: ApiKeyGenerator,
     private val hashGenerator: HashGenerator,
     private val userRepository: UserRepository,

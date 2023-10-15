@@ -3,7 +3,7 @@ package com.template.config.security.user
 import com.template.config.security.apikey.SecureApiKey
 import java.util.*
 
-interface SecureUser {
+internal interface SecureUser {
     val id: UUID
     val email: String
     val username: String
@@ -13,7 +13,7 @@ interface SecureUser {
     val apiKeys: List<SecureApiKey>
 }
 
-data class SecureUserEntry(
+internal data class SecureUserEntry(
     val id: UUID,
     val email: String,
     val username: String,

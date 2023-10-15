@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 
 @RequestMapping(ENDPOINT)
 @Tag(name = "Keys", description = "Manage api keys for the current user")
-interface ApiKeyInterface {
+internal interface ApiKeyInterface {
 
     companion object {
         const val ENDPOINT = "/keys"
@@ -56,7 +56,7 @@ interface ApiKeyInterface {
     ): ResponseEntity<Void>
 }
 
-data class ApiKeyRequest(
+internal data class ApiKeyRequest(
     @field:NotBlank
     val name: String,
     val read: Boolean,
@@ -64,13 +64,13 @@ data class ApiKeyRequest(
     val delete: Boolean,
 )
 
-data class ApiKeyDto(
+internal data class ApiKeyDto(
     val id: UUID,
     val name: String,
     val authorities: List<String>,
 )
 
-data class ApiKeyCreatedDto(
+internal data class ApiKeyCreatedDto(
     val id: UUID,
     val key: String,
     val name: String,

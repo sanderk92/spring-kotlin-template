@@ -4,7 +4,7 @@ import com.template.config.security.user.Authority
 import com.template.config.security.user.SecureUser
 import java.util.*
 
-data class User(
+internal data class User(
     override val id: UUID,
     override val email: String,
     override val username: String,

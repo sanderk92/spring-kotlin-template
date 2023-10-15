@@ -63,7 +63,7 @@ private const val mediaType: String = MediaType.APPLICATION_JSON_VALUE
         ),
     ]
 )
-interface ExceptionInterface
+internal interface ExceptionInterface
 
 private interface ExceptionModel {
     val type: String

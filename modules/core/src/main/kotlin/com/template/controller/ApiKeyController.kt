@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ApiKeyController(
+internal class ApiKeyController(
     private val userService: UserService,
     private val apiKeyService: ApiKeyService,
     private val apiKeyMapper: ApiKeyMapper,

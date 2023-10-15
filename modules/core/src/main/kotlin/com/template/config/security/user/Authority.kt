@@ -5,7 +5,7 @@ const val WRITE_ROLE = "ROLE_WRITE"
 const val DELETE_ROLE = "ROLE_DELETE"
 const val ADMIN_ROLE = "ROLE_ADMIN"
 
-enum class Authority(val role: String) {
+internal enum class Authority(val role: String) {
     READ(READ_ROLE),
     WRITE(WRITE_ROLE),
     DELETE(DELETE_ROLE),

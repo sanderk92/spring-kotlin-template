@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "api-keys")
-data class ApiKeyEntity(
+internal data class ApiKeyEntity(
 
     @Size(max = 256)
     @Column(name = "hashed-key", nullable = false, unique = true)

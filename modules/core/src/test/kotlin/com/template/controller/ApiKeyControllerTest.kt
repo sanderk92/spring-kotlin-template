@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.post
         EnableAspectOrientedProgramming::class,
     ],
 )
-class ApiKeyControllerTest {
+internal class ApiKeyControllerTest {
 
     @TestConfiguration
     class TestConfig {

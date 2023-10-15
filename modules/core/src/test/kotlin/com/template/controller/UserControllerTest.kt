@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.get
         EnableAspectOrientedProgramming::class,
     ],
 )
-class UserControllerTest {
+internal class UserControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc

@@ -7,7 +7,7 @@ import com.template.persistence.entity.UserEntity
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring", uses = [ApiKeyMapper::class])
-interface UserMapper {
+internal interface UserMapper {
 
     fun toUser(entity: UserEntity): User
 

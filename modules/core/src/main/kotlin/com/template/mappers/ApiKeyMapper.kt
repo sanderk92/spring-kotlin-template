@@ -8,7 +8,7 @@ import com.template.persistence.entity.ApiKeyEntity
 import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring")
-interface ApiKeyMapper {
+internal interface ApiKeyMapper {
 
     fun toApiKey(entity: ApiKeyEntity): ApiKey
 

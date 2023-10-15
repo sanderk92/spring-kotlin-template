@@ -6,4 +6,4 @@ import org.springframework.context.annotation.Import
 
 @EnableAspectJAutoProxy
 @Import(value = [CurrentUserAspect::class])
-class EnableAspectOrientedProgramming
+internal class EnableAspectOrientedProgramming

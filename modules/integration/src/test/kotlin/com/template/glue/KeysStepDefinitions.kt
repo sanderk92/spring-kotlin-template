@@ -1,6 +1,5 @@
 package com.template.glue
 
-import com.template.config.security.user.Authority.*
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.assertj.core.api.Assertions.assertThat
@@ -31,7 +30,7 @@ class KeysStepDefinitions(private val keysApi : KeysApi) {
     @Then("api key with name {string} exists with all authorities")
     fun thenApiKeyExists(name: String) {
         val key = findApiKey(name) ?: fail("api key with name '$name' did not exist")
-        assertThat(key.authorities).containsExactly(READ.toString(), WRITE.toString(), DELETE.toString())
+        assertThat(key.authorities).containsExactly("READ", "WRITE", "DELETE")
     }
 
     private fun findApiKey(name: String): ApiKeyDto? =

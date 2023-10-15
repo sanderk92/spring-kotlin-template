@@ -5,4 +5,4 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy
 
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
-class AopConfig
+internal class AopConfig
