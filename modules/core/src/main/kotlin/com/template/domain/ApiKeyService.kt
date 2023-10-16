@@ -22,15 +22,13 @@ internal class ApiKeyService(
     private val apiKeyMapper: ApiKeyMapper,
 ) {
     @Transactional
-    fun createApiKey(userId: UUID, name: String, authorities: List<Authority>): ApiKeyCreated? {
-        val unHashedApiKey = apiKeyGenerator.generate()
-        val hashedApiKey = hashGenerator.hash(unHashedApiKey)
-
-        return userRepository.findById(userId).getOrNull()
-            ?.let { user -> ApiKeyEntity(hashedApiKey, name, user, authorities) }
-            ?.let(apiKeyRepository::save)
-            ?.let { entity -> apiKeyMapper.toApiKeyCreated(entity, unHashedApiKey) }
-    }
+    fun createApiKey(userId: UUID, name: String, authorities: List<Authority>): ApiKeyCreated? =
+        userRepository.findById(userId).getOrNull()?.let { user ->
+            val unHashedApiKey = apiKeyGenerator.generate()
+            ApiKeyEntity(hashGenerator.hash(unHashedApiKey), name, user, authorities)
+                .let(apiKeyRepository::save)
+                .let { apiKeyMapper.toApiKeyCreated(it, unHashedApiKey) }
+        }
 
     @Transactional
     fun deleteApiKey(userId: UUID, apiKeyId: UUID) =

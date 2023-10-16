@@ -1,12 +1,9 @@
 package com.template.domain
 
 import com.template.domain.objects.user
-import com.template.mappers.ApiKeyMapper
 import com.template.mappers.ApiKeyMapperImpl
-import com.template.mappers.UserMapper
 import com.template.mappers.UserMapperImpl
 import com.template.persistence.UserRepository
-import com.template.persistence.objects.apiKeyEntity
 import com.template.persistence.objects.userEntity
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -17,7 +14,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mapstruct.factory.Mappers
 
 @ExtendWith(MockKExtension::class)
 internal class UserServiceTest {
