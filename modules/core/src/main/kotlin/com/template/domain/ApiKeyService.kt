@@ -31,6 +31,6 @@ internal class ApiKeyService(
         }
 
     @Transactional
-    fun deleteApiKey(userId: UUID, apiKeyId: UUID) =
+    fun deleteApiKey(userId: UUID, apiKeyId: UUID): Unit =
         apiKeyRepository.delete(userId, apiKeyId)
 }

@@ -10,5 +10,5 @@ internal val userEntity: UserEntity = UserEntity(
     username = "username",
     firstName = "firstName",
     lastName = "lastName",
-    apiKeys = listOf(apiKeyEntity),
+    apiKeys = listOf(),
 )

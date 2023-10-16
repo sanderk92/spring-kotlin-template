@@ -3,7 +3,6 @@ package com.template.controller
 import com.template.config.security.user.Authority
 import com.template.config.security.user.Authority.*
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
-import com.template.controller.objects.*
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
 import com.template.domain.objects.*
@@ -106,7 +105,7 @@ internal class ApiKeyControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Api keys can be created`() {
-        every { apiKeyService.createApiKey(any(), any(), any()) } returns apiKeyCreated
+        every { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) } returns apiKeyCreated
 
         val payload = mapOf(
             "name" to apiKeyRequest.name,
@@ -125,15 +124,12 @@ internal class ApiKeyControllerTest {
             jsonPath("$.name", equalTo(apiKeyCreated.name))
             jsonPath("$.authorities", equalTo(apiKeyCreated.authorities.map(Authority::toString)))
         }
-
-        // TODO Somehow this registers 2 calls
-        verify(exactly = 2) { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
     }
 
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Api keys for non-existing users cannot be created`() {
-        every { apiKeyService.createApiKey(any(), any(), any()) } returns null
+        every { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) } returns null
 
         val payload = mapOf(
             "name" to apiKeyRequest.name,
@@ -149,8 +145,6 @@ internal class ApiKeyControllerTest {
         }.andExpect {
             status { isNotFound() }
         }
-
-        verify(exactly = 1) { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
     }
 
     @Test

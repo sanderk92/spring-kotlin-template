@@ -6,6 +6,6 @@ import com.template.persistence.entity.ApiKeyEntity
 internal val apiKeyEntity: ApiKeyEntity = ApiKeyEntity(
     name = "name",
     hashedKey = "hashedKey",
-    owner = userEntity,
+    owner = null,
     authorities = listOf(READ, WRITE, DELETE)
 )

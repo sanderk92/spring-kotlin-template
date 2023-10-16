@@ -4,6 +4,7 @@ import com.template.domain.objects.user
 import com.template.mappers.ApiKeyMapperImpl
 import com.template.mappers.UserMapperImpl
 import com.template.persistence.UserRepository
+import com.template.persistence.objects.apiKeyEntity
 import com.template.persistence.objects.userEntity
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -32,7 +33,7 @@ internal class UserServiceTest {
 
     @Test
     fun `Users can be searched for`() {
-        every { userRepository.search(any()) } returns listOf(userEntity)
+        every { userRepository.search(any()) } returns listOf(userEntity.copy(apiKeys = listOf(apiKeyEntity)))
 
         val query = "query"
         val result = userService.search(query)
@@ -43,7 +44,7 @@ internal class UserServiceTest {
 
     @Test
     fun `Users can be found by id`() {
-        every { userRepository.findById(any()) } returns Optional.of(userEntity)
+        every { userRepository.findById(any()) } returns Optional.of(userEntity.copy(apiKeys = listOf(apiKeyEntity)))
 
         val id = UUID.randomUUID()
         val result = userService.findById(id)
@@ -63,7 +64,7 @@ internal class UserServiceTest {
 
     @Test
     fun `Users can be found by api key`() {
-        every { userRepository.findByApiKey(any()) } returns userEntity
+        every { userRepository.findByApiKey(any()) } returns userEntity.copy(apiKeys = listOf(apiKeyEntity))
 
         val key = "key"
         val result = userService.findByApiKey(key)
