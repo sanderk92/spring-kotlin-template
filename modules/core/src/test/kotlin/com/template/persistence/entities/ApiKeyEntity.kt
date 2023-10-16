@@ -1,4 +1,4 @@
-package com.template.persistence.objects
+package com.template.persistence.entities
 
 import com.template.config.security.user.Authority.*
 import com.template.persistence.entity.ApiKeyEntity

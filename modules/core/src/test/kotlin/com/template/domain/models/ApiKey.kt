@@ -1,4 +1,4 @@
-package com.template.domain.objects
+package com.template.domain.models
 
 import com.template.config.security.user.Authority
 import com.template.controller.interfaces.ApiKeyRequest

@@ -4,8 +4,8 @@ import com.template.config.security.user.Authority
 import com.template.config.security.user.READ_ROLE
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
 import com.template.domain.UserService
-import com.template.domain.objects.PRINCIPAL_NAME
-import com.template.domain.objects.user
+import com.template.domain.models.PRINCIPAL_NAME
+import com.template.domain.models.user
 import com.template.mappers.ApiKeyMapperImpl
 import com.template.mappers.UserMapperImpl
 import com.template.util.EnableAspectOrientedProgramming

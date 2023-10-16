@@ -5,11 +5,11 @@ import com.template.config.security.user.Authority.*
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
-import com.template.domain.objects.*
-import com.template.domain.objects.apiKey
-import com.template.domain.objects.apiKeyCreated
-import com.template.domain.objects.apiKeyRequest
-import com.template.domain.objects.user
+import com.template.domain.models.*
+import com.template.domain.models.apiKey
+import com.template.domain.models.apiKeyCreated
+import com.template.domain.models.apiKeyRequest
+import com.template.domain.models.user
 import com.template.mappers.ApiKeyMapperImpl
 import com.template.mappers.UserMapperImpl
 import com.template.util.EnableAspectOrientedProgramming

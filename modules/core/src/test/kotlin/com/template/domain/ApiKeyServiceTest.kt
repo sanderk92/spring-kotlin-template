@@ -3,13 +3,13 @@ package com.template.domain
 import com.template.config.security.apikey.ApiKeyGenerator
 import com.template.config.security.apikey.HashGenerator
 import com.template.config.security.user.Authority.*
-import com.template.domain.objects.apiKeyCreated
-import com.template.domain.objects.user
+import com.template.domain.models.apiKeyCreated
+import com.template.domain.models.user
 import com.template.mappers.ApiKeyMapperImpl
 import com.template.persistence.ApiKeyRepository
 import com.template.persistence.UserRepository
-import com.template.persistence.objects.apiKeyEntity
-import com.template.persistence.objects.userEntity
+import com.template.persistence.entities.apiKeyEntity
+import com.template.persistence.entities.userEntity
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension

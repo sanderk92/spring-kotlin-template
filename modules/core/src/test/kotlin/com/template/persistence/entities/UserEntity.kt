@@ -1,6 +1,6 @@
-package com.template.persistence.objects
+package com.template.persistence.entities
 
-import com.template.domain.objects.PRINCIPAL_NAME
+import com.template.domain.models.PRINCIPAL_NAME
 import com.template.persistence.entity.UserEntity
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.template.domain.objects
+package com.template.domain.models
 
 import com.template.domain.model.User
 import java.util.*
