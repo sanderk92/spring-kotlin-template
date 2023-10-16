@@ -37,5 +37,4 @@ internal val user = User(
     firstName = "firstName",
     lastName = "lastName",
     apiKeys = listOf(apiKey),
-    authorities = listOf(READ, WRITE, DELETE, ADMIN),
 )

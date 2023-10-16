@@ -1,6 +1,5 @@
 package com.template.domain
 
-import com.template.config.security.user.Authority
 import com.template.config.security.user.SecureUserEntry
 import com.template.config.security.user.SecureUserService
 import com.template.domain.model.User
@@ -19,7 +18,7 @@ internal class UserService(
 ) : SecureUserService {
 
     @Transactional(readOnly = true)
-    override fun search(query: String): List<User> =
+    fun search(query: String): List<User> =
         userRepository.search(query)
             .map(userMapper::toUser)
 
@@ -37,13 +36,6 @@ internal class UserService(
     override fun create(entry: SecureUserEntry): User =
         userRepository.save(createEntity(entry))
             .let(userMapper::toUser)
-
-    @Transactional
-    override fun update(userId: UUID, authorities: List<Authority>): User? =
-        userRepository.findById(userId).getOrNull()
-            ?.copy(authorities = authorities)
-            ?.also(userRepository::save)
-            ?.let(userMapper::toUser)
 }
 
 private fun createEntity(user: SecureUserEntry) = UserEntity(
@@ -52,6 +44,5 @@ private fun createEntity(user: SecureUserEntry) = UserEntity(
     username = user.username,
     firstName = user.firstName,
     lastName = user.lastName,
-    authorities = user.authorities,
     apiKeys = listOf(),
 )

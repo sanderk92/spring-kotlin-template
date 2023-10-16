@@ -22,7 +22,7 @@ internal class UserController(
 
     override fun getCurrentUser(currentUser: CurrentUser): ResponseEntity<CurrentUserDto> =
         userService.findById(currentUser.id)
-            ?.let(userMapper::toCurrentUserDto)
+            ?.let { userMapper.toCurrentUserDto(it, currentUser.authorities) }
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 }

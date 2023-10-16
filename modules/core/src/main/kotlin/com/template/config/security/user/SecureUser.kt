@@ -9,7 +9,6 @@ internal interface SecureUser {
     val username: String
     val firstName: String
     val lastName: String
-    val authorities: List<Authority>
     val apiKeys: List<SecureApiKey>
 }
 
@@ -19,5 +18,4 @@ internal data class SecureUserEntry(
     val username: String,
     val firstName: String,
     val lastName: String,
-    val authorities: List<Authority>,
 )

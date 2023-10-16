@@ -1,6 +1,5 @@
 package com.template.persistence.entity
 
-import com.template.config.security.user.Authority
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import java.util.*
@@ -30,11 +29,5 @@ internal data class UserEntity(
     @Column(name = "api-keys", nullable = false)
     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
     val apiKeys: List<ApiKeyEntity>,
-
-    @ElementCollection
-    @CollectionTable(name = "user-authorities")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "authorities", nullable = false)
-    val authorities: List<Authority>
 
 ) : BaseEntity(id)

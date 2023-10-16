@@ -56,7 +56,7 @@ internal class ApiKeyControllerTest {
         fun apiKeyMapper() = ApiKeyMapperImpl()
 
         @Bean
-        fun userMapper() = UserMapperImpl()
+        fun userMapper() = UserMapperImpl(apiKeyMapper())
     }
 
     @Autowired

@@ -1,9 +1,11 @@
 @Integration
 Feature: User
 
-  Scenario: default authorities are updated when roles are changed
+  Scenario: default authorities are assigned
     Given current user without roles
     Then current user can be retrieved and has authorities 'READ,WRITE,DELETE'
+
+  Scenario: role authorities are assigned
     Given current user with roles 'admin'
     Then current user can be retrieved and has authorities 'READ,WRITE,DELETE,ADMIN'
 
