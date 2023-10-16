@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder
 annotation class MockJwtDecoder
 
 @Configuration
-class MockJwtConfig {
+internal class MockJwtConfig {
 
     @Bean
     @MockJwtDecoder

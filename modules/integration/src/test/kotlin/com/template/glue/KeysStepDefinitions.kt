@@ -8,7 +8,7 @@ import org.openapitools.client.apis.KeysApi
 import org.openapitools.client.models.ApiKeyDto
 import org.openapitools.client.models.ApiKeyRequest
 
-class KeysStepDefinitions(private val keysApi : KeysApi) {
+internal class KeysStepDefinitions(private val keysApi : KeysApi) {
 
     @When("creating api key with name {string} and all authorities")
     fun whenCreatingApiKey(name: String) {

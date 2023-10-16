@@ -6,6 +6,11 @@ import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.controller.objects.*
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
+import com.template.domain.objects.*
+import com.template.domain.objects.apiKey
+import com.template.domain.objects.apiKeyCreated
+import com.template.domain.objects.apiKeyRequest
+import com.template.domain.objects.user
 import com.template.mappers.ApiKeyMapperImpl
 import com.template.mappers.UserMapperImpl
 import com.template.util.EnableAspectOrientedProgramming
@@ -121,7 +126,8 @@ internal class ApiKeyControllerTest {
             jsonPath("$.authorities", equalTo(apiKeyCreated.authorities.map(Authority::toString)))
         }
 
-        verify { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
+        // TODO Somehow this registers 2 calls
+        verify(exactly = 2) { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
     }
 
     @Test
@@ -144,7 +150,7 @@ internal class ApiKeyControllerTest {
             status { isNotFound() }
         }
 
-        verify { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
+        verify(exactly = 1) { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) }
     }
 
     @Test
@@ -158,7 +164,7 @@ internal class ApiKeyControllerTest {
             status { isOk() }
         }
 
-        verify { apiKeyService.deleteApiKey(user.id, apiKey.id) }
+        verify(exactly = 1) { apiKeyService.deleteApiKey(user.id, apiKey.id) }
     }
 
     /*

@@ -5,7 +5,7 @@ import io.cucumber.java.en.Then
 import org.assertj.core.api.Assertions.assertThat
 import org.openapitools.client.apis.UserApi
 
-class UserStepDefinitions(private val userApi : UserApi) {
+internal class UserStepDefinitions(private val userApi : UserApi) {
 
     @Then("current user can be retrieved and has authorities {string}")
     fun thenRetrieveCurrentUser(authorities: String) {

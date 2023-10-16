@@ -9,7 +9,7 @@ import java.util.*
 
 private val currentUserId = UUID.randomUUID();
 
-class AuthStepDefinitions(@MockJwtDecoder private val jwtDecoder: JwtDecoder) {
+internal class AuthStepDefinitions(@MockJwtDecoder private val jwtDecoder: JwtDecoder) {
 
     @Given("current user without roles")
     fun givenDefaultAuthenticatedUserWithoutRoles() {

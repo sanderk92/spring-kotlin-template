@@ -3,12 +3,12 @@ package com.template.objects
 import org.springframework.security.oauth2.jwt.Jwt
 import java.time.Instant
 
-const val email = "test@email.com"
-const val username = "username"
-const val firstName = "firstName"
-const val lastName = "lastName"
+internal const val email = "test@email.com"
+internal const val username = "username"
+internal const val firstName = "firstName"
+internal const val lastName = "lastName"
 
-fun jwtBuilder(userId: String, roles: List<String> = emptyList()): Jwt.Builder = Jwt
+internal fun jwtBuilder(userId: String, roles: List<String> = emptyList()): Jwt.Builder = Jwt
     .withTokenValue(userId)
     .issuedAt(Instant.MIN)
     .expiresAt(Instant.MAX)

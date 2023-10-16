@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.web.reactive.function.client.WebClient
 
 @Configuration
-class OpenApiConfig(
+internal class OpenApiConfig(
     private val context: ServletWebServerApplicationContext
 ) {
     @Bean

@@ -29,7 +29,7 @@ import org.springframework.test.context.DynamicPropertySource
     tags = "@Integration"
 )
 
-class CucumberTest {
+internal class CucumberTest {
 
     companion object {
 
