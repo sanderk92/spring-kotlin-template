@@ -13,7 +13,7 @@ import java.util.*
 @MappedSuperclass
 internal sealed class BaseEntity(
     @Id
-    open val id: UUID,
+    open val id: UUID
 ) {
     constructor() : this(UUID(0, 0))
 }

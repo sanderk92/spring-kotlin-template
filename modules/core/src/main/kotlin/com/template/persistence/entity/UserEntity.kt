@@ -30,4 +30,19 @@ internal data class UserEntity(
     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
     val apiKeys: List<ApiKeyEntity>,
 
-) : BaseEntity(id)
+) : BaseEntity(id) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is UserEntity) return false
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+    override fun toString(): String {
+        return "UserEntity(id=$id)"
+    }
+}

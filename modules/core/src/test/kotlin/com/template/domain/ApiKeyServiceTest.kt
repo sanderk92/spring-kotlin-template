@@ -55,7 +55,7 @@ internal class ApiKeyServiceTest {
         verify(exactly = 1) { userRepository.findById(user.id) }
         verify(exactly = 1) { apiKeyGenerator.generate() }
         verify(exactly = 1) { hashGenerator.hash("unHashedKey") }
-        verify(exactly = 1) { apiKeyRepository.save(eq(apiKeyEntity.copy(owner = userEntity))) }
+        verify(exactly = 1) { apiKeyRepository.save(apiKeyEntity.copy(owner = userEntity)) }
     }
 
     @Test
