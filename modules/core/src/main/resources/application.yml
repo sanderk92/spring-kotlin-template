@@ -15,10 +15,11 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-    driverClassName: ${DATABASE_DRIVER}
   jpa:
     database-platform: ${DATABASE_DIALECT}
     show-sql: true
+    hibernate:
+      ddl-auto: create-drop
   security:
     oauth2:
       resourceserver:

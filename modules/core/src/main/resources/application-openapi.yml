@@ -1,9 +1,7 @@
 DATABASE_URL: jdbc:h2:mem:testdb
-DATABASE_DRIVER: org.h2.Driver
 DATABASE_DIALECT: org.hibernate.dialect.H2Dialect
 DATABASE_USERNAME: username
 DATABASE_PASSWORD: password
-
 OIDC_PROVIDER_CONFIG_URL: https://todo.com/
 OIDC_PROVIDER_JWK_URL: https://todo.com/
 OIDC_SERVER_CLIENT_ID: unused

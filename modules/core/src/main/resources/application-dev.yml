@@ -1,0 +1,9 @@
+DATABASE_URL: jdbc:postgresql://localhost:5432/
+DATABASE_USERNAME: postgres
+DATABASE_PASSWORD: postgres
+DATABASE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+OIDC_PROVIDER_CONFIG_URL: http://localhost:8081/realms/master/.well-known/openid-configuration
+OIDC_PROVIDER_JWK_URL: http://localhost:8081/realms/master/protocol/openid-connect/certs
+OIDC_SERVER_CLIENT_ID: backend
+OIDC_SERVER_CLIENT_SECRET: sdelgUsnWeC5wFYWNDDqkvt3tz90mUIe
+OIDC_SWAGGER_CLIENT_ID: swagger
