@@ -32,17 +32,21 @@ internal data class UserEntity(
 
 ) : BaseEntity(id) {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is UserEntity) return false
-        return id == other.id
-    }
+    override fun equals(other: Any?): Boolean =
+        this === other || other is UserEntity &&
+            id == other.id &&
+            email == other.email &&
+            username == other.username &&
+            firstName == other.firstName &&
+            lastName == other.lastName
 
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
+    override fun hashCode(): Int =
+        31 * id.hashCode() +
+            31 * email.hashCode() +
+            31 * username.hashCode() +
+            31 * firstName.hashCode() +
+            31 * lastName.hashCode()
 
-    override fun toString(): String {
-        return "UserEntity(id=$id)"
-    }
+    override fun toString(): String =
+        "${this.javaClass.simpleName}(id=$id)"
 }

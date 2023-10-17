@@ -17,7 +17,7 @@ private val entityClass = ApiKeyEntity::class.java
 @DataJpaTest
 @EnableAutoConfiguration
 @ContextConfiguration(classes = [ApiKeyRepository::class])
-class ApiKeyRepositoryTest {
+internal class ApiKeyRepositoryTest {
 
     @Autowired
     private lateinit var em: TestEntityManager

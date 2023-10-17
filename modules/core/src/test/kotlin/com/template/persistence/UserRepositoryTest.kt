@@ -3,8 +3,6 @@ package com.template.persistence
 import com.template.domain.models.apiKey
 import com.template.persistence.entities.apiKeyEntity
 import com.template.persistence.entities.userEntity
-import com.template.persistence.entity.UserEntity
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,12 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
 
-private val entityClass = UserEntity::class.java
-
 @DataJpaTest
 @EnableAutoConfiguration
 @ContextConfiguration(classes = [UserRepository::class])
-class UserRepositoryTest {
+internal class UserRepositoryTest {
 
     @Autowired
     private lateinit var em: TestEntityManager
@@ -51,4 +47,3 @@ class UserRepositoryTest {
         assertThat(result).isEqualTo(persistedUser.copy(apiKeys = listOf(persistedApiKey)))
     }
 }
-
