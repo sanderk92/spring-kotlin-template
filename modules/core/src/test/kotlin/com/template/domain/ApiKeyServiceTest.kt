@@ -24,6 +24,9 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class ApiKeyServiceTest {
 
     @MockK
+    private lateinit var idGenerator: () -> UUID
+
+    @MockK
     private lateinit var apiKeyGenerator: ApiKeyGenerator
 
     @MockK
@@ -39,14 +42,15 @@ internal class ApiKeyServiceTest {
 
     @BeforeEach
     fun setUp() {
-        service = ApiKeyService(apiKeyGenerator, hashGenerator, userRepository, apiKeyRepository, ApiKeyMapperImpl())
+        service = ApiKeyService(idGenerator, apiKeyGenerator, hashGenerator, userRepository, apiKeyRepository, ApiKeyMapperImpl())
     }
 
     @Test
     fun `Api key can be created`() {
+        every { idGenerator() } returns apiKeyEntity.id
         every { userRepository.findById(any()) } returns Optional.of(userEntity)
-        every { apiKeyGenerator.generate() } returns "unHashedKey"
-        every { hashGenerator.hash(any()) } returns "hashedKey"
+        every { apiKeyGenerator.generate() } returns apiKeyCreated.key
+        every { hashGenerator.hash(any()) } returns apiKeyEntity.hashedKey
         every { apiKeyRepository.save(any()) } returns apiKeyEntity
 
         val result = service.createApiKey(user.id, apiKeyEntity.name, apiKeyEntity.authorities)
@@ -54,7 +58,7 @@ internal class ApiKeyServiceTest {
         assertThat(result).isEqualTo(apiKeyCreated)
         verify(exactly = 1) { userRepository.findById(user.id) }
         verify(exactly = 1) { apiKeyGenerator.generate() }
-        verify(exactly = 1) { hashGenerator.hash("unHashedKey") }
+        verify(exactly = 1) { hashGenerator.hash(apiKeyCreated.key) }
         verify(exactly = 1) { apiKeyRepository.save(apiKeyEntity.copy(owner = userEntity)) }
     }
 

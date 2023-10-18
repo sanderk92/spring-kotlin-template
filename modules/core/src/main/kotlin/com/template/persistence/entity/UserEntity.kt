@@ -7,8 +7,8 @@ import java.util.*
 @Entity
 @Table(name = "users")
 internal data class UserEntity(
-
-    override val id: UUID,
+    @Id
+    val id: UUID,
 
     @Size(max = 256)
     @Column(name = "email", nullable = false, unique = true)
@@ -29,9 +29,7 @@ internal data class UserEntity(
     @Column(name = "api-keys", nullable = false)
     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
     val apiKeys: List<ApiKeyEntity>,
-
-) : BaseEntity(id) {
-
+) {
     override fun equals(other: Any?): Boolean =
         this === other || other is UserEntity &&
             id == other.id &&

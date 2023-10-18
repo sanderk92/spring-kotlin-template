@@ -1,5 +1,6 @@
 package com.template.domain
 
+import com.template.config.IdGenerator
 import com.template.config.security.apikey.ApiKeyGenerator
 import com.template.config.security.apikey.HashGenerator
 import com.template.config.security.user.Authority
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 internal class ApiKeyService(
+    private val idGenerator: IdGenerator<UUID>,
     private val apiKeyGenerator: ApiKeyGenerator,
     private val hashGenerator: HashGenerator,
     private val userRepository: UserRepository,
@@ -25,7 +27,7 @@ internal class ApiKeyService(
     fun createApiKey(userId: UUID, name: String, authorities: List<Authority>): ApiKeyCreated? =
         userRepository.findById(userId).getOrNull()?.let { user ->
             val unHashedApiKey = apiKeyGenerator.generate()
-            ApiKeyEntity(hashGenerator.hash(unHashedApiKey), name, user, authorities)
+            ApiKeyEntity(idGenerator(), hashGenerator.hash(unHashedApiKey), name, user, authorities)
                 .let(apiKeyRepository::save)
                 .let { apiKeyMapper.toApiKeyCreated(it, unHashedApiKey) }
         }

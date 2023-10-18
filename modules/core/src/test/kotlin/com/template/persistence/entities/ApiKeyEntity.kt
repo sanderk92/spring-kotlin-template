@@ -1,11 +1,13 @@
 package com.template.persistence.entities
 
-import com.template.domain.models.apiKey
+import com.template.config.security.user.Authority.*
 import com.template.persistence.entity.ApiKeyEntity
+import java.util.*
 
 internal val apiKeyEntity: ApiKeyEntity = ApiKeyEntity(
-    name = apiKey.name,
-    hashedKey = apiKey.hashedKey,
+    id = UUID.randomUUID(),
+    name = "name",
+    hashedKey = "hashedKey",
     owner = userEntity,
-    authorities = apiKey.authorities
+    authorities = listOf(READ, WRITE, DELETE, ADMIN)
 )

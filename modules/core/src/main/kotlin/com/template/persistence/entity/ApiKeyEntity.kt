@@ -8,6 +8,8 @@ import java.util.*
 @Entity
 @Table(name = "apikeys")
 internal data class ApiKeyEntity(
+    @Id
+    val id: UUID,
 
     @Size(max = 256)
     @Column(name = "hashed-key", nullable = false, unique = true)
@@ -26,9 +28,7 @@ internal data class ApiKeyEntity(
     @CollectionTable(name = "apikey-authorities")
     @Column(name = "authorities", nullable = false)
     val authorities: List<Authority>,
-
-) : BaseEntity() {
-
+) {
     override fun equals(other: Any?): Boolean =
         this === other || other is ApiKeyEntity &&
             id == other.id &&

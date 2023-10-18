@@ -1,28 +1,27 @@
 package com.template.domain.models
 
-import com.template.config.security.user.Authority
 import com.template.controller.interfaces.ApiKeyRequest
 import com.template.domain.model.ApiKey
 import com.template.domain.model.ApiKeyCreated
-import java.util.*
+import com.template.persistence.entities.apiKeyEntity
 
 internal val apiKeyRequest = ApiKeyRequest(
-    name = "keyName",
+    name = apiKeyEntity.name,
     read = true,
     write = true,
     delete = true,
 )
 
 internal val apiKeyCreated = ApiKeyCreated(
-    id = UUID(0, 0),
-    name = "name",
+    id = apiKeyEntity.id,
+    name = apiKeyEntity.name,
     key = "unHashedKey",
-    authorities = listOf(Authority.READ, Authority.WRITE, Authority.DELETE)
+    authorities = apiKeyEntity.authorities
 )
 
 internal val apiKey = ApiKey(
-    id = UUID(0, 0),
-    name = "name",
-    hashedKey = "hashedKey",
-    authorities = listOf(Authority.READ, Authority.WRITE, Authority.DELETE)
+    id = apiKeyEntity.id,
+    name = apiKeyEntity.name,
+    hashedKey = apiKeyEntity.hashedKey,
+    authorities = apiKeyEntity.authorities
 )
