@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 internal class ApiKeyService(
-    private val idGenerator: IdGenerator<UUID>,
+    private val generateUuid: IdGenerator<UUID>,
     private val apiKeyGenerator: ApiKeyGenerator,
     private val hashGenerator: HashGenerator,
     private val userRepository: UserRepository,
@@ -27,7 +27,7 @@ internal class ApiKeyService(
     fun createApiKey(userId: UUID, name: String, authorities: List<Authority>): ApiKeyCreated? =
         userRepository.findById(userId).getOrNull()?.let { user ->
             val unHashedApiKey = apiKeyGenerator.generate()
-            ApiKeyEntity(idGenerator(), hashGenerator.hash(unHashedApiKey), name, user, authorities)
+            ApiKeyEntity(generateUuid(), hashGenerator.hash(unHashedApiKey), name, user, authorities)
                 .let(apiKeyRepository::save)
                 .let { apiKeyMapper.toApiKeyCreated(it, unHashedApiKey) }
         }
