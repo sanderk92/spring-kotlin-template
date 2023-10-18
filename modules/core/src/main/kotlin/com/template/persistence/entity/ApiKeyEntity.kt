@@ -16,7 +16,7 @@ internal data class ApiKeyEntity(
     val hashedKey: String,
 
     @Size(max = 256)
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     val name: String,
 
     @JoinColumn(name = "owner")
