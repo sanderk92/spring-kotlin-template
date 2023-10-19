@@ -1,0 +1,13 @@
+DATABASE_URL: jdbc:h2:mem:testdb
+DATABASE_DIALECT: org.hibernate.dialect.H2Dialect
+DATABASE_USERNAME: username
+DATABASE_PASSWORD: password
+OIDC_PROVIDER_CONFIG_URL: http://unused/
+OIDC_PROVIDER_JWK_URL: http://unused/
+OIDC_SERVER_CLIENT_ID: unused
+OIDC_SERVER_CLIENT_SECRET: unused
+OIDC_SWAGGER_CLIENT_ID: unused
+
+feature:
+  dev:
+    generate-user: true
