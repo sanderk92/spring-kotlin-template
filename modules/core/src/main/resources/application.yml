@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: "/api"
+    context-path: "/v1"
 
 springdoc:
   oidc:
