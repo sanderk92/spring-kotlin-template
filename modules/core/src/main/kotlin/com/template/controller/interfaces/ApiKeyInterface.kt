@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 internal interface ApiKeyInterface {
 
     companion object {
-        const val ENDPOINT = "/keys"
+        const val ENDPOINT = "/v1/keys"
     }
 
     @GetMapping

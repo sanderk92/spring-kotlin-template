@@ -1,7 +1,3 @@
-server:
-  servlet:
-    context-path: "/v1"
-
 springdoc:
   oidc:
     url: ${OIDC_PROVIDER_CONFIG_URL}

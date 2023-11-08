@@ -14,7 +14,7 @@ internal class OpenApiConfig(
 ) {
     @Bean
     fun webClient(): WebClient = WebClient.builder()
-        .baseUrl("http://localhost:${context.webServer.port}/api/")
+        .baseUrl("http://localhost:${context.webServer.port}/")
         .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer token")
         .build()
 

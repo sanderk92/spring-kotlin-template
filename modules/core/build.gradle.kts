@@ -69,7 +69,7 @@ tasks.withType<Test> {
 }
 
 openApi {
-    apiDocsUrl.set("http://localhost:8080/api/v3/api-docs")
+    apiDocsUrl.set("http://localhost:8080/v3/api-docs")
     customBootRun {
         args.set(listOf("--spring.profiles.active=openapi"))
     }

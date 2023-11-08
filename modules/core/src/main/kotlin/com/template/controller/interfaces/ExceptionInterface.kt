@@ -42,16 +42,6 @@ private const val mediaType: String = MediaType.APPLICATION_JSON_VALUE
             ]
         ),
         ApiResponse(
-            responseCode = "403",
-            description = "Access denied error",
-            content = [
-                Content(
-                    mediaType = mediaType,
-                    schema = Schema(implementation = ExceptionModel::class)
-                )
-            ]
-        ),
-        ApiResponse(
             responseCode = "400",
             description = "Input formatting error",
             content = [

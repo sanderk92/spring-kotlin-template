@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam
 internal interface UserInterface {
 
     companion object {
-        const val ENDPOINT = "/users"
+        const val ENDPOINT = "/v1/users"
     }
 
     @GetMapping
