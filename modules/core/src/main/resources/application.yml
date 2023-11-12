@@ -2,6 +2,7 @@ springdoc:
   oidc:
     url: ${OIDC_PROVIDER_CONFIG_URL}
   swagger-ui:
+    oauth2-redirect-url: ${SERVER_HOST}/swagger-ui/oauth2-redirect.html
     oauth:
       client-id: ${OIDC_SWAGGER_CLIENT_ID}
       use-pkce-with-authorization-code-grant: true

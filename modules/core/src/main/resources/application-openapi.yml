@@ -1,3 +1,4 @@
+SERVER_HOST: http://localhost:8080
 DATABASE_URL: jdbc:h2:mem:testdb
 DATABASE_DIALECT: org.hibernate.dialect.H2Dialect
 DATABASE_USERNAME: username
@@ -7,7 +8,3 @@ OIDC_PROVIDER_JWK_URL: https://todo.com/
 OIDC_SERVER_CLIENT_ID: unused
 OIDC_SERVER_CLIENT_SECRET: unused
 OIDC_SWAGGER_CLIENT_ID: unused
-
-springdoc:
-  openapi:
-    host: https://todo.com/

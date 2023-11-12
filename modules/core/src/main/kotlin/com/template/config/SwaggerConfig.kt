@@ -40,17 +40,7 @@ internal class SwaggerConfiguration(
         .build()
 
     @Bean
-    @Profile("!openapi")
-    fun apiInfo(): OpenAPI = OpenAPI().info(
-        Info()
-            .title("API")
-            .description("API docs")
-            .version(buildProperties.version),
-    )
-
-    @Bean
-    @Profile("openapi")
-    fun apiInfoOpenApiProfile(@Value("\${springdoc.openapi.host}") host: String): OpenAPI = OpenAPI()
+    fun apiInfoOpenApiProfile(@Value("\${server.host}") host: String): OpenAPI = OpenAPI()
         .addServersItem(Server().also { it.url = host }).info(
             Info()
                 .title("API")

@@ -1,3 +1,4 @@
+SERVER_HOST: http://localhost:8080
 DATABASE_URL: jdbc:postgresql://localhost:5432/
 DATABASE_USERNAME: postgres
 DATABASE_PASSWORD: postgres
