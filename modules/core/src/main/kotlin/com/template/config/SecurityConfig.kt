@@ -20,6 +20,7 @@ private val PUBLIC_ENDPOINTS = arrayOf(
     "/swagger-ui/**",
     "/swagger-resources/**",
     "/v3/api-docs/**",
+    "/actuator/health"
 )
 
 @Configuration
