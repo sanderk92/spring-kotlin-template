@@ -11,10 +11,12 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import java.util.*
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.annotation.Secured
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
+@CrossOrigin
 @RequestMapping(ENDPOINT)
 @Secured(READ_ROLE)
 @Tag(name = "User", description = "Retrieve information about the current user")

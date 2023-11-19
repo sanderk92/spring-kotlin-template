@@ -32,6 +32,7 @@ internal class SecurityConfig(
 
     @Bean
     fun configure(http: HttpSecurity): SecurityFilterChain = http
+        .cors(Customizer.withDefaults())
         .csrf(Customizer.withDefaults())
         .authorizeHttpRequests { auth ->
             auth
@@ -49,14 +50,4 @@ internal class SecurityConfig(
         .addFilterAfter(jwtUserStorageFilter, BearerTokenAuthenticationFilter::class.java)
         .addFilterAfter(apiKeyFilter, jwtUserStorageFilter::class.java)
         .build()
-
-    @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("*")
-        configuration.allowedMethods = listOf("*")
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", configuration)
-        return source
-    }
 }

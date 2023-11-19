@@ -17,8 +17,8 @@ internal class JwtRoleExtractor {
      * will result in only the default authorizations to be assigned. Any unknown roles are ignored.
      */
     @Bean
-    fun jwtAuthConverter(jwtProperties: JwtProperties): JwtAuthenticationConverter {
-        val claimStructure = jwtProperties.claims.authorities.split(".")
+    fun jwtAuthConverter(role: RoleProperties): JwtAuthenticationConverter {
+        val claimStructure = role.claim.split(".")
 
         if (claimStructure.isEmpty()) {
             throw ApplicationContextException("Required claim for authorities extraction is missing")
@@ -28,8 +28,8 @@ internal class JwtRoleExtractor {
             converter.setJwtGrantedAuthoritiesConverter { jwt ->
                 runCatching { extractRoles(jwt, claimStructure) }
                     .getOrDefault(emptyList())
-                    .flatMap { jwtProperties.roleMappings[it] ?: emptyList() }
-                    .plus(jwtProperties.roleDefaults)
+                    .flatMap { role.mappings[it] ?: emptyList() }
+                    .plus(role.defaults)
                     .distinct()
                     .map { SimpleGrantedAuthority(it.role) }
             }

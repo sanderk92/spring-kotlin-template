@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.info.BuildProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 
 internal object SecuritySchemes {
     const val APIKEY = "API-Key"
@@ -34,13 +33,13 @@ internal class SwaggerConfiguration(
     private val buildProperties: BuildProperties,
 ) {
     @Bean
-    fun api(): GroupedOpenApi = GroupedOpenApi.builder()
+    fun groupedOpenApi(): GroupedOpenApi = GroupedOpenApi.builder()
         .group("API")
         .pathsToMatch("/**")
         .build()
 
     @Bean
-    fun apiInfoOpenApiProfile(@Value("\${server.host}") host: String): OpenAPI = OpenAPI()
+    fun openApi(@Value("\${server.host}") host: String): OpenAPI = OpenAPI()
         .addServersItem(Server().also { it.url = host }).info(
             Info()
                 .title("API")

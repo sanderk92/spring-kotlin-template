@@ -40,6 +40,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test")
     testImplementation("com.h2database:h2:2.2.224")
+    testImplementation("org.wiremock:wiremock:3.3.1")
 
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.vintage:junit-vintage-engine")
