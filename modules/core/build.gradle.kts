@@ -15,6 +15,7 @@ plugins {
     id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
     id("com.google.cloud.tools.jib") version "3.3.0"
+    id("org.flywaydb.flyway") version "9.0.0"
 }
 
 repositories {
@@ -47,9 +48,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-noarg")
 
-    // Other
+    // Database
     implementation("org.postgresql:postgresql")
     implementation("com.h2database:h2:2.2.224")
+    implementation("org.flywaydb:flyway-core:9.0.0")
+
+    // Mapping
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
 

@@ -19,7 +19,7 @@ spring:
     database-platform: ${DATABASE_DIALECT}
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
   security:
     oauth2:
       resourceserver:

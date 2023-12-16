@@ -26,7 +26,7 @@ internal data class UserEntity(
     @Column(name = "lastname", nullable = false)
     val lastName: String,
 
-    @Column(name = "api-keys", nullable = false)
+    @Column(name = "api_keys", nullable = false)
     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
     val apiKeys: List<ApiKeyEntity>,
 ) {

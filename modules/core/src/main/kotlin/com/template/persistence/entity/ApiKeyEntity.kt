@@ -12,7 +12,7 @@ internal data class ApiKeyEntity(
     val id: UUID,
 
     @Size(max = 256)
-    @Column(name = "hashed-key", nullable = false, unique = true)
+    @Column(name = "hashed_key", nullable = false, unique = true)
     val hashedKey: String,
 
     @Size(max = 256)
@@ -25,7 +25,7 @@ internal data class ApiKeyEntity(
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "apikey-authorities")
+    @CollectionTable(name = "apikey_authorities")
     @Column(name = "authorities", nullable = false)
     val authorities: List<Authority>,
 ) {
