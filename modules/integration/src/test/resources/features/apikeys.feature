@@ -1,5 +1,5 @@
 @Integration
-Feature: Keys
+Feature: ApiKeys
 
   Scenario: api keys can be managed
     Given current user without roles

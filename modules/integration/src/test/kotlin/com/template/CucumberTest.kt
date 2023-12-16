@@ -17,9 +17,6 @@ import org.springframework.test.context.DynamicPropertySource
 
 @RunWith(Cucumber::class)
 @CucumberContextConfiguration
-@DirtiesContext(
-    methodMode = AFTER_METHOD
-)
 @SpringBootTest(
     webEnvironment = RANDOM_PORT,
     classes = [Application::class]
@@ -30,6 +27,7 @@ import org.springframework.test.context.DynamicPropertySource
     monochrome = true,
     tags = "@Integration"
 )
+//@DirtiesContext // TODO Currently, the database is not cleared
 internal class CucumberTest {
 
     companion object {
