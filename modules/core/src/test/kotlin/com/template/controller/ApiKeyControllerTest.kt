@@ -1,11 +1,13 @@
 package com.template.controller
 
 import com.template.config.security.user.Authority
-import com.template.config.security.user.Authority.*
+import com.template.config.security.user.Authority.DELETE
+import com.template.config.security.user.Authority.READ
+import com.template.config.security.user.Authority.WRITE
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
-import com.template.domain.models.*
+import com.template.domain.models.PRINCIPAL_NAME
 import com.template.domain.models.apiKey
 import com.template.domain.models.apiKeyCreated
 import com.template.domain.models.apiKeyRequest
@@ -18,7 +20,7 @@ import com.template.util.asJson
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import java.util.*
+import java.util.UUID
 import org.apache.catalina.security.SecurityConfig
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Test
@@ -46,10 +48,8 @@ import org.springframework.test.web.servlet.post
     ],
 )
 internal class ApiKeyControllerTest {
-
     @TestConfiguration
     class TestConfig {
-
         @Bean
         fun apiKeyService() = mockk<ApiKeyService>()
 
@@ -105,14 +105,21 @@ internal class ApiKeyControllerTest {
     @Test
     @WithMockUser(username = PRINCIPAL_NAME)
     fun `Api keys can be created`() {
-        every { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) } returns apiKeyCreated
+        every {
+            apiKeyService.createApiKey(
+                UUID.fromString(PRINCIPAL_NAME),
+                apiKeyRequest.name,
+                listOf(READ, WRITE, DELETE),
+            )
+        } returns apiKeyCreated
 
-        val payload = mapOf(
-            "name" to apiKeyRequest.name,
-            "read" to apiKeyRequest.read,
-            "write" to apiKeyRequest.write,
-            "delete" to apiKeyRequest.delete,
-        ).asJson()
+        val payload =
+            mapOf(
+                "name" to apiKeyRequest.name,
+                "read" to apiKeyRequest.read,
+                "write" to apiKeyRequest.write,
+                "delete" to apiKeyRequest.delete,
+            ).asJson()
 
         mvc.post(ENDPOINT) {
             with(csrf())
@@ -131,12 +138,13 @@ internal class ApiKeyControllerTest {
     fun `Api keys for non-existing users cannot be created`() {
         every { apiKeyService.createApiKey(UUID.fromString(PRINCIPAL_NAME), apiKeyRequest.name, listOf(READ, WRITE, DELETE)) } returns null
 
-        val payload = mapOf(
-            "name" to apiKeyRequest.name,
-            "read" to apiKeyRequest.read,
-            "write" to apiKeyRequest.write,
-            "delete" to apiKeyRequest.delete,
-        ).asJson()
+        val payload =
+            mapOf(
+                "name" to apiKeyRequest.name,
+                "read" to apiKeyRequest.read,
+                "write" to apiKeyRequest.write,
+                "delete" to apiKeyRequest.delete,
+            ).asJson()
 
         mvc.post(ENDPOINT) {
             with(csrf())

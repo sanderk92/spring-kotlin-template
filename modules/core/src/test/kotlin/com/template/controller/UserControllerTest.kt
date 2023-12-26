@@ -36,7 +36,6 @@ import org.springframework.test.web.servlet.get
     ],
 )
 internal class UserControllerTest {
-
     @Autowired
     private lateinit var mvc: MockMvc
 
@@ -45,7 +44,6 @@ internal class UserControllerTest {
 
     @TestConfiguration
     class TestConfig {
-
         @Bean
         fun userService() = mockk<UserService>()
 

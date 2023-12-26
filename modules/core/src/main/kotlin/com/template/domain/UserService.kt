@@ -6,7 +6,7 @@ import com.template.domain.model.User
 import com.template.mappers.UserMapper
 import com.template.persistence.UserRepository
 import com.template.persistence.entity.UserEntity
-import java.util.*
+import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,7 +16,6 @@ internal class UserService(
     private val userRepository: UserRepository,
     private val userMapper: UserMapper,
 ) : SecureUserService {
-
     @Transactional(readOnly = true)
     fun search(query: String): List<User> =
         userRepository.search(query)
@@ -38,11 +37,12 @@ internal class UserService(
             .let(userMapper::toUser)
 }
 
-private fun createEntity(user: SecureUserEntry) = UserEntity(
-    id = user.id,
-    email = user.email,
-    username = user.username,
-    firstName = user.firstName,
-    lastName = user.lastName,
-    apiKeys = listOf(),
-)
+private fun createEntity(user: SecureUserEntry) =
+    UserEntity(
+        id = user.id,
+        email = user.email,
+        username = user.username,
+        firstName = user.firstName,
+        lastName = user.lastName,
+        apiKeys = listOf(),
+    )

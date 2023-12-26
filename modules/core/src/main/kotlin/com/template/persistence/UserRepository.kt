@@ -1,14 +1,13 @@
 package com.template.persistence
 
 import com.template.persistence.entity.UserEntity
-import java.util.*
+import java.util.UUID
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
 internal interface UserRepository : JpaRepository<UserEntity, UUID> {
-
     @Query(
         """
         SELECT u FROM UserEntity u

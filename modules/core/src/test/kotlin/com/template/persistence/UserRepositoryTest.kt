@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration
 @EnableAutoConfiguration
 @ContextConfiguration(classes = [UserRepository::class])
 internal class UserRepositoryTest {
-
     @Autowired
     private lateinit var em: TestEntityManager
 

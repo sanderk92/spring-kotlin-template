@@ -1,31 +1,31 @@
 package com.template.persistence.entity
 
-import jakarta.persistence.*
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 import jakarta.validation.constraints.Size
-import java.util.*
+import java.util.UUID
 
 @Entity
 @Table(name = "users")
 internal data class UserEntity(
     @Id
     val id: UUID,
-
     @Size(max = 256)
     @Column(name = "email", nullable = false, unique = true)
     val email: String,
-
     @Size(max = 256)
     @Column(name = "username", nullable = false, unique = true)
     val username: String,
-
     @Size(max = 256)
     @Column(name = "firstname", nullable = false)
     val firstName: String,
-
     @Size(max = 256)
     @Column(name = "lastname", nullable = false)
     val lastName: String,
-
     @Column(name = "api_keys", nullable = false)
     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
     val apiKeys: List<ApiKeyEntity>,
@@ -45,6 +45,5 @@ internal data class UserEntity(
             31 * firstName.hashCode() +
             31 * lastName.hashCode()
 
-    override fun toString(): String =
-        "${this.javaClass.simpleName}(id=$id)"
+    override fun toString(): String = "${this.javaClass.simpleName}(id=$id)"
 }

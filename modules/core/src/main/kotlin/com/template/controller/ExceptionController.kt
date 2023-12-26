@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 
 @ControllerAdvice
 internal class ExceptionController : ExceptionInterface {
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handle(exception: Throwable): ProblemDetail {
@@ -79,11 +78,12 @@ internal class ExceptionController : ExceptionInterface {
         }
     }
 
-    private fun constraintError(error: ConstraintViolation<*>) = ValidationError(
-        message = error.message ?: "no message",
-        field = error.propertyPath.toString(),
-        value = error.invalidValue.toString(),
-    )
+    private fun constraintError(error: ConstraintViolation<*>) =
+        ValidationError(
+            message = error.message ?: "no message",
+            field = error.propertyPath.toString(),
+            value = error.invalidValue.toString(),
+        )
 
     private fun fieldErrors(exception: MethodArgumentNotValidException) =
         exception.bindingResult.fieldErrors.map { error ->

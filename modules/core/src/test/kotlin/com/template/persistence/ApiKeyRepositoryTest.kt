@@ -3,7 +3,6 @@ package com.template.persistence
 import com.template.persistence.entities.apiKeyEntity
 import com.template.persistence.entities.userEntity
 import com.template.persistence.entity.ApiKeyEntity
-import java.util.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +17,6 @@ private val entityClass = ApiKeyEntity::class.java
 @EnableAutoConfiguration
 @ContextConfiguration(classes = [ApiKeyRepository::class])
 internal class ApiKeyRepositoryTest {
-
     @Autowired
     private lateinit var em: TestEntityManager
 

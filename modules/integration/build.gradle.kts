@@ -2,14 +2,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
-    kotlin("plugin.jpa") version "1.5.21"
-    kotlin("plugin.allopen") version "1.5.21"
-    kotlin("plugin.noarg") version "1.9.10"
-    id("org.springframework.boot") version "3.1.1"
-    id("io.spring.dependency-management") version "1.1.3"
-    id("org.openapi.generator") version "7.0.1"
+    kotlin("jvm") version "1.9.22"
+    kotlin("plugin.spring") version "1.9.22"
+    kotlin("plugin.jpa") version "1.9.22"
+    kotlin("plugin.allopen") version "1.9.22"
+    kotlin("plugin.noarg") version "1.9.22"
+    // org.springframework.boot 3.2.0 currently causes wiremock issues
+    id("org.springframework.boot") version "3.1.7"
+    id("io.spring.dependency-management") version "1.1.4"
+    id("org.openapi.generator") version "7.2.0"
 }
 
 repositories {
@@ -25,17 +26,17 @@ sourceSets {
     }
 }
 
-val cucumberVersion = "7.14.0"
+val cucumberVersion = "7.15.0"
 
 dependencies {
     implementation(project(mapOf("path" to ":modules:core")))
 
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux:3.1.4")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test")

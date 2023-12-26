@@ -6,7 +6,7 @@ import com.template.config.security.user.SecureUserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import java.util.*
+import java.util.UUID
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -24,8 +24,11 @@ internal class JwtUserStorageFilter(
     private val userInfoProperties: UserInfoProperties,
     private val restTemplate: RestTemplate,
 ) : OncePerRequestFilter() {
-
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        chain: FilterChain,
+    ) {
         val authentication: Authentication? = SecurityContextHolder.getContext().authentication
         if (authentication?.isAuthenticated == true && authentication is JwtAuthenticationToken) {
             secureUserService.findById(extractId(authentication)) ?: createUser(authentication)
@@ -59,15 +62,19 @@ internal class JwtUserStorageFilter(
         runCatching { UUID.fromString(authentication.name) }.getOrNull()
             ?: throw IllegalArgumentException("Invalid or missing id in JWT: '${authentication.name}'")
 
-    private fun extractEmail(map: Map<String, String>) = map[userInfoProperties.email]
-        ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.email}'")
+    private fun extractEmail(map: Map<String, String>) =
+        map[userInfoProperties.email]
+            ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.email}'")
 
-    private fun extractUsername(map: Map<String, String>) = map[userInfoProperties.username]
-        ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.username}'")
+    private fun extractUsername(map: Map<String, String>) =
+        map[userInfoProperties.username]
+            ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.username}'")
 
-    private fun extractFirstName(map: Map<String, String>) = map[userInfoProperties.firstName]
-        ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.firstName}'")
+    private fun extractFirstName(map: Map<String, String>) =
+        map[userInfoProperties.firstName]
+            ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.firstName}'")
 
-    private fun extractLastName(map: Map<String, String>) = map[userInfoProperties.lastName]
-        ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.lastName}'")
+    private fun extractLastName(map: Map<String, String>) =
+        map[userInfoProperties.lastName]
+            ?: throw IllegalArgumentException("Missing required user info: '${userInfoProperties.lastName}'")
 }

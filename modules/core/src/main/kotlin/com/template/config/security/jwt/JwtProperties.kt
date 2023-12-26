@@ -16,5 +16,5 @@ internal data class UserInfoProperties(
 internal data class RoleProperties(
     val claim: String,
     val defaults: List<Authority>,
-    val mappings: Map<String, List<Authority>>
+    val mappings: Map<String, List<Authority>>,
 )

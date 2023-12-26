@@ -9,10 +9,12 @@ internal enum class Authority(val role: String) {
     READ(READ_ROLE),
     WRITE(WRITE_ROLE),
     DELETE(DELETE_ROLE),
-    ADMIN(ADMIN_ROLE);
+    ADMIN(ADMIN_ROLE),
+    ;
 
     companion object {
         private val lookup: Map<String, Authority> = Authority.values().associateBy(Authority::role)
+
         fun valueOfRole(role: String?): Authority? = role?.let(lookup::get)
     }
 }

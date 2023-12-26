@@ -4,18 +4,18 @@ group = "com.template"
 version = "0.0.1"
 
 plugins {
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
-    kotlin("plugin.jpa") version "1.5.21"
-    kotlin("plugin.allopen") version "1.5.21"
-    kotlin("plugin.noarg") version "1.9.10"
-    kotlin("kapt") version "1.9.10"
-    id("org.springframework.boot") version "3.1.1"
-    id("io.spring.dependency-management") version "1.1.3"
+    kotlin("jvm") version "1.9.22"
+    kotlin("plugin.spring") version "1.9.22"
+    kotlin("plugin.jpa") version "1.9.22"
+    kotlin("plugin.allopen") version "1.9.22"
+    kotlin("plugin.noarg") version "1.9.22"
+    kotlin("kapt") version "1.9.22"
+    id("org.springframework.boot") version "3.2.1"
+    id("io.spring.dependency-management") version "1.1.4"
     id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
-    id("com.google.cloud.tools.jib") version "3.3.0"
-    id("org.flywaydb.flyway") version "9.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
+    id("com.google.cloud.tools.jib") version "3.4.0"
+    id("org.flywaydb.flyway") version "10.4.1"
 }
 
 repositories {
@@ -39,19 +39,19 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-aop")
-    implementation("org.springframework:spring-aspects:6.0.3")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+    implementation("org.springframework:spring-aspects")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
     // Kotlin
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlin:kotlin-noarg")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
+    implementation("org.jetbrains.kotlin:kotlin-noarg:1.9.22")
 
     // Database
-    implementation("org.postgresql:postgresql")
+    implementation("org.postgresql:postgresql:42.7.1")
     implementation("com.h2database:h2:2.2.224")
-    implementation("org.flywaydb:flyway-core:9.0.0")
+    implementation("org.flywaydb:flyway-core:10.4.1")
 
     // Mapping
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
@@ -59,7 +59,7 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk:1.13.8")
 }
 
 tasks.withType<KotlinCompile> {
@@ -86,8 +86,32 @@ springBoot {
 
 ktlint {
     enableExperimentalRules.set(true)
-    disabledRules.set(setOf("no-wildcard-imports"))
+    filter {
+        setExcludes(setOf("./build"))
+    }
 }
 
 jib {
+}
+
+/*
+ * To satisfy Gradle 8+
+ */
+tasks.named("forkedSpringBootRun") {
+    dependsOn(":modules:core:jar")
+    dependsOn(":modules:core:test")
+    dependsOn(":modules:core:bootJar")
+    dependsOn(":modules:core:processTestResources")
+    dependsOn(":modules:core:kaptGenerateStubsTestKotlin")
+    dependsOn(":modules:core:kaptTestKotlin")
+    dependsOn(":modules:core:compileTestKotlin")
+    dependsOn(":modules:core:runKtlintCheckOverTestSourceSet")
+    dependsOn(":modules:core:runKtlintCheckOverKotlinScripts")
+    dependsOn(":modules:core:ktlintMainSourceSetCheck")
+    dependsOn(":modules:core:ktlintKotlinScriptCheck")
+    dependsOn(":modules:core:ktlintTestSourceSetCheck")
+}
+
+tasks.named("runKtlintCheckOverMainSourceSet") {
+    dependsOn(":modules:core:kaptKotlin")
 }

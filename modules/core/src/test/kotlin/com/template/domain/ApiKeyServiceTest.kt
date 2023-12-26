@@ -2,7 +2,6 @@ package com.template.domain
 
 import com.template.config.security.apikey.ApiKeyGenerator
 import com.template.config.security.apikey.HashGenerator
-import com.template.config.security.user.Authority.*
 import com.template.domain.models.apiKeyCreated
 import com.template.domain.models.user
 import com.template.mappers.ApiKeyMapperImpl
@@ -14,7 +13,8 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -22,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
 internal class ApiKeyServiceTest {
-
     @MockK
     private lateinit var idGenerator: () -> UUID
 

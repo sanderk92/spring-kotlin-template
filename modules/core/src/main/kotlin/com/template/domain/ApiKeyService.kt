@@ -9,7 +9,7 @@ import com.template.mappers.ApiKeyMapper
 import com.template.persistence.ApiKeyRepository
 import com.template.persistence.UserRepository
 import com.template.persistence.entity.ApiKeyEntity
-import java.util.*
+import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,7 +24,11 @@ internal class ApiKeyService(
     private val apiKeyMapper: ApiKeyMapper,
 ) {
     @Transactional
-    fun createApiKey(userId: UUID, name: String, authorities: List<Authority>): ApiKeyCreated? =
+    fun createApiKey(
+        userId: UUID,
+        name: String,
+        authorities: List<Authority>,
+    ): ApiKeyCreated? =
         userRepository.findById(userId).getOrNull()?.let { user ->
             val unHashedApiKey = apiKeyGenerator.generate()
             ApiKeyEntity(uuidGenerator(), hashGenerator.hash(unHashedApiKey), name, user, authorities)
@@ -33,6 +37,8 @@ internal class ApiKeyService(
         }
 
     @Transactional
-    fun deleteApiKey(userId: UUID, apiKeyId: UUID): Unit =
-        apiKeyRepository.delete(userId, apiKeyId)
+    fun deleteApiKey(
+        userId: UUID,
+        apiKeyId: UUID,
+    ): Unit = apiKeyRepository.delete(userId, apiKeyId)
 }

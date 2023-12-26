@@ -1,11 +1,14 @@
 package com.template.util.dev
 
-import com.template.config.security.user.Authority.*
+import com.template.config.security.user.Authority.ADMIN
+import com.template.config.security.user.Authority.DELETE
+import com.template.config.security.user.Authority.READ
+import com.template.config.security.user.Authority.WRITE
 import com.template.config.security.user.SecureUserEntry
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
 import jakarta.annotation.PostConstruct
-import java.util.*
+import java.util.UUID
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
@@ -19,21 +22,23 @@ internal class ApiKeyGenerator(
 ) {
     @PostConstruct
     fun generateDevApiKey() {
-        val user = userService.create(
-            SecureUserEntry(
-                id = UUID.randomUUID(),
-                email = "dev@dev.nl",
-                username = "dev",
-                firstName = "dev",
-                lastName = "dev",
-            ),
-        )
+        val user =
+            userService.create(
+                SecureUserEntry(
+                    id = UUID.randomUUID(),
+                    email = "dev@dev.nl",
+                    username = "dev",
+                    firstName = "dev",
+                    lastName = "dev",
+                ),
+            )
 
-        val key = apiKeyService.createApiKey(
-            userId = user.id,
-            name = "dev-key",
-            authorities = listOf(READ, WRITE, DELETE, ADMIN),
-        )
+        val key =
+            apiKeyService.createApiKey(
+                userId = user.id,
+                name = "dev-key",
+                authorities = listOf(READ, WRITE, DELETE, ADMIN),
+            )
 
         println()
         println("API KEY GENERATED FOR DEV: ${key?.key}")

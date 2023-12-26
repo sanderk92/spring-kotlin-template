@@ -1,7 +1,7 @@
 package com.template.domain.model
 
 import com.template.config.security.user.SecureUser
-import java.util.*
+import java.util.UUID
 
 internal data class User(
     override val id: UUID,

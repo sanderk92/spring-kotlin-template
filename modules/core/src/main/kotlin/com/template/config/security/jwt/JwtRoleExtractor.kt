@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 @Configuration
 internal class JwtRoleExtractor {
-
     /**
      * A custom [JwtAuthenticationConverter] capable of extracting authorities from a nested claim, specified by dot
      * notation. For example the Keycloak claim 'realm_access.roles'. All values inside the claim are translated
@@ -36,7 +35,10 @@ internal class JwtRoleExtractor {
         }
     }
 
-    private fun extractRoles(jwt: Jwt, claimStructure: List<String>): List<String> {
+    private fun extractRoles(
+        jwt: Jwt,
+        claimStructure: List<String>,
+    ): List<String> {
         var map: Map<*, *> = jwt.claims
 
         claimStructure.dropLast(1)

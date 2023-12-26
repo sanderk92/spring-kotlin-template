@@ -1,6 +1,6 @@
 package com.template.config.security.user
 
-import java.util.*
+import java.util.UUID
 
 /**
  * Customizable representation of the current user regardless of auth method

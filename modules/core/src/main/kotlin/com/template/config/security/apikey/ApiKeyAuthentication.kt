@@ -13,7 +13,6 @@ internal class ApiKeyAuthentication(
     private val authorities: List<Authority>,
     private var isAuthenticated: Boolean = true,
 ) : Authentication {
-
     override fun getName(): String {
         return name
     }

@@ -9,15 +9,20 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
-import java.util.*
+import java.util.UUID
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 
 @CrossOrigin
 @RequestMapping(ENDPOINT)
 @Tag(name = "Keys", description = "Manage api keys for the current user")
 internal interface ApiKeyInterface {
-
     companion object {
         const val ENDPOINT = "/v1/keys"
     }
@@ -26,7 +31,7 @@ internal interface ApiKeyInterface {
     @Operation(
         summary = "Get all api keys for the current user",
         description = "Not accessible by API key",
-        security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
+        security = [SecurityRequirement(name = SecuritySchemes.OIDC)],
     )
     fun getApiKeys(
         @Parameter(hidden = true) currentUser: CurrentUser,
@@ -36,7 +41,7 @@ internal interface ApiKeyInterface {
     @Operation(
         summary = "Create a new api key for the current user",
         description = "Not accessible by API key",
-        security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
+        security = [SecurityRequirement(name = SecuritySchemes.OIDC)],
     )
     fun createApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
@@ -48,7 +53,7 @@ internal interface ApiKeyInterface {
     @Operation(
         summary = "Delete an api key of the current user",
         description = "Not accessible by API key",
-        security = [SecurityRequirement(name = SecuritySchemes.OIDC)]
+        security = [SecurityRequirement(name = SecuritySchemes.OIDC)],
     )
     fun deleteApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,

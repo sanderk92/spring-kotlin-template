@@ -11,7 +11,6 @@ internal interface HashGenerator {
 
 @Service
 internal class Sha256HashGenerator : HashGenerator {
-
     override fun hash(string: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
         val hash = digest.digest(string.toByteArray(StandardCharsets.UTF_8))

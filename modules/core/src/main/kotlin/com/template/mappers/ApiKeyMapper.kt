@@ -10,12 +10,14 @@ import org.mapstruct.Mapper
 
 @Mapper(componentModel = "spring", injectionStrategy = CONSTRUCTOR)
 internal interface ApiKeyMapper {
-
     fun toApiKey(entity: ApiKeyEntity): ApiKey
 
     fun toApiKeyDto(model: ApiKey): ApiKeyDto
 
-    fun toApiKeyCreated(entity: ApiKeyEntity, key: String): ApiKeyCreated
+    fun toApiKeyCreated(
+        entity: ApiKeyEntity,
+        key: String,
+    ): ApiKeyCreated
 
     fun toApiKeyCreatedDto(model: ApiKeyCreated): ApiKeyCreatedDto
 }

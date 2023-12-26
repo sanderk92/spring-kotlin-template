@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.MediaType
 
-private const val mediaType: String = MediaType.APPLICATION_JSON_VALUE
+private const val MEDIA_TYPE: String = MediaType.APPLICATION_JSON_VALUE
 
 @ApiResponses(
     value = [
@@ -16,42 +16,42 @@ private const val mediaType: String = MediaType.APPLICATION_JSON_VALUE
             description = "Internal server error",
             content = [
                 Content(
-                    mediaType = mediaType,
-                    schema = Schema(implementation = ExceptionModel::class)
-                )
-            ]
+                    mediaType = MEDIA_TYPE,
+                    schema = Schema(implementation = ExceptionModel::class),
+                ),
+            ],
         ),
         ApiResponse(
             responseCode = "422",
             description = "Input validation error",
             content = [
                 Content(
-                    mediaType = mediaType,
-                    schema = Schema(implementation = ValidationExceptionModel::class)
-                )
-            ]
+                    mediaType = MEDIA_TYPE,
+                    schema = Schema(implementation = ValidationExceptionModel::class),
+                ),
+            ],
         ),
         ApiResponse(
             responseCode = "404",
             description = "Not found error",
             content = [
                 Content(
-                    mediaType = mediaType,
-                    schema = Schema(implementation = ExceptionModel::class)
-                )
-            ]
+                    mediaType = MEDIA_TYPE,
+                    schema = Schema(implementation = ExceptionModel::class),
+                ),
+            ],
         ),
         ApiResponse(
             responseCode = "400",
             description = "Input formatting error",
             content = [
                 Content(
-                    mediaType = mediaType,
-                    schema = Schema(implementation = ExceptionModel::class)
-                )
-            ]
+                    mediaType = MEDIA_TYPE,
+                    schema = Schema(implementation = ExceptionModel::class),
+                ),
+            ],
         ),
-    ]
+    ],
 )
 internal interface ExceptionInterface
 

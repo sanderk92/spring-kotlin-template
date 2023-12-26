@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import java.util.*
+import java.util.UUID
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam
 @Secured(READ_ROLE)
 @Tag(name = "User", description = "Retrieve information about the current user")
 internal interface UserInterface {
-
     companion object {
         const val ENDPOINT = "/v1/users"
     }
@@ -34,17 +33,17 @@ internal interface UserInterface {
     )
     fun searchUsers(
         @Parameter(description = "Query user by first, last or username and email") @RequestParam
-        query: String
+        query: String,
     ): ResponseEntity<List<UserDto>>
 
     @GetMapping("/me")
     @Operation(
         summary = "Get the details of the currently active authentication",
         description = "Accessible with role READ",
-        security = [SecurityRequirement(name = SecuritySchemes.OIDC), SecurityRequirement(name = SecuritySchemes.APIKEY)]
+        security = [SecurityRequirement(name = SecuritySchemes.OIDC), SecurityRequirement(name = SecuritySchemes.APIKEY)],
     )
     fun getCurrentUser(
-        @Parameter(hidden = true) currentUser: CurrentUser
+        @Parameter(hidden = true) currentUser: CurrentUser,
     ): ResponseEntity<CurrentUserDto>
 }
 

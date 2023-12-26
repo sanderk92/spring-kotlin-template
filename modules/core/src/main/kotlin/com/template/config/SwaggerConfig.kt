@@ -33,17 +33,21 @@ internal class SwaggerConfiguration(
     private val buildProperties: BuildProperties,
 ) {
     @Bean
-    fun groupedOpenApi(): GroupedOpenApi = GroupedOpenApi.builder()
-        .group("API")
-        .pathsToMatch("/**")
-        .build()
+    fun groupedOpenApi(): GroupedOpenApi =
+        GroupedOpenApi.builder()
+            .group("API")
+            .pathsToMatch("/**")
+            .build()
 
     @Bean
-    fun openApi(@Value("\${server.host}") host: String): OpenAPI = OpenAPI()
-        .addServersItem(Server().also { it.url = host }).info(
-            Info()
-                .title("API")
-                .description("API docs")
-                .version(buildProperties.version),
-        )
+    fun openApi(
+        @Value("\${server.host}") host: String,
+    ): OpenAPI =
+        OpenAPI()
+            .addServersItem(Server().also { it.url = host }).info(
+                Info()
+                    .title("API")
+                    .description("API docs")
+                    .version(buildProperties.version),
+            )
 }
