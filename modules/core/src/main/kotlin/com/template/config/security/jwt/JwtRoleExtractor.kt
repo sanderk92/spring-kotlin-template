@@ -35,10 +35,7 @@ internal class JwtRoleExtractor {
         }
     }
 
-    private fun extractRoles(
-        jwt: Jwt,
-        claimStructure: List<String>,
-    ): List<String> {
+    private fun extractRoles(jwt: Jwt, claimStructure: List<String>): List<String> {
         var map: Map<*, *> = jwt.claims
 
         claimStructure.dropLast(1)

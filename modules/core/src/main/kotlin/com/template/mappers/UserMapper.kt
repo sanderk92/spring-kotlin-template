@@ -14,8 +14,5 @@ internal interface UserMapper {
 
     fun toUserDto(user: User): UserDto
 
-    fun toCurrentUserDto(
-        user: User,
-        authorities: List<Authority>,
-    ): CurrentUserDto
+    fun toCurrentUserDto(user: User, authorities: List<Authority>): CurrentUserDto
 }

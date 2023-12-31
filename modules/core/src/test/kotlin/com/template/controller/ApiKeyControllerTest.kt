@@ -163,7 +163,7 @@ internal class ApiKeyControllerTest {
         mvc.delete("$ENDPOINT/${apiKey.id}") {
             with(csrf())
         }.andExpect {
-            status { isOk() }
+            status { isNoContent() }
         }
 
         verify(exactly = 1) { apiKeyService.deleteApiKey(user.id, apiKey.id) }

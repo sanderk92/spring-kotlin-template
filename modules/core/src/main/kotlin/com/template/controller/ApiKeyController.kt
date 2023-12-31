@@ -25,21 +25,15 @@ internal class ApiKeyController(
             ?.let { apiKeys -> ResponseEntity.ok(apiKeys) }
             ?: ResponseEntity.notFound().build()
 
-    override fun createApiKey(
-        currentUser: CurrentUser,
-        request: ApiKeyRequest,
-    ): ResponseEntity<ApiKeyCreatedDto> =
+    override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyCreatedDto> =
         apiKeyService.createApiKey(currentUser.id, request.name, request.authorities())
             ?.let(apiKeyMapper::toApiKeyCreatedDto)
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 
-    override fun deleteApiKey(
-        currentUser: CurrentUser,
-        id: UUID,
-    ): ResponseEntity<Void> =
+    override fun deleteApiKey(currentUser: CurrentUser, id: UUID): ResponseEntity<Void> =
         apiKeyService.deleteApiKey(currentUser.id, id)
-            .let { ResponseEntity.ok().build() }
+            .let { ResponseEntity.noContent().build() }
 }
 
 private fun ApiKeyRequest.authorities(): List<Authority> =

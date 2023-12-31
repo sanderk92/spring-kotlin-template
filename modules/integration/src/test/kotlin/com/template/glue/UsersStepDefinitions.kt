@@ -3,9 +3,9 @@ package com.template.glue
 import com.template.objects.*
 import io.cucumber.java.en.Then
 import org.assertj.core.api.Assertions.assertThat
-import org.openapitools.client.apis.UserApi
+import org.openapitools.client.apis.UsersApi
 
-internal class UserStepDefinitions(private val userApi : UserApi) {
+internal class UsersStepDefinitions(private val userApi : UsersApi) {
 
     @Then("current user can be retrieved and has authorities {string}")
     fun thenRetrieveCurrentUser(authorities: String) {

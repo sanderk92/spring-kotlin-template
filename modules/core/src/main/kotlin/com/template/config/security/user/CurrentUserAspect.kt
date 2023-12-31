@@ -27,10 +27,7 @@ internal class CurrentUserAspect {
         setAuthoritiesField(authentication, currentUser)
     }
 
-    private fun setIdField(
-        authentication: Authentication,
-        currentUser: CurrentUser,
-    ) {
+    private fun setIdField(authentication: Authentication, currentUser: CurrentUser) {
         val uuid = UUID.fromString(authentication.name)
         val idField = currentUser.javaClass.getDeclaredField(CurrentUser::id.name)
         idField.isAccessible = true
@@ -38,10 +35,7 @@ internal class CurrentUserAspect {
         idField.isAccessible = false
     }
 
-    private fun setAuthoritiesField(
-        authentication: Authentication,
-        currentUser: CurrentUser,
-    ) {
+    private fun setAuthoritiesField(authentication: Authentication, currentUser: CurrentUser) {
         val authorities = authentication.authorities.map(GrantedAuthority::toString).map(Authority.Companion::valueOfRole)
         val authorityField = currentUser.javaClass.getDeclaredField(CurrentUser::authorities.name)
         authorityField.isAccessible = true

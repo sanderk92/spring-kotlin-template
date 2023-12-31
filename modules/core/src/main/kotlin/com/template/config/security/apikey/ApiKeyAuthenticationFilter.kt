@@ -18,11 +18,7 @@ internal class ApiKeyAuthenticationFilter(
         return request.servletPath.startsWith(ApiKeyInterface.ENDPOINT)
     }
 
-    override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        chain: FilterChain,
-    ) {
+    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         request.getHeader("API-Key")?.also { apiKey ->
 
             val hashedApiKey = hashGenerator.hash(apiKey)

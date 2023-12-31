@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @CrossOrigin
 @RequestMapping(ENDPOINT)
-@Tag(name = "Keys", description = "Manage api keys for the current user")
+@Tag(name = "ApiKeys", description = "Manage api keys for the current user")
 internal interface ApiKeyInterface {
     companion object {
         const val ENDPOINT = "/v1/keys"

@@ -24,11 +24,7 @@ internal class JwtUserStorageFilter(
     private val userInfoProperties: UserInfoProperties,
     private val restTemplate: RestTemplate,
 ) : OncePerRequestFilter() {
-    override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        chain: FilterChain,
-    ) {
+    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         val authentication: Authentication? = SecurityContextHolder.getContext().authentication
         if (authentication?.isAuthenticated == true && authentication is JwtAuthenticationToken) {
             secureUserService.findById(extractId(authentication)) ?: createUser(authentication)

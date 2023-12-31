@@ -1,7 +1,7 @@
 package com.template.config
 
-import org.openapitools.client.apis.KeysApi
-import org.openapitools.client.apis.UserApi
+import org.openapitools.client.apis.ApiKeysApi
+import org.openapitools.client.apis.UsersApi
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,8 +19,8 @@ internal class OpenApiConfig(
         .build()
 
     @Bean
-    fun userApi(client: WebClient): UserApi = UserApi(client)
+    fun usersApi(client: WebClient): UsersApi = UsersApi(client)
 
     @Bean
-    fun keysApi(client: WebClient): KeysApi = KeysApi(client)
+    fun apiKeysApi(client: WebClient): ApiKeysApi = ApiKeysApi(client)
 }

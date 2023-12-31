@@ -14,10 +14,7 @@ internal interface ApiKeyMapper {
 
     fun toApiKeyDto(model: ApiKey): ApiKeyDto
 
-    fun toApiKeyCreated(
-        entity: ApiKeyEntity,
-        key: String,
-    ): ApiKeyCreated
+    fun toApiKeyCreated(entity: ApiKeyEntity, key: String): ApiKeyCreated
 
     fun toApiKeyCreatedDto(model: ApiKeyCreated): ApiKeyCreatedDto
 }

@@ -16,8 +16,5 @@ internal interface ApiKeyRepository : JpaRepository<ApiKeyEntity, UUID> {
         WHERE a.owner.id = :userId AND a.id = :apiKeyId
      """,
     )
-    fun delete(
-        userId: UUID,
-        apiKeyId: UUID,
-    )
+    fun delete(userId: UUID, apiKeyId: UUID)
 }

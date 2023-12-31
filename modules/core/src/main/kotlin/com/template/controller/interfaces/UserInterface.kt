@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
 @CrossOrigin
 @RequestMapping(ENDPOINT)
 @Secured(READ_ROLE)
-@Tag(name = "User", description = "Retrieve information about the current user")
+@Tag(name = "Users", description = "Retrieve information about the current user")
 internal interface UserInterface {
     companion object {
         const val ENDPOINT = "/v1/users"

@@ -4,16 +4,16 @@ import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.fail
-import org.openapitools.client.apis.KeysApi
+import org.openapitools.client.apis.ApiKeysApi
 import org.openapitools.client.models.ApiKeyDto
 import org.openapitools.client.models.ApiKeyRequest
 
-internal class KeysStepDefinitions(private val keysApi : KeysApi) {
+internal class ApiKeysStepDefinitions(private val apiKeysApi : ApiKeysApi) {
 
     @When("creating api key with name {string} and all authorities")
     fun whenCreatingApiKey(name: String) {
         findApiKey(name)?.also { fail("api key with name '$name' must not already exist") }
-        keysApi.createApiKey(ApiKeyRequest(name = name, read = true, write = true, delete = true)).block()!!
+        apiKeysApi.createApiKey(ApiKeyRequest(name = name, read = true, write = true, delete = true)).block()!!
     }
 
     @Then("api key with name {string} exists with all authorities")
@@ -25,7 +25,7 @@ internal class KeysStepDefinitions(private val keysApi : KeysApi) {
     @When("deleting api key with name {string}")
     fun whenDeletingApiKey(name: String) {
         val key = findApiKey(name) ?: fail("api key with name '$name' must exist")
-        keysApi.deleteApiKey(key.id).block()
+        apiKeysApi.deleteApiKey(key.id).block()
     }
 
     @Then("api key with name {string} does not exist")
@@ -34,5 +34,5 @@ internal class KeysStepDefinitions(private val keysApi : KeysApi) {
     }
 
     private fun findApiKey(name: String): ApiKeyDto? =
-        keysApi.getApiKeys().block()!!.firstOrNull { it.name == name }
+        apiKeysApi.getApiKeys().block()!!.firstOrNull { it.name == name }
 }
