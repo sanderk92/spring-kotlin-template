@@ -6,21 +6,21 @@ import org.springframework.boot.web.servlet.context.ServletWebServerApplicationC
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
-import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.client.RestClient
 
 @Configuration
 internal class OpenApiConfig(
     private val context: ServletWebServerApplicationContext
 ) {
     @Bean
-    fun webClient(): WebClient = WebClient.builder()
+    fun webClient(): RestClient = RestClient.builder()
         .baseUrl("http://localhost:${context.webServer.port}/")
         .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer token")
         .build()
 
     @Bean
-    fun usersApi(client: WebClient): UsersApi = UsersApi(client)
+    fun usersApi(client: RestClient): UsersApi = UsersApi(client)
 
     @Bean
-    fun apiKeysApi(client: WebClient): ApiKeysApi = ApiKeysApi(client)
+    fun apiKeysApi(client: RestClient): ApiKeysApi = ApiKeysApi(client)
 }

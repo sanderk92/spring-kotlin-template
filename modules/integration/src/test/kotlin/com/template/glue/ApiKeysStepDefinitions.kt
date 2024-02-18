@@ -13,7 +13,7 @@ internal class ApiKeysStepDefinitions(private val apiKeysApi : ApiKeysApi) {
     @When("creating api key with name {string} and all authorities")
     fun whenCreatingApiKey(name: String) {
         findApiKey(name)?.also { fail("api key with name '$name' must not already exist") }
-        apiKeysApi.createApiKey(ApiKeyRequest(name = name, read = true, write = true, delete = true)).block()!!
+        apiKeysApi.createApiKey(ApiKeyRequest(name = name, read = true, write = true, delete = true))
     }
 
     @Then("api key with name {string} exists with all authorities")
@@ -25,7 +25,7 @@ internal class ApiKeysStepDefinitions(private val apiKeysApi : ApiKeysApi) {
     @When("deleting api key with name {string}")
     fun whenDeletingApiKey(name: String) {
         val key = findApiKey(name) ?: fail("api key with name '$name' must exist")
-        apiKeysApi.deleteApiKey(key.id).block()
+        apiKeysApi.deleteApiKey(key.id)
     }
 
     @Then("api key with name {string} does not exist")
@@ -34,5 +34,5 @@ internal class ApiKeysStepDefinitions(private val apiKeysApi : ApiKeysApi) {
     }
 
     private fun findApiKey(name: String): ApiKeyDto? =
-        apiKeysApi.getApiKeys().block()!!.firstOrNull { it.name == name }
+        apiKeysApi.getApiKeys().firstOrNull { it.name == name }
 }

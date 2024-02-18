@@ -1,8 +1,8 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("org.springframework.boot") version "3.1.7" // 3.2.1 currently causes wiremock issues
-    id("org.openapi.generator") version "7.2.0"
+    id("org.springframework.boot") version "3.2.2"
+    id("org.openapi.generator") version "7.3.0"
 }
 
 sourceSets {
@@ -20,7 +20,7 @@ dependencies {
     implementation(project(mapOf("path" to ":modules:core")))
 
     // Spring
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test")
@@ -29,7 +29,7 @@ dependencies {
     testImplementation("com.h2database:h2:2.2.224")
     testImplementation("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.vintage:junit-vintage-engine")
-    testImplementation("org.wiremock:wiremock:3.3.1")
+    testImplementation("org.wiremock:wiremock-standalone:3.3.1")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("io.mockk:mockk:1.13.8")
 
@@ -41,7 +41,7 @@ dependencies {
 
 openApiGenerate {
     generatorName.set("kotlin")
-    library.set("jvm-spring-webclient")
+    library.set("jvm-spring-restclient")
     inputSpec.set("${project(":modules:core").projectDir}/build/openapi.json")
     outputDir.set("$projectDir/build/generated")
     configOptions.set(mapOf(

@@ -9,7 +9,7 @@ internal class UsersStepDefinitions(private val userApi : UsersApi) {
 
     @Then("current user can be retrieved and has authorities {string}")
     fun thenRetrieveCurrentUser(authorities: String) {
-        val user = userApi.getCurrentUser().block()!!
+        val user = userApi.getCurrentUser()
         assertThat(user.username).isEqualTo(username)
         assertThat(user.firstName).isEqualTo(firstName)
         assertThat(user.lastName).isEqualTo(lastName)
@@ -19,7 +19,7 @@ internal class UsersStepDefinitions(private val userApi : UsersApi) {
 
     @Then("current user can be found by email")
     fun thenSearchUserByEmail() {
-        val users = userApi.searchUsers(email).block()!!
+        val users = userApi.searchUsers(email)
         assertThat(users.size).isEqualTo(1)
         assertThat(users[0].username).isEqualTo(username)
         assertThat(users[0].firstName).isEqualTo(firstName)
@@ -29,7 +29,7 @@ internal class UsersStepDefinitions(private val userApi : UsersApi) {
 
     @Then("current user can be found by user name")
     fun thenSearchUserByUserName() {
-        val users = userApi.searchUsers(username).block()!!
+        val users = userApi.searchUsers(username)
         assertThat(users.size).isEqualTo(1)
         assertThat(users[0].username).isEqualTo(username)
         assertThat(users[0].firstName).isEqualTo(firstName)
@@ -39,7 +39,7 @@ internal class UsersStepDefinitions(private val userApi : UsersApi) {
 
     @Then("current user can be found by first name")
     fun thenSearchUserByFirstName() {
-        val users = userApi.searchUsers(firstName).block()!!
+        val users = userApi.searchUsers(firstName)
         assertThat(users.size).isEqualTo(1)
         assertThat(users[0].username).isEqualTo(username)
         assertThat(users[0].firstName).isEqualTo(firstName)
@@ -49,7 +49,7 @@ internal class UsersStepDefinitions(private val userApi : UsersApi) {
 
     @Then("current user can be found by last name")
     fun thenSearchUserByLastName() {
-        val users = userApi.searchUsers(lastName).block()!!
+        val users = userApi.searchUsers(lastName)
         assertThat(users.size).isEqualTo(1)
         assertThat(users[0].username).isEqualTo(username)
         assertThat(users[0].firstName).isEqualTo(firstName)
