@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.csrf.CsrfFilter.DEFAULT_CSRF_MATCHER
 
 private val PUBLIC_ENDPOINTS =
     arrayOf(
@@ -32,7 +33,11 @@ internal class SecurityConfig(
     fun configure(http: HttpSecurity): SecurityFilterChain =
         http
             .cors(Customizer.withDefaults())
-            .csrf(Customizer.withDefaults())
+            .csrf { csrf ->
+                csrf.requireCsrfProtectionMatcher { request ->
+                    request.getHeader("API-Key") == null && DEFAULT_CSRF_MATCHER.matches(request)
+                }
+            }
             .authorizeHttpRequests { auth ->
                 auth
                     .requestMatchers(*PUBLIC_ENDPOINTS).permitAll()
