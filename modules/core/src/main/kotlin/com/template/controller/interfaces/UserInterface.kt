@@ -1,6 +1,7 @@
 package com.template.controller.interfaces
 
 import com.template.config.SecuritySchemes
+import com.template.config.security.user.ADMIN_ROLE
 import com.template.config.security.user.CurrentUser
 import com.template.config.security.user.READ_ROLE
 import com.template.controller.interfaces.UserInterface.Companion.ENDPOINT
@@ -31,6 +32,7 @@ internal interface UserInterface {
         description = "Accessible with role READ",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC), SecurityRequirement(name = SecuritySchemes.APIKEY)],
     )
+    @Secured(ADMIN_ROLE)
     fun searchUsers(
         @Parameter(description = "Query user by first, last or username and email") @RequestParam
         query: String,
@@ -42,6 +44,7 @@ internal interface UserInterface {
         description = "Accessible with role READ",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC), SecurityRequirement(name = SecuritySchemes.APIKEY)],
     )
+    @Secured(READ_ROLE)
     fun getCurrentUser(
         @Parameter(hidden = true) currentUser: CurrentUser,
     ): ResponseEntity<CurrentUserDto>

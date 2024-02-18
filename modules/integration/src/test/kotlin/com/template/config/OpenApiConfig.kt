@@ -2,6 +2,7 @@ package com.template.config
 
 import org.openapitools.client.apis.ApiKeysApi
 import org.openapitools.client.apis.UsersApi
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,7 +14,7 @@ internal class OpenApiConfig(
     private val context: ServletWebServerApplicationContext
 ) {
     @Bean
-    fun webClient(): RestClient = RestClient.builder()
+    fun restClient(): RestClient = RestClient.builder()
         .baseUrl("http://localhost:${context.webServer.port}/")
         .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer token")
         .build()

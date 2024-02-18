@@ -2,6 +2,9 @@ package com.template.controller.interfaces
 
 import com.template.config.SecuritySchemes
 import com.template.config.security.user.CurrentUser
+import com.template.config.security.user.DELETE_ROLE
+import com.template.config.security.user.READ_ROLE
+import com.template.config.security.user.WRITE_ROLE
 import com.template.controller.interfaces.ApiKeyInterface.Companion.ENDPOINT
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -11,6 +14,7 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import java.util.UUID
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -33,6 +37,7 @@ internal interface ApiKeyInterface {
         description = "Not accessible by API key",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)],
     )
+    @Secured(READ_ROLE)
     fun getApiKeys(
         @Parameter(hidden = true) currentUser: CurrentUser,
     ): ResponseEntity<List<ApiKeyDto>>
@@ -43,6 +48,7 @@ internal interface ApiKeyInterface {
         description = "Not accessible by API key",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)],
     )
+    @Secured(WRITE_ROLE)
     fun createApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
         @Parameter(description = "The api key to create") @Valid @RequestBody
@@ -55,6 +61,7 @@ internal interface ApiKeyInterface {
         description = "Not accessible by API key",
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)],
     )
+    @Secured(DELETE_ROLE)
     fun deleteApiKey(
         @Parameter(hidden = true) currentUser: CurrentUser,
         @Parameter(description = "The id of the api key to delete") @PathVariable

@@ -26,7 +26,7 @@ import org.springframework.test.context.DynamicPropertySource
     monochrome = true,
     tags = "@Integration"
 )
-@DirtiesContext
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // causes issues with restclient
 internal class CucumberTest {
 
     companion object {
