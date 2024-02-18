@@ -1,5 +1,5 @@
-# Youtil server
-REST API for the Youtil application
+# Kotlin Spring Template
+A template application for a rest api in Kotlin with Spring
 
 ## Running locally
 To run this application for development, run it in the `local` profile. In this profile, everything is stored locally
