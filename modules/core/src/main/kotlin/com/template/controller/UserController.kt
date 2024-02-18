@@ -5,6 +5,7 @@ import com.template.controller.interfaces.CurrentUserDto
 import com.template.controller.interfaces.UserDto
 import com.template.controller.interfaces.UserInterface
 import com.template.domain.UserService
+import com.template.domain.model.User
 import com.template.mappers.UserMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -20,7 +21,7 @@ internal class UserController(
             .let { ResponseEntity.ok(it) }
 
     override fun getCurrentUser(currentUser: CurrentUser): ResponseEntity<CurrentUserDto> =
-        userService.findById(currentUser.id)
+        userService.findById(User.Id(currentUser.id))
             ?.let { userMapper.toCurrentUserDto(it, currentUser.authorities) }
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()

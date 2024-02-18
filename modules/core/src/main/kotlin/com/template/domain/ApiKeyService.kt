@@ -4,7 +4,9 @@ import com.template.config.IdGenerator
 import com.template.config.security.apikey.ApiKeyGenerator
 import com.template.config.security.apikey.HashGenerator
 import com.template.config.security.user.Authority
+import com.template.domain.model.ApiKey
 import com.template.domain.model.ApiKeyCreated
+import com.template.domain.model.User
 import com.template.mappers.ApiKeyMapper
 import com.template.persistence.ApiKeyRepository
 import com.template.persistence.UserRepository
@@ -24,8 +26,8 @@ internal class ApiKeyService(
     private val apiKeyMapper: ApiKeyMapper,
 ) {
     @Transactional
-    fun createApiKey(userId: UUID, name: String, authorities: List<Authority>): ApiKeyCreated? =
-        userRepository.findById(userId).getOrNull()?.let { user ->
+    fun createApiKey(userId: User.Id, name: String, authorities: List<Authority>): ApiKeyCreated? =
+        userRepository.findById(userId.value).getOrNull()?.let { user ->
             val unHashedApiKey = apiKeyGenerator.generate()
             ApiKeyEntity(uuidGenerator(), hashGenerator.hash(unHashedApiKey), name, user, authorities)
                 .let(apiKeyRepository::save)
@@ -33,7 +35,7 @@ internal class ApiKeyService(
         }
 
     @Transactional
-    fun deleteApiKey(userId: UUID, apiKeyId: UUID) {
-        apiKeyRepository.delete(userId, apiKeyId)
+    fun deleteApiKey(userId: User.Id, apiKeyId: ApiKey.Id) {
+        apiKeyRepository.delete(userId.value, apiKeyId.value)
     }
 }

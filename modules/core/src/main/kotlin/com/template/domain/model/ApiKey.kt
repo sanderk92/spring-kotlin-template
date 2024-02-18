@@ -5,14 +5,16 @@ import com.template.config.security.user.Authority
 import java.util.UUID
 
 internal data class ApiKey(
-    val id: UUID,
+    val id: Id,
     val name: String,
     override val hashedKey: String,
     override val authorities: List<Authority>,
-) : SecureApiKey
+) : SecureApiKey {
+    data class Id(val value: UUID)
+}
 
 internal data class ApiKeyCreated(
-    val id: UUID,
+    val id: ApiKey.Id,
     val key: String,
     val name: String,
     val authorities: List<Authority>,

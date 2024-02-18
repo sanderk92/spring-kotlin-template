@@ -22,6 +22,11 @@ internal class UserService(
             .map(userMapper::toUser)
 
     @Transactional(readOnly = true)
+    fun findById(userId: User.Id): User? =
+        userRepository.findById(userId.value).getOrNull()
+            ?.let(userMapper::toUser)
+
+    @Transactional(readOnly = true)
     override fun findById(userId: UUID): User? =
         userRepository.findById(userId).getOrNull()
             ?.let(userMapper::toUser)

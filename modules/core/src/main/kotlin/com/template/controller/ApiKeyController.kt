@@ -8,6 +8,8 @@ import com.template.controller.interfaces.ApiKeyInterface
 import com.template.controller.interfaces.ApiKeyRequest
 import com.template.domain.ApiKeyService
 import com.template.domain.UserService
+import com.template.domain.model.ApiKey
+import com.template.domain.model.User
 import com.template.mappers.ApiKeyMapper
 import java.util.UUID
 import org.springframework.http.ResponseEntity
@@ -26,13 +28,13 @@ internal class ApiKeyController(
             ?: ResponseEntity.notFound().build()
 
     override fun createApiKey(currentUser: CurrentUser, request: ApiKeyRequest): ResponseEntity<ApiKeyCreatedDto> =
-        apiKeyService.createApiKey(currentUser.id, request.name, request.authorities())
+        apiKeyService.createApiKey(User.Id(currentUser.id), request.name, request.authorities())
             ?.let(apiKeyMapper::toApiKeyCreatedDto)
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 
     override fun deleteApiKey(currentUser: CurrentUser, id: UUID): ResponseEntity<Void> =
-        apiKeyService.deleteApiKey(currentUser.id, id)
+        apiKeyService.deleteApiKey(User.Id(currentUser.id), ApiKey.Id(id))
             .let { ResponseEntity.noContent().build() }
 }
 
