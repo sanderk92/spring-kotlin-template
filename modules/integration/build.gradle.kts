@@ -39,10 +39,11 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
 }
 
+val openApiSpec = "${project(":modules:core").projectDir}/build/openapi.json"
 openApiGenerate {
     generatorName.set("kotlin")
     library.set("jvm-spring-restclient")
-    inputSpec.set("${project(":modules:core").projectDir}/build/openapi.json")
+    inputSpec.set(openApiSpec)
     outputDir.set("$projectDir/build/generated")
     configOptions.set(mapOf(
         "useSpringBoot3" to "true",
@@ -50,6 +51,12 @@ openApiGenerate {
     additionalProperties.set(mapOf(
         "serializationLibrary" to "jackson",
     ))
+}
+
+tasks.named("openApiGenerate") {
+    if (!File(openApiSpec).exists()) {
+        dependsOn(":modules:core:generateOpenApiDocs")
+    }
 }
 
 tasks.named("compileKotlin") {
