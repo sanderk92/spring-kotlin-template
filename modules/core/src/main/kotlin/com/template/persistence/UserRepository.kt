@@ -14,7 +14,7 @@ internal interface UserRepository : JpaRepository<UserEntity, UUID> {
         WHERE u.email LIKE :query% OR u.username LIKE :query% OR u.firstName LIKE :query% OR u.lastName LIKE :query%
     """,
     )
-    fun search(query: String): List<UserEntity>
+    fun search(query: String): List<UserEntity> // TODO This will be slow. Delegate to the auth server?
 
     @Query(
         """
