@@ -1,6 +1,7 @@
 package com.template.controller
 
 import com.template.controller.interfaces.ExceptionInterface
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
@@ -12,69 +13,78 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 
+val log = KotlinLogging.logger {}
+
 @ControllerAdvice
 internal class ExceptionController : ExceptionInterface {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handle(exception: Throwable): ProblemDetail {
-        exception.printStackTrace()
-        return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR).also {
-            it.title = "internal server error"
-            it.detail = "an unexpected error occurred"
+        log.error(exception) { "Unexpected exception" }
+        return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR).apply {
+            title = "internal server error"
+            detail = "an unexpected error occurred"
         }
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     fun handle(exception: ConstraintViolationException): ProblemDetail =
-        ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY).also {
-            it.title = "validation failed"
-            it.detail = "constraint on input was violated"
-            it.setProperty("errors", exception.constraintViolations.map(::constraintError))
+        ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY).apply {
+            title = "validation failed"
+            detail = "constraint on input was violated"
+            setProperty("errors", exception.constraintViolations.map(::constraintError))
         }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     fun handle(exception: MethodArgumentNotValidException): ProblemDetail =
-        ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY).also {
-            it.title = "validation failed"
-            it.detail = "constraint on input was violated"
-            it.setProperty("errors", fieldErrors(exception) + globalErrors(exception))
+        ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY).apply {
+            title = "validation failed"
+            detail = "constraint on input was violated"
+            setProperty("errors", fieldErrors(exception) + globalErrors(exception))
         }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
     fun handle(exception: AccessDeniedException): ProblemDetail =
-        ProblemDetail.forStatus(HttpStatus.FORBIDDEN).also {
-            it.title = "access denied"
-            it.detail = "the current user has no access to this resource"
+        ProblemDetail.forStatus(HttpStatus.FORBIDDEN).apply {
+            title = "access denied"
+            detail = exception.message
+        }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun handle(exception: NoSuchElementException): ProblemDetail =
+        ProblemDetail.forStatus(HttpStatus.NOT_FOUND).apply {
+            title = "resource not found"
+            detail = exception.message
         }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handle(exception: HttpMessageNotReadableException): ProblemDetail =
-        ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).also {
-            it.title = "invalid request"
-            it.detail = "the body of the request was malformed or missing data"
+        ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).apply {
+            title = "invalid request"
+            detail = "the body of the request was malformed or missing data"
         }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handle(exception: IllegalStateException): ProblemDetail {
-        exception.printStackTrace()
-        return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR).also {
-            it.title = "illegal state exception"
-            it.detail = exception.message
+        log.error(exception) { "Invalid state" }
+        return ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR).apply {
+            title = "illegal state exception"
+            detail = exception.message
         }
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handle(exception: IllegalArgumentException): ProblemDetail {
-        exception.printStackTrace()
-        return ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).also {
-            it.title = "illegal argument exception"
-            it.detail = exception.message
+        return ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).apply {
+            title = "illegal argument exception"
+            detail = exception.message
         }
     }
 
