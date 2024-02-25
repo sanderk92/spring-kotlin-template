@@ -13,7 +13,8 @@ internal class ApiKeysStepDefinitions(private val apiKeysApi : ApiKeysApi) {
     @When("creating api key with name {string} and all authorities")
     fun whenCreatingApiKey(name: String) {
         findApiKey(name)?.also { fail("api key with name '$name' must not already exist") }
-        apiKeysApi.createApiKey(ApiKeyRequest(name = name, read = true, write = true, delete = true))
+        val request = ApiKeyRequest().name(name).read(true).write(true).delete(true)
+        apiKeysApi.createApiKey(request)
     }
 
     @Then("api key with name {string} exists with all authorities")
