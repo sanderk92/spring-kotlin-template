@@ -26,7 +26,7 @@ import org.springframework.test.context.DynamicPropertySource
     monochrome = true,
     tags = "@Integration"
 )
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 internal class CucumberTest {
 
     companion object {
