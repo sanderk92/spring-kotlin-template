@@ -4,6 +4,7 @@ import com.template.controller.interfaces.ExceptionInterface
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.ConstraintViolationException
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -12,11 +13,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.multipart.MaxUploadSizeExceededException
 
 val log = KotlinLogging.logger {}
 
 @ControllerAdvice
-internal class ExceptionController : ExceptionInterface {
+internal class ExceptionController(
+    @Value("\${spring.servlet.multipart.max-file-size}") private val maxMultipartSize: String
+) : ExceptionInterface {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handle(exception: Throwable): ProblemDetail {
@@ -67,6 +71,14 @@ internal class ExceptionController : ExceptionInterface {
         ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).apply {
             title = "invalid request"
             detail = "the body of the request was malformed or missing data"
+        }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handle(exception: MaxUploadSizeExceededException): ProblemDetail =
+        ProblemDetail.forStatus(HttpStatus.BAD_REQUEST).apply {
+            title = "invalid request"
+            detail = "multipart exceeds the maximum file size of $maxMultipartSize"
         }
 
     @ExceptionHandler

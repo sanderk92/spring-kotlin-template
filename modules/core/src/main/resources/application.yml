@@ -28,6 +28,9 @@ spring:
         opaquetoken:
           client-id: ${OIDC_SERVER_CLIENT_ID}
           client-secret: ${OIDC_SERVER_CLIENT_SECRET}
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
 auth:
   role:
