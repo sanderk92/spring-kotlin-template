@@ -17,7 +17,6 @@ spring:
     password: ${DATABASE_PASSWORD}
   jpa:
     database-platform: ${DATABASE_DIALECT}
-    show-sql: true
     hibernate:
       ddl-auto: validate
   security:
