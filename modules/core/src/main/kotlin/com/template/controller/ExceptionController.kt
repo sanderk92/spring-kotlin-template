@@ -19,7 +19,7 @@ val log = KotlinLogging.logger {}
 
 @ControllerAdvice
 internal class ExceptionController(
-    @Value("\${spring.servlet.multipart.max-file-size}") private val maxMultipartSize: String
+    @Value("\${spring.servlet.multipart.max-file-size}") private val maxMultipartSize: String,
 ) : ExceptionInterface {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

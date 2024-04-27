@@ -1,6 +1,5 @@
 package com.template.config.security.user
 
-import com.template.config.security.apikey.SecureApiKey
 import java.util.UUID
 
 internal interface SecureUser {
@@ -9,7 +8,6 @@ internal interface SecureUser {
     val username: String
     val firstName: String
     val lastName: String
-    val apiKeys: List<SecureApiKey>
 
     interface Id {
         val value: UUID

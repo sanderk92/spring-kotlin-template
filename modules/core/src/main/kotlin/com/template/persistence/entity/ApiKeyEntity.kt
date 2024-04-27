@@ -33,7 +33,7 @@ internal data class ApiKeyEntity(
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "apikey_authorities")
     @Column(name = "authorities", nullable = false)
-    val authorities: List<Authority>,
+    val authorities: Set<Authority>,
 ) {
     override fun equals(other: Any?): Boolean =
         this === other || other is ApiKeyEntity &&

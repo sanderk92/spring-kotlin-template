@@ -10,9 +10,10 @@ import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants.ComponentModel.SPRING
 
-@Mapper(componentModel = SPRING, injectionStrategy = CONSTRUCTOR)
+@Mapper(componentModel = SPRING, injectionStrategy = CONSTRUCTOR, uses = [UserMapper::class])
 internal interface ApiKeyMapper {
     @Mapping(source = "id", target = "id.value")
+    @Mapping(source = "owner", target = "user")
     fun toApiKey(entity: ApiKeyEntity): ApiKey
 
     @Mapping(source = "id.value", target = "id")

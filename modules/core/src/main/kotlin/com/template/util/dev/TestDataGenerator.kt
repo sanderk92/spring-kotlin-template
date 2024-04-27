@@ -27,24 +27,21 @@ internal class TestDataGenerator(
 ) {
     @PostConstruct
     fun generateDevData() {
-        val user =
-            userService.create(
-                entry =
-                    SecureUserEntry(
-                        id = UUID.fromString(userId),
-                        email = "dev@dev.dev",
-                        username = "dev-username",
-                        firstName = "dev-firstname",
-                        lastName = "dev-lastname",
-                    ),
-            )
+        val user = userService.create(
+            SecureUserEntry(
+                id = UUID.fromString(userId),
+                email = "dev@dev.dev",
+                username = "dev-username",
+                firstName = "dev-firstname",
+                lastName = "dev-lastname",
+            ),
+        )
 
-        val key =
-            apiKeyService.createApiKey(
-                userId = user.id,
-                name = "dev-key",
-                authorities = listOf(READ, WRITE, DELETE, ADMIN),
-            )
+        val key = apiKeyService.create(
+            userId = user.id,
+            name = "dev-key",
+            authorities = setOf(READ, WRITE, DELETE, ADMIN),
+        )
 
         log.info { "Generated test data for user '${user.id}'" }
         log.info { "Generated api key '${key?.key}'" }

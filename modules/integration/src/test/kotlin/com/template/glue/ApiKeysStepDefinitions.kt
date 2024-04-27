@@ -35,5 +35,5 @@ internal class ApiKeysStepDefinitions(private val apiKeysApi : ApiKeysApi) {
     }
 
     private fun findApiKey(name: String): ApiKeyDto? =
-        apiKeysApi.getApiKeys().firstOrNull { it.name == name }
+        apiKeysApi.retrieveApiKeys().firstOrNull { it.name == name }
 }

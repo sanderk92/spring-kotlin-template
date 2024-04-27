@@ -9,7 +9,6 @@ internal data class User(
     override val username: String,
     override val firstName: String,
     override val lastName: String,
-    override val apiKeys: List<ApiKey>,
 ) : SecureUser {
     data class Id(
         override val value: UUID,

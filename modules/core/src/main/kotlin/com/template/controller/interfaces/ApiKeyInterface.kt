@@ -38,7 +38,7 @@ internal interface ApiKeyInterface {
         security = [SecurityRequirement(name = SecuritySchemes.OIDC)],
     )
     @Secured(READ_ROLE)
-    fun getApiKeys(
+    fun retrieveApiKeys(
         @Parameter(hidden = true) currentUser: CurrentUser,
     ): ResponseEntity<List<ApiKeyDto>>
 
@@ -80,12 +80,12 @@ internal data class ApiKeyRequest(
 internal data class ApiKeyDto(
     val id: UUID,
     val name: String,
-    val authorities: List<String>,
+    val authorities: Set<String>,
 )
 
 internal data class ApiKeyCreatedDto(
     val id: UUID,
     val key: String,
     val name: String,
-    val authorities: List<String>,
+    val authorities: Set<String>,
 )

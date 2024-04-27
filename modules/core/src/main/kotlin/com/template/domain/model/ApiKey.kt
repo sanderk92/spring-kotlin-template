@@ -7,6 +7,7 @@ import java.util.UUID
 internal data class ApiKey(
     val id: Id,
     val name: String,
+    override val user: User,
     override val hashedKey: String,
     override val authorities: List<Authority>,
 ) : SecureApiKey {
