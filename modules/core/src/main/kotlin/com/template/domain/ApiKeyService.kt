@@ -4,7 +4,7 @@ import com.template.config.IdGenerator
 import com.template.config.security.apikey.ApiKeyGenerator
 import com.template.config.security.apikey.HashGenerator
 import com.template.config.security.user.Authority
-import com.template.config.security.user.SecureApiKeyService
+import com.template.config.security.apikey.SecureApiKeyService
 import com.template.domain.model.ApiKey
 import com.template.domain.model.ApiKeyCreated
 import com.template.domain.model.User

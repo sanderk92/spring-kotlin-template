@@ -1,4 +1,4 @@
-package com.template.config.security.user
+package com.template.config.security.apikey
 
 import com.template.config.security.apikey.SecureApiKey
 

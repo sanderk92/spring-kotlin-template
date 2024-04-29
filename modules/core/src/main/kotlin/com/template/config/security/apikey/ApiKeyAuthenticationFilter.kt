@@ -1,6 +1,5 @@
 package com.template.config.security.apikey
 
-import com.template.config.security.user.SecureApiKeyService
 import com.template.controller.interfaces.ApiKeyInterface
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
